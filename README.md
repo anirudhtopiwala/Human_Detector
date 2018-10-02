@@ -7,6 +7,11 @@
 
 An implementation of Human Detection using HOG features. The classifier used is a trained Support Vector machine (SVM).
 
+## Project Breakdown
+<p align="center">
+<img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/ProjectBreakdown.jpg">
+</p>
+
 ## Standard install via command-line
 ```
 git clone --recursive https://github.com/anirudhtopiwala/Human_Detector.git

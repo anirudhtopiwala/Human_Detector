@@ -6,6 +6,7 @@
 
 # Build artifacts
 build/
+Debug/
 
 # Python
 *.pyc
