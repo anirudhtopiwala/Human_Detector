@@ -24,7 +24,7 @@
 								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1705137916" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.546849542" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1549767799" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="/usr/include/opencv"/>
+									<listOptionValue builtIn="false" value="/usr/include/opencv2"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2006508128" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -36,26 +36,11 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1234307765" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1702259456" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.paths.2034073608" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="/usr/lib"/>
+									<listOptionValue builtIn="false" value="/usr/include"/>
 								</option>
-								<option id="gnu.cpp.link.option.libs.524948810" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="opencv_calib3d300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_core300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_features2d300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_flann300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_highgui300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_imgcodecs300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_imgproc300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_ml300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_objdetect300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_photo300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_shape300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_stitching300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_superres300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_ts300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_video300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_videoio300d.lib"/>
-									<listOptionValue builtIn="false" value="opencv_videostab300d.lib"/>
+								<option id="gnu.cpp.link.option.libs.524948810" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="opencv2_core"/>
+									<listOptionValue builtIn="false" value="opencv2_imgproc"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.614659028" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -136,6 +121,13 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Human_detection"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Human_detection"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

@@ -61,7 +61,7 @@ all: Human_detection
 Human_detection: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L/usr/include -o "Human_detection" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "Human_detection" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

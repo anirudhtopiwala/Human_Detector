@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lopencv2_core -lopencv2_imgproc
+LIBS :=
 

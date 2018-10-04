@@ -4,23 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../test/main.cpp \
-../test/test.cpp 
+../app/main.cpp 
 
 OBJS += \
-./test/main.o \
-./test/test.o 
+./app/main.o 
 
 CPP_DEPS += \
-./test/main.d \
-./test/test.d 
+./app/main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-test/%.o: ../test/%.cpp
+app/%.o: ../app/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I/usr/include/opencv2 -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
