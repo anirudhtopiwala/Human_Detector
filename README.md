@@ -1,6 +1,7 @@
 # Human_Detector
-[![Build Status](https://travis-ci.org/Ghost1995/Valgrind.svg?branch=master)](https://travis-ci.org/Ghost1995/Valgrind)
-[![Coverage Status](https://coveralls.io/repos/github/Ghost1995/Valgrind/badge.svg?branch=master)](https://coveralls.io/github/Ghost1995/Valgrind?branch=master)---
+[![Build Status](https://travis-ci.org/anirudhtopiwala/Human_Detector.svg?branch=master)](https://travis-ci.org/anirudhtopiwala/Human_Detector)
+[![Coverage Status](https://coveralls.io/repos/github/anirudhtopiwala/Human_Detector/badge.svg?branch=master)](https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master)
+---
 
 ## Overview
 
