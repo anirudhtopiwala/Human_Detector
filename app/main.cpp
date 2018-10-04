@@ -13,6 +13,21 @@
  * @return It returns a 0 just to avoid a warning.
  */
 int main() {
+    Detect test;
+    std::string imageName("../data/pedestrian_5.jpg");
+    cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
+    std::vector<cv::Rect> found = test.findHumans(img);
+    for (std::vector<cv::Rect>::iterator i = found.begin(); i != found.end(); ++i) {
+        cv::Rect &r = *i;
+        std::cout << r << std::endl;
+        cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+        test.adjustBoundingBox(r);
+        std::cout << r << std::endl;
+        cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+    }
+    cv::imshow("People detector", img);
+    cv::waitKey(1000);
+
     cv::VideoCapture cap;
     cap.open(0);
     if (!cap.isOpened()) {
@@ -20,7 +35,6 @@ int main() {
         return 2;
     }
 
-    std::cout << "Press 'q' or <ESC> to quit." << std::endl;
     std::cout << "Press <space> to toggle between " <<
                   "Default and Daimler detector" << std::endl;
     Detect detector;
