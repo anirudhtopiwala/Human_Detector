@@ -2,7 +2,7 @@
 /**
  *
  */
-#include "lib.hpp"
+#include "Detect.hpp"
 /**
 
    * @brief		 Main Function to call the class, execute the functions
@@ -14,29 +14,29 @@
 int main()
 {
 
-    VideoCapture cap;
+    cv::VideoCapture cap;
     cap.open(0);
     if (!cap.isOpened())
     {
-        cout << "Can not open video stream: " << endl;
+        std::cout << "Can not open video stream: " << std::endl;
         return 2;
     }
 
-    cout << "Press 'q' or <ESC> to quit." << endl;
-    cout << "Press <space> to toggle between Default and Daimler detector" << endl;
-    Detector detector;
-    Mat frame;
+    std::cout << "Press 'q' or <ESC> to quit." << std::endl;
+    std::cout << "Press <space> to toggle between Default and Daimler detector" << std::endl;
+    Detect detector;
+    cv::Mat frame;
     for (;;)
     {
         cap >> frame;
         if (frame.empty())
         {
-            cout << "Finished reading: empty frame" << endl;
+            std::cout << "Finished reading: empty frame" << std::endl;
             break;
         }
-        int64 t = getTickCount();
-        vector<Rect> found = detector.detect(frame);
-        t = getTickCount() - t;
+        int64 t = cv::getTickCount();
+        std::vector<cv::Rect> found = detector.findHumans(frame);
+        t = cv::getTickCount() - t;
 
         // show the window
 //        {
@@ -45,19 +45,19 @@ int main()
 //                << "FPS: " << fixed << setprecision(1) << (getTickFrequency() / (double)t);
 //            putText(frame, buf.str(), Point(10, 30), FONT_HERSHEY_PLAIN, 2.0, Scalar(0, 0, 255), 2, LINE_AA);
 //        }
-        for (vector<Rect>::iterator i = found.begin(); i != found.end(); ++i)
+        for (std::vector<cv::Rect>::iterator i = found.begin(); i != found.end(); ++i)
         {
-            Rect &r = *i;
-            detector.adjustRect(r);
-            rectangle(frame, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+            cv::Rect &r = *i;
+            detector.adjustBoundingBox(r);
+            cv::rectangle(frame, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         }
-        imshow("People detector", frame);
+        cv::imshow("People detector", frame);
 
         // interact with user
-        const char key = (char)waitKey(30);
+        const char key = (char)cv::waitKey(30);
         if (key == 27 || key == 'q') // ESC
         {
-            cout << "Exit requested" << endl;
+            std::cout << "Exit requested" << std::endl;
             break;
         }
         else if (key == ' ')
