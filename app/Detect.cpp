@@ -10,7 +10,8 @@
 /*
  * @brief This is the constructor for the class
  */
-Detect::Detect(): m(Default), hog(), hog_d(cv::Size(48, 96), cv::Size(16, 16), cv::Size(8, 8), cv::Size(8, 8), 9) {
+Detect::Detect(): m(Default), hog(),
+hog_d(cv::Size(48, 96), cv::Size(16, 16), cv::Size(8, 8), cv::Size(8, 8), 9) {
     hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
     hog_d.setSVMDetector(cv::HOGDescriptor::getDaimlerPeopleDetector());
 }
@@ -41,9 +42,11 @@ std::string Detect::modeName() const {
 std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
     std::vector<cv::Rect> found;
     if (m == Default)
-        hog.detectMultiScale(img, found, 0, cv::Size(8,8), cv::Size(32,32), 1.05, 2, false);
+        hog.detectMultiScale(img, found, 0, cv::Size(8,8),
+                             cv::Size(32,32), 1.05, 2, false);
     else if (m == Daimler)
-        hog_d.detectMultiScale(img, found, 0.5, cv::Size(8,8), cv::Size(32,32), 1.05, 2, true);
+        hog_d.detectMultiScale(img, found, 0.5, cv::Size(8,8),
+                               cv::Size(32,32), 1.05, 2, true);
     return found;
 }
 
@@ -52,7 +55,7 @@ std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
  *
  * @ param This method takes the bounding box detected as input.
  */
-void adjustBoundingBox(cv::Rect r) {
+void Detect::adjustBoundingBox(cv::Rect & r) {
     r.x += cvRound(r.width*0.1);
     r.width = cvRound(r.width*0.8);
     r.y += cvRound(r.height*0.07);

@@ -26,7 +26,7 @@
  */
 
 class Detect {
-    enum Mode {Default, Daimler} m;
+    enum Mode { Default, Daimler } m;
     cv::HOGDescriptor hog, hog_d;
 
     public:
@@ -61,7 +61,7 @@ class Detect {
      *
      * @ param This method takes the bounding box detected as input.
     */
-    void adjustBoundingBox(cv::Rect);
+    void adjustBoundingBox(cv::Rect &);
 
     /*
      * @brief This is the destructor for the class
