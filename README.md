@@ -15,6 +15,12 @@ Histogram of Oriented Gradient (HOG) as the feature extractor. Support Vector Ma
 as a classifier which will be using the extracted HOG features as a classifying factor. The data set used for
 training images will be from Caltech [Pedestrian Dataset](http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/)  or the [INRIA Person Dataset](http://pascal.inrialpes.fr/data/human/)
 
+## Initial Project Breakdown (Plan)
+
+<p align="center">
+<img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/InitialProjectBreakdown.jpg">
+</p>
+
 ## License
 MIT License
 
