@@ -120,3 +120,13 @@ sudo ldconfig
 ```
 # TDD Process
 Test Driven Development is used to develop the module. The process is detailed in the following [link](https://docs.google.com/spreadsheets/d/1EZE9dxY_vlz4glKEceYtc5kQ3OyYQjs5Zh9BSKF8AoA/edit?usp=sharing)
+
+# How to generate doxygen documnetation
+```
+sudo apt install doxygen
+cd <path to repository>
+doxygen Doxygen
+```
+find an index.html in ./docs/html directory, which can be viewed on web browser.
+
+

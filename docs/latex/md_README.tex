@@ -1,0 +1,116 @@
+\href{https://travis-ci.org/anirudhtopiwala/Human_Detector}{\tt } \subsection*{\href{https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master}{\tt } }
+
+\subsection*{Overview}
+
+Human detection is an old and important problem in the field of object detection.\+Current technologies easily detect static obstacles. But, detecting dynamic obstacles has always been tough.\+In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient.
+
+To this extent we propose an algorithm that can detect humans in frame by making rectangular bounding boxes around individual humans. The center position of the rectangle will be used as the pixel location in that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations (not considered in this project) to track the human with respect to the robot world frame. We would be using Histogram of Oriented Gradient (H\+OG) as the feature extractor. Support Vector Machine (S\+VM) will be used as a classifier which will be using the extracted H\+OG features as a classifying factor. The data set used for training images will be from Caltech \href{http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/}{\tt Pedestrian Dataset} or the \href{http://pascal.inrialpes.fr/data/human/}{\tt I\+N\+R\+IA Person Dataset}
+
+\subsection*{Initial Project Breakdown (Plan)}
+
+ 
+
+\subsection*{License}
+
+M\+IT License
+
+Copyright (c) 2017 Anirudh Topiwala
+
+
+\begin{DoxyCode}
+1 Permission is hereby granted, free of charge, to any person obtaining a copy
+2 of this software and associated documentation files (the "Software"), to deal
+3 in the Software without restriction, including without limitation the rights
+4 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+5 copies of the Software, and to permit persons to whom the Software is
+6 furnished to do so, subject to the following conditions:
+7 
+8 The above copyright notice and this permission notice shall be included in all
+9 copies or substantial portions of the Software.
+10 
+11 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+12 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+13 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+14 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+15 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+16 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+17 SOFTWARE.
+\end{DoxyCode}
+
+
+\#\# Standard install via command-\/line 
+\begin{DoxyCode}
+1 git clone https://github.com/anirudhtopiwala/Human\_Detector.git
+2 cd <path to repository>
+3 mkdir build
+4 cd build
+5 cmake ..
+6 make
+7 Run tests: ./test/cpp-test
+8 Run program: ./app/detect
+\end{DoxyCode}
+
+
+\#\# Building for code coverage 
+\begin{DoxyCode}
+1 sudo apt-get install lcov
+2 cmake -D COVERAGE=ON -D CMAKE\_BUILD\_TYPE=Debug ../
+3 make
+4 make code\_coverage
+\end{DoxyCode}
+ This generates a index.\+html page in the build/coverage sub-\/directory that can be viewed locally in a web browser.
+
+\section*{Dependencies}
+
+Install Open\+CV 3.\+3.\+0 using the following commands
+
+Install Dependencies 
+\begin{DoxyCode}
+1 sudo apt-get install build-essential checkinstall cmake pkg-config yasm gfortran git
+2 sudo apt-get install libjpeg8-dev libjasper-dev libpng12-dev
+3 ## If you are using Ubuntu 14.04
+4 sudo apt-get install libtiff4-dev
+5 ## If you are using Ubuntu 16.04
+6 sudo apt-get install libtiff5-dev
+7 sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev
+8 sudo apt-get install libxine2-dev libv4l-dev
+9 sudo apt-get install libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+10 sudo apt-get install libqt4-dev libgtk2.0-dev libtbb-dev
+11 sudo apt-get install libatlas-base-dev
+12 sudo apt-get install libfaac-dev libmp3lame-dev libtheora-dev
+13 sudo apt-get install libvorbis-dev libxvidcore-dev
+14 sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
+15 sudo apt-get install x264 v4l-utils
+\end{DoxyCode}
+ Download and Compile Open\+CV 
+\begin{DoxyCode}
+1 git clone https://github.com/opencv/opencv.git
+2 cd opencv 
+3 git checkout 3.3.0 
+4 cd ..
+5 git clone https://github.com/opencv/opencv\_contrib.git
+6 cd opencv\_contrib
+7 git checkout 3.3.0
+8 cd ..
+9 cd opencv
+10 mkdir build
+11 cd build
+12 cmake -D CMAKE\_BUILD\_TYPE=RELEASE \(\backslash\)
+13       -D CMAKE\_INSTALL\_PREFIX=/usr/local \(\backslash\)
+14       -D INSTALL\_C\_EXAMPLES=ON \(\backslash\)
+15       -D WITH\_TBB=ON \(\backslash\)
+16       -D WITH\_V4L=ON \(\backslash\)
+17       -D WITH\_QT=ON \(\backslash\)
+18       -D OPENCV\_EXTRA\_MODULES\_PATH=../../opencv\_contrib/modules \(\backslash\)
+19       -D BUILD\_EXAMPLES=ON ..
+20 ## find out number of CPU cores in your machine
+21 nproc
+22 ## substitute 4 by output of nproc
+23 make -j4
+24 sudo make install
+25 sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
+26 sudo ldconfig
+\end{DoxyCode}
+ \section*{T\+DD Process}
+
+Test Driven Development is used to develop the module. The process is detailed in the following \href{https://docs.google.com/spreadsheets/d/1EZE9dxY_vlz4glKEceYtc5kQ3OyYQjs5Zh9BSKF8AoA/edit?usp=sharing}{\tt link} 
