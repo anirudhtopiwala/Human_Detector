@@ -1,6 +1,8 @@
 /*
  * @file Detect.cpp
- * @Copyright [2018] Ghost1995 [Ashwin Goyal]
+ * @Copyright [2018]
+ * @author1 Ghost1995 [Ashwin Goyal] - stub
+ * @author2 anirudhtopiwala [Anirudh Topiwala] - Implementation
  * @date Oct 04, 2018
  * @brief This is the implementation of the Detect class.
  */
