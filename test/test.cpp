@@ -27,7 +27,8 @@ TEST(DetectTest, DetectHumansTest) {
   std::vector<cv::Rect> found = test2.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &r = *i;
-  ASSERT_TRUE(orgBox == r);
+  std::cout << r << std::endl;
+  EXPECT_TRUE(orgBox == r);
 }
 
 TEST(DetectTest, DetectAdjustBoxTest) {
@@ -38,5 +39,6 @@ TEST(DetectTest, DetectAdjustBoxTest) {
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &r = *i;
   test2.adjustBoundingBox(r);
-  ASSERT_TRUE(newBox == r);
+  std::cout << r << std::endl;
+  EXPECT_TRUE(newBox == r);
 }
