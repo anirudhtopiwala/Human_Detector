@@ -18,10 +18,11 @@ TEST(DetectTest, DetectToggleTest) {
   ASSERT_EQ("Default", test.modeName());
   test.toggleMode();
   ASSERT_EQ("Daimler", test.modeName());
+  test.toggleMode();
 }
 
 TEST(DetectTest, DetectHumansTest) {
-  cv::Rect orgBox(215,89,74,148);  //[74 x 148 from (215, 89)]
+  cv::Rect orgBox(115,6,238,475);  //[238 x 475 from (115, 6)]
   std::string imageName("../data/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
   std::vector<cv::Rect> found = test.findHumans(img);
@@ -31,7 +32,7 @@ TEST(DetectTest, DetectHumansTest) {
 }
 
 TEST(DetectTest, DetectAdjustBoxTest) {
-  cv::Rect newBox(222,99,59,118);  //[59 x 118 from (222, 99)]
+  cv::Rect newBox(139,39,190,380);  //[190 x 380 from (139, 39)]
   std::string imageName("../data/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
   std::vector<cv::Rect> found = test.findHumans(img);

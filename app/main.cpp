@@ -29,7 +29,7 @@ int main() {
     }
     cv::imshow("People detector", img);
     cv::waitKey(1000);
-
+/*
     cv::VideoCapture cap;
     cap.open(0);
     if (!cap.isOpened()) {
@@ -68,5 +68,5 @@ int main() {
             detector.toggleMode();
         }
     }
-    return 0;
+*/    return 0;
 }
