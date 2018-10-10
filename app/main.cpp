@@ -22,13 +22,13 @@ int main() {
     for (std::vector<cv::Rect>::iterator i = found.begin(); i != found.end(); ++i) {
         cv::Rect &r = *i;
         std::cout << r << std::endl;
-        cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+  //      cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         test.adjustBoundingBox(r);
         std::cout << r << std::endl;
-        cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+      //  cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
     }
-    cv::imshow("People detector", img);
-    cv::waitKey(1000);
+//    cv::imshow("People detector", img);
+  //  cv::waitKey(1000);
 /*
     cv::VideoCapture cap;
     cap.open(0);
