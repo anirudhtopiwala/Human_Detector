@@ -24,6 +24,34 @@ before_install:
   - pip install --user cpp-coveralls
 install:
   - sudo apt-get install -y -qq lcov
+# OpenCV install
+  - sudo apt-get install -y build-essential
+  - sudo apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+  - sudo apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+  
+#  - sudo apt-get install libxine2-dev libv4l-dev
+#  - sudo apt-get install libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+#  - sudo apt-get install libqt4-dev libgtk2.0-dev libtbb-dev
+#  - sudo apt-get install libatlas-base-dev
+#  - sudo apt-get install libfaac-dev libmp3lame-dev libtheora-dev
+#  - sudo apt-get install libvorbis-dev libxvidcore-dev
+#  - sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
+#  - sudo apt-get install x264 v4l-utils
+
+# Download v2.4.8
+  - curl -sL https://github.com/Itseez/opencv/archive/3.3.0.zip > opencv.zip
+  - unzip opencv.zip
+  - cd opencv-3.3.0
+  - mkdir build
+  - cd build
+  - cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+  - make -j4
+  - sudo make install
+  
+  - sudo sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+  - sudo ldconfig
+  - cd ../../
+
 script:
   - export CXX=$COMPILER;
   - mkdir build
