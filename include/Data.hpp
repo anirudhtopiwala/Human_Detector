@@ -1,6 +1,6 @@
 /*
  *  @file Data.hpp
- *  Copyright [2018] Ghost1995 [Ashwin Goyal]
+ *  Copyright [2018] anirudhtopiwala [Anirudh Topiwala]
  *  @date Oct 12, 2018
  *  @brief This is the declaration of the Data class.
  */
@@ -9,15 +9,7 @@
 #define _INCLUDE_DATA_H_
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/video/video.hpp>
-#include <opencv2/ml/ml.hpp>
 #include <iostream>
-#include <iomanip>
-#include <string>
-#include <time.h>
 
 /*
  * @brief Data is a class
@@ -28,25 +20,24 @@ class Data {
 
     /*
      * @brief This is the constructor for the class
+     * 
+     * @param This constructor takes a string as an input which defines the objective of the class.
      */
     Data(std::string);
 
     /*
-     * @brief This is the second method of the class. It loads the images (test set, training set) as per the string defined.
+     * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
      *
-     * @param The first parameter is the directory name from where the images are to be loaded.
-     * @param The second parameter is a boolean which states whether to show the images being loaded or not. By default, it is set to false.
+     * @param This method takes the directory name as an input from where the images are to be loaded.
      */
     void loadImages(const cv::String);
     
     /*
-     * @brief This is the third method of the class. It returns if a human is found in the image.
+     * @brief This is the second method of the class. It extracts sample images from the load images.
      *
-     * @param 
-     * @param 
-     * @param 
+     * @param This method takes the size of the window as an input to be used for sampling the images.
      */
-    void sampleImages(const cv::Size &);
+    void sampleImages(const cv::Size);
 
     /*
      * @brief This is the destructor for the class

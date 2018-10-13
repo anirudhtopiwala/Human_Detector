@@ -11,16 +11,17 @@
 
 /*
  * @brief This is the constructor for the class
+ * 
+ * @param This constructor takes a string as an input which defines the objective of the class.
  */
 Data::Data(std::string classObjective) {
-    std::cout << "Class Data has been created to read " << classObjective << std::endl;
+    std::cout << "Class Data has been Initialized to read " << classObjective << std::endl;
 }
 
 /*
- * @brief This is the first method of the class. It loads the images (test set, training set (positive, negative)) as per the string defined.
+ * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
  *
- * @param The first parameter is the directory name from where the images are to be loaded.
- * @param The second parameter is a boolean which states whether to show the images being loaded or not. By default, it is set to false.
+ * @param This method takes the directory name as an input from where the images are to be loaded.
  */
 void Data::loadImages(const cv::String dirName) {
     std::vector<cv::String> files;
@@ -28,7 +29,7 @@ void Data::loadImages(const cv::String dirName) {
 
     for (auto imgName : files) {
         cv::Mat img = cv::imread(imgName);
-        if (img.empty()) {  // invalid image, skip it.
+        if (img.empty()) {
             std::cout << imgName << " is invalid!" << std::endl;
             continue;
         }
@@ -37,13 +38,11 @@ void Data::loadImages(const cv::String dirName) {
 }
 
 /*
- * @brief This is the third method of the class. It returns if a human is found in the image.
+ * @brief This is the second method of the class. It extracts sample images from the load images.
  *
- * @param The first parameter defines all the images read.
- * @param The second parameter reduces the images into samples of the size roi
- * @param The third parameter is the size of the ROI.
+ * @param This method takes the size of the window as an input to be used for sampling the images.
  */
-void Data::sampleImages(const cv::Size & size) {
+void Data::sampleImages(const cv::Size size) {
     std::vector<cv::Mat> temp;
     cv::Rect box;
     box.width = size.width;
@@ -67,5 +66,5 @@ void Data::sampleImages(const cv::Size & size) {
  * @brief This is the destructor for the class
  */
 Data::~Data() {
-    std::cout << "Class Data is destroyed" << std::endl;
+    std::cout << "Class Data has been Destroyed" << std::endl;
 }
