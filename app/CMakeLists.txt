@@ -1,4 +1,5 @@
-add_executable(detect main.cpp Detect.cpp)
+add_executable(detect main.cpp Detect.cpp Data.cpp)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${OpenCV_INCLUDE_DIRS}
