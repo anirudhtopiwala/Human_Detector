@@ -21,14 +21,14 @@
  * @brief Detector is a class
  */
 class Detect {
-    enum Mode { Default, User } m;
-    cv::HOGDescriptor hog, hog_user;
+    enum Mode { Default, Daimler } m;
+    cv::HOGDescriptor hog, hog_d;
 
     public:
     /*
      * @brief This is the constructor for the class
      */
-    Detect(cv::HOGDescriptor);
+    Detect();
 
     /*
      * @brief This is the first method of the class. It toggles between the Default mode and Daimler mode.
@@ -57,13 +57,15 @@ class Detect {
      * @param This method takes the bounding box detected as input.
     */
     void adjustBoundingBox(cv::Rect &);
-
+    
     /*
-     * @brief This is the fifth method of the class. It is used to test the trained classifier.
+     * @brief This is the third method of the class. It returns if a human is found in the image.
      *
-     * @param The only parameter of this method is the test directory which holds the testing data set.
+     * @param This method takes an image as input.
+     *
+     * @return This method returns a vector containing the object Rect which defines the bounding box around the detected humans.
      */
-    void testTrainedDetector(cv::String);
+    void testTrainedDetector(cv::String, cv::String, cv::String);
 
     /*
      * @brief This is the destructor for the class
@@ -72,16 +74,3 @@ class Detect {
 };
 
 #endif  // _INCLUDE_DETECT_H_
-
-
-
-
-
-    
-    //  * @brief This is the third method of the class. It returns if a human is found in the image.
-    //  *
-    //  * @param This method takes an image as input.
-    //  *
-    //  * @return This method returns a vector containing the object Rect which defines the bounding box around the detected humans.
-     
-    // void testTrainedDetector(cv::String, cv::String, cv::String);

@@ -1,6 +1,6 @@
 /*
  *  @file Data.hpp
- *  Copyright [2018] anirudhtopiwala [Anirudh Topiwala]
+ *  Copyright [2018] Ghost1995 [Ashwin Goyal]
  *  @date Oct 12, 2018
  *  @brief This is the declaration of the Data class.
  */

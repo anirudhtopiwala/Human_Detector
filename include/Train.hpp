@@ -53,7 +53,6 @@ class Train {
      * @brief This is the third method of the class. It ensures the extracted HOG features are row vectors.
      */
     void trainSVM();
-
     /*
      * @brief This is the destructor for the class
      */

@@ -13,7 +13,7 @@
  * @brief This is the constructor for the class
  */
 Data::Data(std::string classObjective) {
-    std::cout << "Images Class has been created to read " << classObjective << std::endl;   
+    std::cout << "Class Data has been created to read " << classObjective << std::endl;
 }
 
 /*
@@ -22,19 +22,15 @@ Data::Data(std::string classObjective) {
  * @param The first parameter is the directory name from where the images are to be loaded.
  * @param The second parameter is a boolean which states whether to show the images being loaded or not. By default, it is set to false.
  */
-void Data::loadImages(const cv::String & dirName, bool showImages = false) {
+void Data::loadImages(const cv::String dirName) {
     std::vector<cv::String> files;
     cv::glob(dirName, files);
 
     for (auto imgName : files) {
-        cv::Mat img = cv::imread(imgName);  // load the image
+        cv::Mat img = cv::imread(imgName);
         if (img.empty()) {  // invalid image, skip it.
             std::cout << imgName << " is invalid!" << std::endl;
             continue;
-        }
-        if (showImages) {
-            imshow("image", img);
-            cv::waitKey(1);
         }
         imgList.push_back(img);
     }
@@ -56,8 +52,6 @@ void Data::sampleImages(const cv::Size & size) {
     const int size_x = box.width;
     const int size_y = box.height;
 
-//    srand( (unsigned int)time( NULL ) );
-
     for (auto data : imgList) {
         if (data.cols > box.width && data.rows > box.height) {
             box.x = rand() % (data.cols - size_x);
@@ -73,5 +67,5 @@ void Data::sampleImages(const cv::Size & size) {
  * @brief This is the destructor for the class
  */
 Data::~Data() {
-    std::cout << "Class is destroyed" << std::endl;
+    std::cout << "Class Data is destroyed" << std::endl;
 }
