@@ -9,6 +9,7 @@
 
 #include <Detect.hpp>
 #include <Data.hpp>
+#include <Train.hpp>
 
 /*
  * @brief This is the main function to call the classes, execute the functions, and print the results.
@@ -16,64 +17,78 @@
  * @return It returns a 0 just to avoid a warning.
  */
 int main() {
-//    Train trainclass;
     Data posData("Positive Training Set"), negData("Negative Training Set");
-    Detect test;
+    Train trainClass;
+    Detect detector;
 
     // Setting Data store file path
     cv::String posDir = "../data/INRIAPerson/Train/pos/";
     cv::String negDir = "../data/INRIAPerson/Train/neg/";
-    cv::String testDir = "../data/INRIAPerson/Test";
-
-    // Booleans
-    bool testingTrainedClassifier = false;
-    bool output = false;
-    // Setting Input image size
-    int inputRows = 96;
-    int inputCols = 160;
-
+    cv::String testDir = "../data/test/";
+    // Check if directories exist
     if (posDir.empty() || negDir.empty() || testDir.empty()) {
         std::cout << "Input data directory empty or incorrect. Please enter a valid data path." << std::endl;
         return 0;
     }
 
-    std::vector<cv::Mat> posList, fullNegList, negList, gradientList;
-    std::vector<int> labels;
-
+    // Load positive images
     std::cout << "Loading Positive Images" << std::endl;
-    posData.loadImages(posDir, output);
-
-    // Check if Data is actually Present.
+    posData.loadImages(posDir);
+    // Check if images were successfully loaded
     if (posData.imgList.size() > 0) {
-        std::cout << "Loading Training Data Complete: " << posData.imgList.size() << std::endl;
+        std::cout << "Loading Training Data Complete" << std::endl;
     } else {
         std::cout << "No images found. Please check the Path Directory: " << posDir << std::endl;
         return 0;
     }
 
-    // Checking to see if all images are of the same size
-    cv::Size posImgSize = posData.imgList[0].size();
-    if (inputRows && inputCols) {
-        posImgSize = cv::Size(inputRows, inputCols);
-    } else {
-        for (auto data : posData.imgList) {
-            if (data.size() != posImgSize) {
-                std::cout << "All the input images do not match the input image size of rows: " << inputRows << " and columns: " << inputCols << std::endl;
-                return 0;
-            }
-        }
-    }
+    //Define a window size
+    cv::Size windowSize = cv::Size(96, 160);
 
-    //Now loading Negative Samples and Sampling them randomly
-    negData.loadImages(negDir, false);
-    negData.sampleImages(posImgSize);
-    std::cout << "Negative Image Sampling Completed: " << negData.imgList.size() << std::endl;
+    //Now load negative images and sample them randomly
+    negData.loadImages(negDir);
+    negData.sampleImages(windowSize);
+    std::cout << "Negative Image Sampling Completed" << std::endl;
 
-    // End of Loading the Data
+    // For Positive Images
+    std::cout << "Extracting HOG features and storing in a vector for Positive Images" << std::endl;
+    trainClass.getHOGfeatures(windowSize, posData.imgList);
+    size_t positiveCount = trainClass.gradientList.size();
+    // Assigning Positive labels
+    trainClass.labels.assign(positiveCount, 1);
+    std::cout << "Done getting HOG Features for Positive Images: " << positiveCount << std::endl;
 
-    // Training Starts
-
+    // For Negative Images
+    std::cout << "Extracting HOG features and storing in a vector for Negative Images" << std::endl;
+    trainClass.getHOGfeatures(windowSize, negData.imgList);
+    size_t negativeCount = trainClass.gradientList.size() - positiveCount;
+    // Assigning Negative labels
+    trainClass.labels.insert(trainClass.labels.end(), negativeCount, -1);
+    std::cout << "Done getting HOG Features for Negative Images: " << negativeCount << std::endl;
     
+    // Training Starts
+    trainClass.trainSVM();
+
+    // std::cout << "Saving Classifier" << std::endl;
+    const cv::String classifier_1 = "../data/svmclassifier";
+    // trainClass.classifier->save(classifier_1);
+    // std::cout << "Classifier saved" << std::endl;
+    // std::cout << "Loading Classifier" << std::endl;
+    // trainClass.classifier->load(classifier_1);
+
+    // Calling HOG
+    cv::HOGDescriptor hog;
+    // Setting Window Size
+    hog.winSize = windowSize;
+    // Setting the Trained SVM Classifier
+    hog.setSVMDetector(trainClass.getClassifier());
+    // Saving the Classifier
+    const cv::String SVM_detect_1 = "../data/svmclassifier", videoFilename = "";
+    hog.save(SVM_detect_1);
+
+    // Testing Trained Classifier
+    detector.testTrainedDetector(SVM_detect_1, testDir, videoFilename);
+    std::cout << "Finshed" << std::endl;
 
     // std::string imageName("../data/pedestrian_5.jpg");
     // cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
