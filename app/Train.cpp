@@ -15,7 +15,7 @@
 Train::Train() {
     // Initialize classifier
     classifier = cv::ml::SVM::create();
-    // // Default values to train SVM
+    // Default values to train SVM
     // classifier->setCoef0(0.0);
     // classifier->setDegree(3);
     // classifier->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 1000, 1e-3));
@@ -25,7 +25,7 @@ Train::Train() {
     // classifier->setP(0.1); // for EPSILON_SVR, epsilon in loss function?
     // classifier->setC(0.01); // From paper, soft classifier
     // classifier->setType(cv::ml::SVM::EPS_SVR); // C_SVC; // EPSILON_SVR; // may be also NU_SVR; // do regression task
-    std::cout << "Train Class Initialized." << std::endl;
+    std::cout << "Class Train has been Initialized" << std::endl;
 }
 
 /*
@@ -40,6 +40,7 @@ std::vector<float> Train::getClassifier() {
     cv::Mat alpha, svidx;
     double rho = classifier->getDecisionFunction(0, alpha, svidx);
 
+    // create a variable to return the support vectors in desired type
     std::vector<float> hogDetector(svm.cols + 1);
     memcpy(&hogDetector[0], svm.ptr(), svm.cols*sizeof(hogDetector[0]));
     hogDetector[svm.cols] = (float) - rho;
@@ -52,7 +53,7 @@ std::vector<float> Train::getClassifier() {
  * @param The first parameter is the window size to be used for HOG feature extraction.
  * @param The second parameter is a vector containing the images whose feature are to be extracted.
  */
-void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat> & imgList) {
+void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat> imgList) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
     cv::Mat gray;
@@ -68,7 +69,7 @@ void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat>
 }
 
 /*
- * @brief This is the third method of the class. It ensures the extracted HOG features are row vectors.
+ * @brief This is the third method of the class. It trains the SVM classifier.
  */
 void Train::trainSVM() {
     // Manipulate Matrix of HOG features for the train function of SVM
@@ -83,14 +84,16 @@ void Train::trainSVM() {
             gradientList[index].copyTo(trainData.row((int)index));
         }
     }
+
     // Training Starts
     std::cout << "Training SVM Classifier" << std::endl;
     classifier->train(trainData, cv::ml::ROW_SAMPLE, labels);
     std::cout << "Training Finshed" << std::endl;
 }
+
 /*
  * @brief This is the destructor for the class
  */
 Train::~Train() {
-    std::cout << "Class is destroyed" << std::endl;
+    std::cout << "Class Train has been Destroyed" << std::endl;
 }
