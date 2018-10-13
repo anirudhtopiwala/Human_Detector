@@ -1,6 +1,6 @@
 /*
  *  @file Data.hpp
- *  Copyright [2018] Ghost1995 [Ashwin Goyal]
+ *  Copyright [2018] anirudhtopiwala [Anirudh Topiwala]
  *  @date Oct 12, 2018
  *  @brief This is the declaration of the Data class.
  */
@@ -37,7 +37,7 @@ class Data {
      * @param The first parameter is the directory name from where the images are to be loaded.
      * @param The second parameter is a boolean which states whether to show the images being loaded or not. By default, it is set to false.
      */
-    void loadImages(const cv::String &, bool);
+    void loadImages(const cv::String);
     
     /*
      * @brief This is the third method of the class. It returns if a human is found in the image.
