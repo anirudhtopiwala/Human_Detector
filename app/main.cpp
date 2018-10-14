@@ -17,10 +17,6 @@
  * @return It returns a 0 just to avoid a warning.
  */
 int main() {
-    Data posData("Positive Training Set"), negData("Negative Training Set");
-    Train trainClass;
-    Detect detector;
-
     // Setting Data store file path
     cv::String posDir = "../data/INRIAPerson/Train/pos/";
     cv::String negDir = "../data/INRIAPerson/Train/neg/";
@@ -31,7 +27,9 @@ int main() {
         return 0;
     }
 
+
     // Load positive images
+    Data posData("Positive Training Set");
     std::cout << "Loading Positive Images" << std::endl;
     posData.loadImages(posDir);
     // Check if images were successfully loaded
@@ -42,14 +40,15 @@ int main() {
         return 0;
     }
 
+    //Now load negative images and sample them randomly
+    Data negData("Negative Training Set");
+    negData.loadImages(negDir);
     //Define a window size
     cv::Size windowSize = cv::Size(96, 160);
-
-    //Now load negative images and sample them randomly
-    negData.loadImages(negDir);
     negData.sampleImages(windowSize);
     std::cout << "Negative Image Sampling Completed" << std::endl;
 
+    Train trainClass;
     // For Positive Images
     std::cout << "Extracting HOG features and storing in a vector for Positive Images" << std::endl;
     trainClass.getHOGfeatures(windowSize, posData.imgList);
@@ -69,25 +68,13 @@ int main() {
     // Training Starts
     trainClass.trainSVM();
 
-    // std::cout << "Saving Classifier" << std::endl;
-    const cv::String classifier_1 = "../data/svmclassifier";
-    // trainClass.classifier->save(classifier_1);
-    // std::cout << "Classifier saved" << std::endl;
-    // std::cout << "Loading Classifier" << std::endl;
-    // trainClass.classifier->load(classifier_1);
-
     // Calling HOG
     cv::HOGDescriptor hog;
-    // Setting Window Size
     hog.winSize = windowSize;
-    // Setting the Trained SVM Classifier
     hog.setSVMDetector(trainClass.getClassifier());
-    // Saving the Classifier
-    const cv::String SVM_detect_1 = "../data/svmclassifier", videoFilename = "";
-    hog.save(SVM_detect_1);
-
     // Testing Trained Classifier
-    detector.testTrainedDetector(SVM_detect_1, testDir, videoFilename);
+    Detect detector(hog);
+    cv::Rect r = detector.testClassifier("Default", testDir, "", true);
     std::cout << "Finshed" << std::endl;
 
     // std::string imageName("../data/pedestrian_5.jpg");
