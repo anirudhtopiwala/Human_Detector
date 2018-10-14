@@ -70,7 +70,7 @@ cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = true) {
     cv::Rect R;
     for (auto data : files) {
         cv::Mat img = cv::imread(data);
-         if (img.empty()) {
+        if (img.empty()) {
             std::cout << data << " is invalid!" << std::endl;
             continue;
         }

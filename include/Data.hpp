@@ -9,17 +9,17 @@
 #define INCLUDE_DATA_HPP_
 
 #include <iostream>
+#include <vector>
 #include <opencv2/opencv.hpp>
 
 /*
  * @brief Data is a class
  */
 class Data {
-
     std::vector <cv::Rect> anotations;
-    std::vector <cv::String> trainimages;
+    std::vector <cv::String> trainImages;
 
-    public:
+ public:
     std::vector<cv::Mat> imgList;
 
     /*
@@ -28,30 +28,32 @@ class Data {
     Data();
 
     /*
-     * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
-     *
-     * @param This method takes the directory name as an input from where the images are to be loaded.
+     * @brief This is the first method of the class. It loads the images, that is, training set - positive.
      */
     void loadImages();
-    
-      /*
-     * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
+
+    /*
+     * @brief This is the overloaded first method of the class. It loads the images, that is, training set - negative - from the directory given as a string input.
      *
      * @param This method takes the directory name as an input from where the images are to be loaded.
      */
     void loadImages(const cv::String);
 
     /*
-     * @brief This is the second method of the class. It extracts sample images from the load images.
+     * @brief This is the second method of the class. It extracts sample images from the loaded images.
      *
      * @param This method takes the size of the window as an input to be used for sampling the images.
      */
     void sampleImages(const cv::Size);
 
     /*
-     * @brief This is the third method of the class. It is used to extract the annotations from the text file.
+     * @brief This is the third method of the class. It loads the annotations to be used when loading positive training set.
+     *
+     * @param The first parameter defines the path to the directory where all annotations are defined.
+     * @param The second parameter defines the path to the directory where all positive images are stored.
      */
-    void loadAnnotations(const cv::String , const cv::String );
+    void loadAnnotations(const cv::String , const cv::String);
+
     /*
      * @brief This is the destructor for the class
      */
