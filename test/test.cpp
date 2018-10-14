@@ -76,7 +76,7 @@ TEST(DetectTest, DetectHumansTest) {
   Detect test;
   cv::Rect orgBox(115, 6, 238, 475);  // [238 x 475 from (115, 6)]
   std::string imageName("../data/test/pedestrian_5.jpg");
-  cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
+  cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &r = *i;
@@ -87,7 +87,7 @@ TEST(DetectTest, DetectAdjustBoxTest) {
   Detect test;
   cv::Rect newBox(139, 39, 190, 380);  // [190 x 380 from (139, 39)]
   std::string imageName("../data/test/pedestrian_5.jpg");
-  cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
+  cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &r = *i;
@@ -98,7 +98,7 @@ TEST(DetectTest, DetectAdjustBoxTest) {
 TEST(DetectTest, DetectTestClassifierTest) {
   Detect test1, test2;
   std::string imageName("../data/test/pedestrian_5.jpg");
-  cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
+  cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test1.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &orgBox = *i;

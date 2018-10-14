@@ -30,8 +30,9 @@ void Data::loadImages() {
             std::cout << trainimages[i] << " is invalid!" << std::endl;
             continue;
         }
-        cv::imshow("frame",img);
-        cv::waitKey(10);
+        cv::resize(img, img, cv::Size(96,160), 0, 0);
+        // cv::imshow("frame",img);
+        // cv::waitKey(10);
         imgList.push_back(img);
     }
 }
@@ -144,21 +145,6 @@ for (int k=0; k< files.size(); k++) {
 // std::cout<< "files"<< trainimages.size()<<std::endl;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

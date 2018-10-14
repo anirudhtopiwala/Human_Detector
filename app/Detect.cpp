@@ -31,6 +31,7 @@ std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
         hog.detectMultiScale(img, found, 0, cv::Size(8, 8),
                              cv::Size(32, 32), 1.05, 2, false);
     else if (m == User)
+        std::cout<<"USing User Trained Classifier"<<std::endl;
         hog_user.detectMultiScale(img, found, 0, cv::Size(8, 8),
                                   cv::Size(32, 32), 1.05, 2, false);
     return found;
@@ -54,26 +55,40 @@ void Detect::adjustBoundingBox(cv::Rect & r) {
  * @param The first parameter defines the testDir where the testing set is stored.
  * @param The second parameter commands the method to either show or not show the images.
  */
-cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = false) {
+cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = true) {
     std::cout << "Testing Trained Classifier" << std::endl;
-
+    std::cout<<"2"<<std::endl;
     std::vector<cv::String> files;
     cv::glob(testDir, files);
-
+    
     if (m != User) {
         m = User;
     }
+    m=Default;
+    std::cout<<"value of m"<<m<<std::endl;
 
     cv::Rect R;
     for (auto data : files) {
         cv::Mat img = cv::imread(data);
+         if (img.empty()) {
+            std::cout << data << " is invalid!" << std::endl;
+            continue;
+        }
+        cv::resize(img, img, cv::Size(96,160), 0, 0);
+        cv::imshow("Frame" , img);
+        cv::waitKey(300);
+        std::cout<<"Before findhumans"<<std::endl;
         std::vector<cv::Rect> detections = findHumans(img);
+        std::cout<<"detections is"<< detections.size()<< std::endl;
+
+        std::cout<<"After findhumans"<<std::endl;
         for (std::vector<cv::Rect>::iterator i = detections.begin();
                                              i != detections.end(); ++i) {
             cv::Rect &r = *i;
             if (data == "../data/test/pedestrian_5.jpg")
                 R = r;
             adjustBoundingBox(r);
+            std::cout<<"final rect is"<< r<< std::endl;
             cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         }
         if (dispImage) {
