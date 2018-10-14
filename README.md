@@ -1,6 +1,7 @@
 # Human_Detector
 [![Build Status](https://travis-ci.org/anirudhtopiwala/Human_Detector.svg?branch=master)](https://travis-ci.org/anirudhtopiwala/Human_Detector)
 [![Coverage Status](https://coveralls.io/repos/github/anirudhtopiwala/Human_Detector/badge.svg?branch=master)](https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master)
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
 ## Overview
@@ -129,4 +130,19 @@ doxygen Doxygen
 ```
 find an index.html in ./docs/html directory, which can be viewed on web browser.
 
+## Plugins
 
+- CppChEclipse
+
+    To install and run cppcheck in Terminal
+
+    1. cd <path to repository>
+    2. Run cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name *.cpp | grep -vE -e "^./build/" -e "^./vendor/" )
+
+
+- Google C++ Sytle
+
+    To include and use Google C++ Style formatter in Terminal
+
+    1. cd <path to repository>
+    2. Run cpplint $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )

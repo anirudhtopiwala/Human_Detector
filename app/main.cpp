@@ -7,9 +7,9 @@
  *  @brief This is the main file which runs the detection algorithm
  */
 
-#include <Detect.hpp>
 #include <Data.hpp>
 #include <Train.hpp>
+#include <Detect.hpp>
 
 /*
  * @brief This is the main function to call the classes, execute the functions, and print the results.
@@ -25,70 +25,67 @@ int main() {
     const cv::String annotationpath = "../data/INRIAPerson/Train/annotations/";
     // Check if directories exist
     if (posDir.empty() || negDir.empty() || testDir.empty()) {
-        std::cout << "Input data directory empty or incorrect. Please enter a valid data path." << std::endl;
+        std::cout << "Input data directory empty or incorrect." <<
+                     " Please enter a valid data path." << std::endl;
         return 0;
     }
 
-    Data posData("Positive Training Set");
+    // Load positive images
+    Data posData;
     // Loading Annotations
     posData.loadAnnotations(annotationpath, posDir);
-    // Load positive images
     std::cout << "Loading Positive Images" << std::endl;
     posData.loadImages();
     // Check if images were successfully loaded
     if (posData.imgList.size() > 0) {
         std::cout << "Loading Training Data Complete" << std::endl;
     } else {
-        std::cout << "No images found. Please check the Path Directory: " << posDir << std::endl;
+        std::cout << "No images found. " <<
+                    "Please check the Path Directory: " << posDir << std::endl;
         return 0;
     }
 
-
-
-
-
-
-    //Now load negative images and sample them randomly
-    Data negData("Negative Training Set");
+    // Now load negative images and sample them randomly
+    Data negData;
     negData.loadImages(negDir);
-    //Define a window size
+    // Define a window size
     cv::Size windowSize = cv::Size(96, 160);
     negData.sampleImages(windowSize);
     std::cout << "Negative Image Sampling Completed" << std::endl;
 
     Train trainClass;
     // For Positive Images
-    std::cout << "Extracting HOG features and storing in a vector for Positive Images" << std::endl;
+    std::cout << "Extracting HOG features and storing in a " <<
+                 "vector for Positive Images" << std::endl;
     trainClass.getHOGfeatures(windowSize, posData.imgList);
     size_t positiveCount = trainClass.gradientList.size();
     // Assigning Positive labels
     trainClass.labels.assign(positiveCount, 1);
-    std::cout << "Done getting HOG Features for Positive Images: " << positiveCount << std::endl;
+    std::cout << "Done getting HOG Features for Positive Images" << std::endl;
 
     // For Negative Images
-    std::cout << "Extracting HOG features and storing in a vector for Negative Images" << std::endl;
+    std::cout << "Extracting HOG features and storing in a " <<
+                 "vector for Negative Images" << std::endl;
     trainClass.getHOGfeatures(windowSize, negData.imgList);
     size_t negativeCount = trainClass.gradientList.size() - positiveCount;
     // Assigning Negative labels
     trainClass.labels.insert(trainClass.labels.end(), negativeCount, -1);
-    std::cout << "Done getting HOG Features for Negative Images: " << negativeCount << std::endl;
-    
+    std::cout << "Done getting HOG Features for Negative Images" << std::endl;
+
     // Training Starts
     trainClass.trainSVM();
 
-    // Calling HOG
-    cv::HOGDescriptor hog;
-    hog.winSize = windowSize;
-    hog.setSVMDetector(trainClass.getClassifier());
     // Testing Trained Classifier
-    Detect detector(hog);
-    cv::Rect r = detector.testClassifier("Default", testDir, "", true);
+    Detect detector;
+    detector.hog_user.setSVMDetector(trainClass.getClassifier());
+    cv::Rect r = detector.testClassifier(testDir, true);
     std::cout << "Finshed" << std::endl;
 
     // std::string imageName("../data/pedestrian_5.jpg");
     // cv::Mat img = cv::imread(imageName, CV_LOAD_IMAGE_COLOR);
     // std::vector<cv::Rect> found = test.findHumans(img);
-    // for (std::vector<cv::Rect>::iterator i = found.begin(); i != found.end(); ++i) {
+    // for (std::vector<cv::Rect>::iterator i = found.begin();
+    //                                      i != found.end(); ++i) {
     //     cv::Rect &r = *i;
     //     std::cout << r << std::endl;
     //     cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);

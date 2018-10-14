@@ -5,12 +5,12 @@
  *  @brief This is the declaration of the Data class.
  */
 
-#ifndef _INCLUDE_DATA_H_
-#define _INCLUDE_DATA_H_
+#ifndef INCLUDE_DATA_HPP_
+#define INCLUDE_DATA_HPP_
 
-#include <opencv2/opencv.hpp>
 #include <iostream>
-#include <experimental/filesystem>
+#include <opencv2/opencv.hpp>
+
 /*
  * @brief Data is a class
  */
@@ -24,10 +24,8 @@ class Data {
 
     /*
      * @brief This is the constructor for the class
-     * 
-     * @param This constructor takes a string as an input which defines the objective of the class.
      */
-    Data(std::string);
+    Data();
 
     /*
      * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
@@ -60,4 +58,4 @@ class Data {
     ~Data();
 };
 
-#endif  // _INCLUDE_DATA_H_
+#endif  // INCLUDE_DATA_HPP_

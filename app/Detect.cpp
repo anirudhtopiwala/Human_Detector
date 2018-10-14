@@ -11,33 +11,15 @@
 
 /*
  * @brief This is the constructor for the class
- *
- * @param This constructor takes the user defined HOGDescriptor as input. It also sets the mode as Default.
  */
-Detect::Detect(cv::HOGDescriptor hog_temp): m(Default), hog(), hog_user() {
+Detect::Detect() {
+    m = Default;
     hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
-    hog_user = hog_temp;
     std::cout << "Class Detect has been Initialized" << std::endl;
 }
 
 /*
- * @brief This is the first method of the class. It toggles between the Default mode and User mode.
- */
-void Detect::toggleMode() {
-    m = (m == Default ? User : Default);
-}
-
-/*
- * @brief This is the second method of the class. It returns the name of the current mode.
- *
- * @return This method returns the mode name as a string.
- */
-std::string Detect::modeName() const {
-    return (m == Default ? "Default" : "User");
-}
-
-/*
- * @brief This is the third method of the class. It returns the bounding boxes around the humans found in the image.
+ * @brief This is the first method of the class. It returns the bounding boxes around the humans found in the image.
  *
  * @param This method takes an image as input.
  *
@@ -46,14 +28,16 @@ std::string Detect::modeName() const {
 std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
     std::vector<cv::Rect> found;
     if (m == Default)
-        hog.detectMultiScale(img, found, 0, cv::Size(8,8), cv::Size(32,32), 1.05, 2, false);
+        hog.detectMultiScale(img, found, 0, cv::Size(8, 8),
+                             cv::Size(32, 32), 1.05, 2, false);
     else if (m == User)
-        hog_user.detectMultiScale(img, found, 0.5, cv::Size(8,8), cv::Size(32,32), 1.05, 2, false);
+        hog_user.detectMultiScale(img, found, 0, cv::Size(8, 8),
+                                  cv::Size(32, 32), 1.05, 2, false);
     return found;
 }
 
 /*
- * @brief This is the fourth method of the class. It adjusts the bounding box created around a detected human.
+ * @brief This is the second method of the class. It adjusts the bounding box created around a detected human.
  *
  * @param This method takes the bounding box detected as input.
  */
@@ -65,52 +49,34 @@ void Detect::adjustBoundingBox(cv::Rect & r) {
 }
 
 /*
- * @brief This is the fifth method of the class. It is used to test the trained classifier.
+ * @brief This is the third method of the class. It is used to test the trained classifier.
  *
- * @param The first parameter defines the mode to be used. In general, it will use "User" mode.
- * @param The second parameter defines the testDir where the testing set is stored.
- * @param The third parameter gives the video filename if video is to be made.
- * @param The fourth parameter commands the method to either show or not show the images.
+ * @param The first parameter defines the testDir where the testing set is stored.
+ * @param The second parameter commands the method to either show or not show the images.
  */
-cv::Rect Detect::testClassifier(std::string detectMode, cv::String testDir, cv::String videoFilename = "", bool displayImage = false) {
+cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = false) {
     std::cout << "Testing Trained Classifier" << std::endl;
-    
+
     std::vector<cv::String> files;
     cv::glob(testDir, files);
 
-    cv::VideoCapture cap;
-    if (videoFilename != "") {
-        if (videoFilename.size() == 1 && isdigit(videoFilename[0]))
-            cap.open(videoFilename[0] - '0');
-        else
-            cap.open(videoFilename);
-    }
-
-    if (detectMode != modeName()) {
-        toggleMode();
+    if (m != User) {
+        m = User;
     }
 
     cv::Rect R;
-    for(auto i=0;; i++) {
-        cv::Mat img;
-        if (cap.isOpened()) {
-            cap >> img;
-        } else if (i < files.size()) {
-            img = cv::imread(files[i]);
-        }
-        if (img.empty())
-            return R;
-
+    for (auto data : files) {
+        cv::Mat img = cv::imread(data);
         std::vector<cv::Rect> detections = findHumans(img);
-        for (std::vector<cv::Rect>::iterator j = detections.begin(); j != detections.end(); ++j) {
-            cv::Rect &r = *j;
-            if (files[i] == "../data/test/pedestrian_5.jpg")
+        for (std::vector<cv::Rect>::iterator i = detections.begin();
+                                             i != detections.end(); ++i) {
+            cv::Rect &r = *i;
+            if (data == "../data/test/pedestrian_5.jpg")
                 R = r;
-//            cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
             adjustBoundingBox(r);
             cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         }
-        if (displayImage) {
+        if (dispImage) {
             cv::imshow("Frame" , img);
             cv::waitKey(300);
         }

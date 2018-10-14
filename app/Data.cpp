@@ -8,13 +8,12 @@
  */
 
 #include <Data.hpp>
+
 /*
  * @brief This is the constructor for the class
- * 
- * @param This constructor takes a string as an input which defines the objective of the class.
  */
-Data::Data(std::string classObjective) {
-    std::cout << "Class Data has been Initialized to read " << classObjective << std::endl;
+Data::Data() {
+    std::cout << "Class Data has been Initialized" << std::endl;
 }
 
 /*
