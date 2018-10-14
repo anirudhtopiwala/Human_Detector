@@ -17,27 +17,24 @@ Data::Data() {
 }
 
 /*
- * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
- *
- * @param This method takes the directory name as an input from where the images are to be loaded.
+ * @brief This is the first method of the class. It loads the images, that is, training set - positive.
  */
 void Data::loadImages() {
-    for (int i=0; i< anotations.size(); i++) {
-
-        cv::Mat img = cv::imread(trainimages[i]);
-        img= img(anotations[i]);
+    for (auto i = 0; i < anotations.size(); i++) {
+        cv::Mat img = cv::imread(trainImages[i]);
+        img = img(anotations[i]);
         if (img.empty()) {
-            std::cout << trainimages[i] << " is invalid!" << std::endl;
+            std::cout << trainImages[i] << " is invalid!" << std::endl;
             continue;
         }
-        cv::imshow("frame",img);
-        cv::waitKey(10);
+        // cv::imshow("frame",img);
+        // cv::waitKey(10);
         imgList.push_back(img);
     }
 }
 
 /*
- * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
+ * @brief This is the overloaded first method of the class. It loads the images, that is, training set - negative - from the directory given as a string input.
  *
  * @param This method takes the directory name as an input from where the images are to be loaded.
  */
@@ -56,7 +53,7 @@ void Data::loadImages(const cv::String dirName) {
 }
 
 /*
- * @brief This is the second method of the class. It extracts sample images from the load images.
+ * @brief This is the second method of the class. It extracts sample images from the loaded images.
  *
  * @param This method takes the size of the window as an input to be used for sampling the images.
  */
@@ -68,11 +65,13 @@ void Data::sampleImages(const cv::Size size) {
 
     const int size_x = box.width;
     const int size_y = box.height;
+    unsigned int seed = time(NULL);
+    srand(seed);
 
     for (auto data : imgList) {
         if (data.cols > box.width && data.rows > box.height) {
-            box.x = rand() % (data.cols - size_x);
-            box.y = rand() % (data.rows - size_y);
+            box.x = rand_r(&seed) % (data.cols - size_x);
+            box.y = rand_r(&seed) % (data.rows - size_y);
             cv::Mat roi = data(box);
             temp.push_back(roi.clone());
         }
@@ -80,86 +79,74 @@ void Data::sampleImages(const cv::Size size) {
     imgList = temp;
 }
 
+/*
+ * @brief This is the third method of the class. It loads the annotations to be used when loading positive training set.
+ *
+ * @param The first parameter defines the path to the directory where all annotations are defined.
+ * @param The second parameter defines the path to the directory where all positive images are stored.
+ */
+void Data::loadAnnotations(const cv::String annotPath,
+                           const cv::String  posDir) {
+    std::string line, value;  // Line stores lines of the file
+                              // and value stores characters of the line
+    int j = 0;  // Iterate through characters
+    int n = 0;  // Iterate through ,()-...
+    char v;  // Stores variable value as a char for making comparisons easy
 
- 
+    // Stores rectangles for each image
+    std::vector<int> bbValues;  // Bounding box values (xmin,ymin,xmax,ymax)
 
-void Data::loadAnnotations(const cv::String annotpath, const cv::String  posDir) {
+    std::vector<cv::String> filesAnnot, files;
+    cv::glob(annotPath, filesAnnot);
+    cv::glob(posDir, files);
 
-std::string line,value; //Line stores lines of the file and value stores characters of the line
-int i=0; //Iterate through lines
-int j=0; //Iterate through characters
-int n=0; //Iterate through ,()-...
-char v; //Stores variable value as a char to be able to make comparisions easily
+    std::cout << "Reading anotations from " << annotPath << std::endl;
 
- //Stores rectangles for each image
-std::vector <int> bbValues; //Bounding box values (xmin,ymin,xmax,ymax)
-
-
-std::vector<cv::String> filesannot, files ;
-cv::glob(annotpath, filesannot);
-cv::glob(posDir, files);
-
-std::cout<<"Reading anotations from"<< annotpath <<std::endl;
-
-for (int k=0; k< files.size(); k++) {
-    std::ifstream inputFile; //Declare input file with image path
-    inputFile.open(filesannot[k]);
-    // std::cout<<"here 1";
-    i=0;
-    while (! inputFile.eof() ){ //Until end of file
-        getline (inputFile,line);//Get lines one by one
-        if ((i>=17) && ((i-17)%7==0)){ //In lines numer 17,24,31,38...where bounding boxes coordinates are
-            j=69;
-            v=line[j]; //Start from character num 69 corresponding to first value of Xmin
-            while (j<line.size()){ //Until end of line
-                if (v=='(' || v==',' || v==')' || v==' ' || v=='-'){ //if true, push back acumulated value unless previous value wasn't a symbol also
-                    if (n==0){
-                        bbValues.push_back(stoi(value)); //stoi converts string in to integer ("567"->567) 
-                        value.clear();
+    for (auto k = 0; k < files.size(); k++) {
+        std::ifstream inputFile;  // Declare input file with image path
+        inputFile.open(filesAnnot[k]);
+        int i = 0;  // Iterate through lines
+        while (!inputFile.eof()) {  // Until end of file
+            getline(inputFile, line);  // Get lines one by one
+            // Line number 17,24,31,38...have bounding boxes coordinates
+            if ((i >= 17) && ((i - 17) % 7 == 0)) {
+                j = 69;
+                // Start from character num 69 which is first value of Xmin
+                v = line[j];
+                while (j < line.size()) {  // Until end of line
+                    if ((v == '(') || (v == ',') || (v == ')') ||
+                        (v == ' ') || (v == '-')) {
+                    // if true, push back acumulated value
+                        if (n == 0) {
+                            bbValues.push_back(stoi(value));
+                            // stoi converts string to integer
+                            value.clear();
+                        }
+                        n++;
+                    } else {
+                        value += v;  // Append new number
+                        // Reset in order to know that a number has been read
+                        n = 0;
                     }
-                    n++;
-                 }
-                else{
-                     value+=v; //Append new number
-                    n=0;//Reset in order to know that a number has been read
-                    }
-                j++;
-                v=line[j];//Read next character
-            }
-            cv::Rect rect(bbValues[0],bbValues[1],bbValues[2]-bbValues[0],bbValues[3]-bbValues[1]); //Build a rectangle rect(xmin,ymin,xmax-xmin,ymax-ymin)
-            anotations.push_back(rect);
-            trainimages.push_back(files[k]);
-            // std::cout<< "rect read"<< rect<<std::endl;
-
-            bbValues.clear();
-       }
-       i++;//Next line
-     }
-    // std::cout<<"File name"<< imgName <<std::endl;
-
-    inputFile.close();     
-    // std::cout<< k<< std::endl;
-}      
-// std::cout<< "annotsize"<< anotations.size()<<std::endl;
-// std::cout<< "files"<< trainimages.size()<<std::endl;
-
+                    j++;
+                    v = line[j];  // Read next character
+                }
+                // Build a rectangle rect(xmin,ymin,xmax-xmin,ymax-ymin)
+                cv::Rect rect(bbValues[0], bbValues[1],
+                              bbValues[2] - bbValues[0],
+                              bbValues[3] - bbValues[1]);
+                anotations.push_back(rect);
+                trainImages.push_back(files[k]);
+                bbValues.clear();
+           }
+           i++;  // Next line
+        }
+        // std::cout << "File name: " << imgName << std::endl;
+        inputFile.close();
+    }
+    // std::cout << "annotSize" << anotations.size() << std::endl;
+    // std::cout << "files" << trainImages.size() << std::endl;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
  * @brief This is the destructor for the class

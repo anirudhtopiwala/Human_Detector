@@ -67,6 +67,10 @@ cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = false) {
     cv::Rect R;
     for (auto data : files) {
         cv::Mat img = cv::imread(data);
+        if (img.empty()) {
+            std::cout << data << " is invalid!" << std::endl;
+            continue;
+        }
         std::vector<cv::Rect> detections = findHumans(img);
         for (std::vector<cv::Rect>::iterator i = detections.begin();
                                              i != detections.end(); ++i) {
