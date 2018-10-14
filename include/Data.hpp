@@ -16,10 +16,9 @@
  * @brief Data is a class
  */
 class Data {
+ public:
     std::vector <cv::Rect> anotations;
     std::vector <cv::String> trainImages;
-
- public:
     std::vector<cv::Mat> imgList;
 
     /*

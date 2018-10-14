@@ -12,9 +12,9 @@
 /*
  * @brief This is the constructor for the class
  */
-Detect::Detect() {
-    m = Default;
+Detect::Detect(): m(Default), hog(), hog_user() {
     hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
+    hog_user.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
     std::cout << "Class Detect has been Initialized" << std::endl;
 }
 
@@ -27,13 +27,15 @@ Detect::Detect() {
  */
 std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
     std::vector<cv::Rect> found;
-    if (m == Default)
+    if (m == Default) {
+        std::cout << "Using in-Built Classifier" << std::endl;
         hog.detectMultiScale(img, found, 0, cv::Size(8, 8),
                              cv::Size(32, 32), 1.05, 2, false);
-    else if (m == User)
-        std::cout<<"USing User Trained Classifier"<<std::endl;
+    } else if (m == User) {
+        std::cout << "Using User Trained Classifier" << std::endl;
         hog_user.detectMultiScale(img, found, 0, cv::Size(8, 8),
                                   cv::Size(32, 32), 1.05, 2, false);
+    }
     return found;
 }
 
@@ -57,15 +59,14 @@ void Detect::adjustBoundingBox(cv::Rect & r) {
  */
 cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = true) {
     std::cout << "Testing Trained Classifier" << std::endl;
-    std::cout<<"2"<<std::endl;
     std::vector<cv::String> files;
     cv::glob(testDir, files);
-    
+
     if (m != User) {
         m = User;
     }
-    m=Default;
-    std::cout<<"value of m"<<m<<std::endl;
+//    m = Default;
+//    std::cout<<"value of m"<<m<<std::endl;
 
     cv::Rect R;
     for (auto data : files) {
@@ -74,21 +75,19 @@ cv::Rect Detect::testClassifier(cv::String testDir, bool dispImage = true) {
             std::cout << data << " is invalid!" << std::endl;
             continue;
         }
-        cv::resize(img, img, cv::Size(96,160), 0, 0);
-        cv::imshow("Frame" , img);
-        cv::waitKey(300);
-        std::cout<<"Before findhumans"<<std::endl;
+        // cv::resize(img, img, cv::Size(96, 160), 0, 0);
+        std::cout << "Image " << data << " Read" << std::endl;
         std::vector<cv::Rect> detections = findHumans(img);
-        std::cout<<"detections is"<< detections.size()<< std::endl;
+        std::cout << "Human Detection Done: " << detections.size() <<
+                     " detections" << std::endl;
 
-        std::cout<<"After findhumans"<<std::endl;
+        std::cout << "Creating Bounding Boxes" << std::endl;
         for (std::vector<cv::Rect>::iterator i = detections.begin();
                                              i != detections.end(); ++i) {
             cv::Rect &r = *i;
-            if (data == "../data/test/pedestrian_5.jpg")
+            if (data == "../data/test/imgs/pedestrian_5.jpg")
                 R = r;
             adjustBoundingBox(r);
-            std::cout<<"final rect is"<< r<< std::endl;
             cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         }
         if (dispImage) {

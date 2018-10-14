@@ -14,13 +14,13 @@
 
 TEST(DataTest, DataLoadImagesTest) {
   Data test;
-  test.loadImages("../data/test");
+  test.loadImages("../data/test/imgs");
   ASSERT_GT(test.imgList.size(), 0);
 }
 
 TEST(DataTest, DataSampleImagesTest) {
   Data test;
-  test.loadImages("../data/test");
+  test.loadImages("../data/test/imgs");
   std::vector<cv::Mat> orgDataList = test.imgList;
   test.sampleImages(cv::Size(100, 100));
   std::vector<cv::Mat> newDataList = test.imgList;
@@ -38,10 +38,23 @@ TEST(DataTest, DataSampleImagesTest) {
   ASSERT_TRUE((!match) & (checkSize));
 }
 
+TEST(DataTest, DataLoadAnnotationsTest) {
+  Data test;
+  test.loadAnnotations("../data/test/annotations", "../data/test/pos");
+  ASSERT_TRUE((test.anotations.size() == 11) & (test.trainImages.size() == 11));
+}
+
+TEST(DataTest, DataLoadPositiveImagesTest) {
+  Data test;
+  test.loadAnnotations("../data/test/annotations", "../data/test/pos");
+  test.loadImages();
+  ASSERT_EQ(test.imgList.size(), 11);
+}
+
 TEST(TrainTest, TrainGetHOGTest) {
   Data testData;
   Train test;
-  testData.loadImages("../data/test");
+  testData.loadImages("../data/test/imgs");
   test.getHOGfeatures(cv::Size(96, 160), testData.imgList);
   ASSERT_GT(test.gradientList.size(), 0);
 }
@@ -49,7 +62,7 @@ TEST(TrainTest, TrainGetHOGTest) {
 TEST(TrainTest, TrainSVMTest) {
   Data testData;
   Train test;
-  testData.loadImages("../data/test");
+  testData.loadImages("../data/test/imgs");
   test.getHOGfeatures(cv::Size(96, 160), testData.imgList);
   test.labels.assign(test.gradientList.size()/2, 1);
   test.labels.insert(test.labels.end(),
@@ -63,7 +76,7 @@ TEST(TrainTest, TrainSVMTest) {
 TEST(TrainTest, TrainGetClassifierTest) {
   Data testData;
   Train test;
-  testData.loadImages("../data/test");
+  testData.loadImages("../data/test/imgs");
   test.getHOGfeatures(cv::Size(96, 160), testData.imgList);
   test.labels.assign(test.gradientList.size()/2, 1);
   test.labels.insert(test.labels.end(),
@@ -75,7 +88,7 @@ TEST(TrainTest, TrainGetClassifierTest) {
 TEST(DetectTest, DetectHumansTest) {
   Detect test;
   cv::Rect orgBox(115, 6, 238, 475);  // [238 x 475 from (115, 6)]
-  std::string imageName("../data/test/pedestrian_5.jpg");
+  std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
@@ -86,7 +99,7 @@ TEST(DetectTest, DetectHumansTest) {
 TEST(DetectTest, DetectAdjustBoxTest) {
   Detect test;
   cv::Rect newBox(139, 39, 190, 380);  // [190 x 380 from (139, 39)]
-  std::string imageName("../data/test/pedestrian_5.jpg");
+  std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
@@ -97,12 +110,12 @@ TEST(DetectTest, DetectAdjustBoxTest) {
 
 TEST(DetectTest, DetectTestClassifierTest) {
   Detect test1, test2;
-  std::string imageName("../data/test/pedestrian_5.jpg");
+  std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
   std::vector<cv::Rect> found = test1.findHumans(img);
   std::vector<cv::Rect>::iterator i = found.begin();
   cv::Rect &orgBox = *i;
   test2.hog_user.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
-  cv::Rect r = test2.testClassifier("../data/test", false);
+  cv::Rect r = test2.testClassifier("../data/test/imgs", false);
   ASSERT_LT(orgBox.area() - (orgBox & r).area(), 500);
 }
