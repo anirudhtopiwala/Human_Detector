@@ -18,20 +18,23 @@
  */
 int main() {
     // Setting Data store file path
-    cv::String posDir = "../data/INRIAPerson/Train/pos/";
-    cv::String negDir = "../data/INRIAPerson/Train/neg/";
-    cv::String testDir = "../data/test/";
+
+    const cv::String posDir = "../data/INRIAPerson/Train/pos/";
+    const cv::String negDir = "../data/INRIAPerson/Train/neg/";
+    const cv::String testDir = "../data/test/";
+    const cv::String annotationpath = "../data/INRIAPerson/Train/annotations/";
     // Check if directories exist
     if (posDir.empty() || negDir.empty() || testDir.empty()) {
         std::cout << "Input data directory empty or incorrect. Please enter a valid data path." << std::endl;
         return 0;
     }
 
-
-    // Load positive images
     Data posData("Positive Training Set");
+    // Loading Annotations
+    posData.loadAnnotations(annotationpath, posDir);
+    // Load positive images
     std::cout << "Loading Positive Images" << std::endl;
-    posData.loadImages(posDir);
+    posData.loadImages();
     // Check if images were successfully loaded
     if (posData.imgList.size() > 0) {
         std::cout << "Loading Training Data Complete" << std::endl;
@@ -39,6 +42,11 @@ int main() {
         std::cout << "No images found. Please check the Path Directory: " << posDir << std::endl;
         return 0;
     }
+
+
+
+
+
 
     //Now load negative images and sample them randomly
     Data negData("Negative Training Set");

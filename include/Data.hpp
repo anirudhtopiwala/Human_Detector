@@ -15,6 +15,10 @@
  * @brief Data is a class
  */
 class Data {
+
+    std::vector <cv::Rect> anotations;
+    std::vector <cv::String> trainimages;
+
     public:
     std::vector<cv::Mat> imgList;
 
@@ -30,8 +34,15 @@ class Data {
      *
      * @param This method takes the directory name as an input from where the images are to be loaded.
      */
-    void loadImages(const cv::String);
+    void loadImages();
     
+      /*
+     * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
+     *
+     * @param This method takes the directory name as an input from where the images are to be loaded.
+     */
+    void loadImages(const cv::String);
+
     /*
      * @brief This is the second method of the class. It extracts sample images from the load images.
      *
@@ -42,7 +53,7 @@ class Data {
     /*
      * @brief This is the third method of the class. It is used to extract the annotations from the text file.
      */
-    void loadAnnotations();
+    void loadAnnotations(const cv::String , const cv::String );
     /*
      * @brief This is the destructor for the class
      */

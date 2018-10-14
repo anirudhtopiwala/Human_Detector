@@ -22,6 +22,26 @@ Data::Data(std::string classObjective) {
  *
  * @param This method takes the directory name as an input from where the images are to be loaded.
  */
+void Data::loadImages() {
+    for (int i=0; i< anotations.size(); i++) {
+
+        cv::Mat img = cv::imread(trainimages[i]);
+        img= img(anotations[i]);
+        if (img.empty()) {
+            std::cout << trainimages[i] << " is invalid!" << std::endl;
+            continue;
+        }
+        cv::imshow("frame",img);
+        cv::waitKey(10);
+        imgList.push_back(img);
+    }
+}
+
+/*
+ * @brief This is the first method of the class. It loads the images, that is, training set - positive, negative - from the directory given as a string input.
+ *
+ * @param This method takes the directory name as an input from where the images are to be loaded.
+ */
 void Data::loadImages(const cv::String dirName) {
     std::vector<cv::String> files;
     cv::glob(dirName, files);
@@ -62,9 +82,9 @@ void Data::sampleImages(const cv::Size size) {
 }
 
 
+ 
 
-
-void Data::loadAnnotations() {
+void Data::loadAnnotations(const cv::String annotpath, const cv::String  posDir) {
 
 std::string line,value; //Line stores lines of the file and value stores characters of the line
 int i=0; //Iterate through lines
@@ -72,82 +92,57 @@ int j=0; //Iterate through characters
 int n=0; //Iterate through ,()-...
 char v; //Stores variable value as a char to be able to make comparisions easily
 
-std::vector <cv::Rect> anotations; //Stores rectangles for each image
+ //Stores rectangles for each image
 std::vector <int> bbValues; //Bounding box values (xmin,ymin,xmax,ymax)
 
-std::experimental::filesystem::path anotationsFolder = "../data/INRIAPerson/Train/annotations/"; //Path of anotations folder
-std::experimental::filesystem::path anotationsParsedFolder = "../data/annot"; //Path to store new anotations
 
-std::experimental::filesystem::recursive_directory_iterator it(anotationsFolder); //Iteradores of files
-std::experimental::filesystem::recursive_directory_iterator endit;
+std::vector<cv::String> filesannot, files ;
+cv::glob(annotpath, filesannot);
+cv::glob(posDir, files);
 
-std::cout<<"Loading anotations from "<<anotationsFolder<<std::endl;
+std::cout<<"Reading anotations from"<< annotpath <<std::endl;
 
-while((it != endit)) //Until end of folder
-{
-    if((std::experimental::filesystem::is_regular_file(*it))) //Good practice
-    {
-        std::experimental::filesystem::path imagePath(it->path()); //Complete path of the image
-
-        std::cout<<"Reading anotations from"<<it->path().filename()<<std::endl;
-
-        std::ifstream inputFile; //Declare input file with image path
-        inputFile.open(imagePath.string().data(), std::ios_base::in);
-
-        i=0;
-        while (! inputFile.eof() ){ //Until end of file
-
-            getline (inputFile,line);//Get lines one by one
-
-            if ((i>=17) && ((i-17)%7==0)){ //In lines numer 17,24,31,38...where bounding boxes coordinates are
-
-                j=69;
-                v=line[j]; //Start from character num 69 corresponding to first value of Xmin
-
-                while (j<line.size()){ //Until end of line
-
-                    if (v=='(' || v==',' || v==')' || v==' ' || v=='-'){ //if true, push back acumulated value unless previous value wasn't a symbol also
-                        if (n==0){
-                            bbValues.push_back(stoi(value)); //stoi converts string in to integer ("567"->567) 
-                            value.clear();
-                        }
-                        n++;
+for (int k=0; k< files.size(); k++) {
+    std::ifstream inputFile; //Declare input file with image path
+    inputFile.open(filesannot[k]);
+    // std::cout<<"here 1";
+    i=0;
+    while (! inputFile.eof() ){ //Until end of file
+        getline (inputFile,line);//Get lines one by one
+        if ((i>=17) && ((i-17)%7==0)){ //In lines numer 17,24,31,38...where bounding boxes coordinates are
+            j=69;
+            v=line[j]; //Start from character num 69 corresponding to first value of Xmin
+            while (j<line.size()){ //Until end of line
+                if (v=='(' || v==',' || v==')' || v==' ' || v=='-'){ //if true, push back acumulated value unless previous value wasn't a symbol also
+                    if (n==0){
+                        bbValues.push_back(stoi(value)); //stoi converts string in to integer ("567"->567) 
+                        value.clear();
                     }
-                    else{
-                        value+=v; //Append new number
-                        n=0;//Reset in order to know that a number has been read
+                    n++;
+                 }
+                else{
+                     value+=v; //Append new number
+                    n=0;//Reset in order to know that a number has been read
                     }
-                    j++;
-                    v=line[j];//Read next character
-                }
-                cv::Rect rect(bbValues[0],bbValues[1],bbValues[2]-bbValues[0],bbValues[3]-bbValues[1]); //Build a rectangle rect(xmin,ymin,xmax-xmin,ymax-ymin)
-                anotations.push_back(rect);
-                bbValues.clear();
+                j++;
+                v=line[j];//Read next character
             }
-            i++;//Next line
-        }
-        inputFile.close();            
+            cv::Rect rect(bbValues[0],bbValues[1],bbValues[2]-bbValues[0],bbValues[3]-bbValues[1]); //Build a rectangle rect(xmin,ymin,xmax-xmin,ymax-ymin)
+            anotations.push_back(rect);
+            trainimages.push_back(files[k]);
+            // std::cout<< "rect read"<< rect<<std::endl;
 
-        std::cout<<"Writing..."<<std::endl;
+            bbValues.clear();
+       }
+       i++;//Next line
+     }
+    // std::cout<<"File name"<< imgName <<std::endl;
 
-        //Save the anotations to a file
-        std::ofstream outputFile; //Declare file
-        std::experimental::filesystem::path outputPath(anotationsParsedFolder / it->path().filename());// Complete path of the file
-        outputFile.open(outputPath.string().data(), std::ios_base::trunc);
-
-        // Store anotations as x y width heigth
-        for (int i=0; i<anotations.size(); i++){
-            outputFile<<anotations[i].x<<" ";
-            outputFile<<anotations[i].y<<" ";
-            outputFile<<anotations[i].width<<" ";
-            outputFile<<anotations[i].height<<std::endl;
-        }
-        anotations.clear();
-        outputFile.close();
-    }
-    ++it;//Next file in anotations folder
-}
-
+    inputFile.close();     
+    // std::cout<< k<< std::endl;
+}      
+// std::cout<< "annotsize"<< anotations.size()<<std::endl;
+// std::cout<< "files"<< trainimages.size()<<std::endl;
 
 }
 
