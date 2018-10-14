@@ -11,19 +11,20 @@
 
 /*
  * @brief This is the constructor for the class
+ *
+ * @param This constructor takes the user defined HOGDescriptor as input. It also sets the mode as Default.
  */
-Detect::Detect(): m(Default), hog(),
-hog_d(cv::Size(48, 96), cv::Size(16, 16), cv::Size(8, 8), cv::Size(8, 8), 9) {
-    // hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
-    // hog_d.setSVMDetector(cv::HOGDescriptor::getDaimlerPeopleDetector());
-    std::cout<<"whats up"<<std::endl;
+Detect::Detect(cv::HOGDescriptor hog_temp): m(Default), hog(), hog_user() {
+    hog.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
+    hog_user = hog_temp;
+    std::cout << "Class Detect has been Initialized" << std::endl;
 }
 
 /*
- * @brief This is the first method of the class. It toggles between the Default mode and Daimler mode.
+ * @brief This is the first method of the class. It toggles between the Default mode and User mode.
  */
 void Detect::toggleMode() {
-    m = (m == Default ? Daimler : Default);
+    m = (m == Default ? User : Default);
 }
 
 /*
@@ -32,11 +33,11 @@ void Detect::toggleMode() {
  * @return This method returns the mode name as a string.
  */
 std::string Detect::modeName() const {
-    return (m == Default ? "Default" : "Daimler");
+    return (m == Default ? "Default" : "User");
 }
 
 /*
- * @brief This is the third method of the class. It returns if a human is found in the image.
+ * @brief This is the third method of the class. It returns the bounding boxes around the humans found in the image.
  *
  * @param This method takes an image as input.
  *
@@ -45,16 +46,14 @@ std::string Detect::modeName() const {
 std::vector<cv::Rect> Detect::findHumans(cv::InputArray img) {
     std::vector<cv::Rect> found;
     if (m == Default)
-        hog.detectMultiScale(img, found, 0, cv::Size(8,8),
-                             cv::Size(32,32), 1.05, 2, false);
-    else if (m == Daimler)
-        hog_d.detectMultiScale(img, found, 0.5, cv::Size(8,8),
-                               cv::Size(32,32), 1.05, 2, true);
+        hog.detectMultiScale(img, found, 0, cv::Size(8,8), cv::Size(32,32), 1.05, 2, false);
+    else if (m == User)
+        hog_user.detectMultiScale(img, found, 0.5, cv::Size(8,8), cv::Size(32,32), 1.05, 2, false);
     return found;
 }
 
 /*
- * @brief This is the fourth method of the class. It adjust the bounding box created around a detected human.
+ * @brief This is the fourth method of the class. It adjusts the bounding box created around a detected human.
  *
  * @param This method takes the bounding box detected as input.
  */
@@ -64,69 +63,64 @@ void Detect::adjustBoundingBox(cv::Rect & r) {
     r.y += cvRound(r.height*0.07);
     r.height = cvRound(r.height*0.8);
 }
+
 /*
- * @brief This is the fifth method of the class. It is used to test the trained detector.
+ * @brief This is the fifth method of the class. It is used to test the trained classifier.
  *
- * @param This method takes the bounding box detected as input.
+ * @param The first parameter defines the mode to be used. In general, it will use "User" mode.
+ * @param The second parameter defines the testDir where the testing set is stored.
+ * @param The third parameter gives the video filename if video is to be made.
+ * @param The fourth parameter commands the method to either show or not show the images.
  */
-
-void Detect::testTrainedDetector(cv::String objDetFilename, cv::String testDir, cv::String videofilename = "") {
-    std::cout << "Testing trained detector..." << std::endl;
-    cv::HOGDescriptor hog;
-    hog.load(objDetFilename);
-
+cv::Rect Detect::testClassifier(std::string detectMode, cv::String testDir, cv::String videoFilename = "", bool displayImage = false) {
+    std::cout << "Testing Trained Classifier" << std::endl;
+    
     std::vector<cv::String> files;
     cv::glob(testDir, files);
 
-    // int delay = 0;
-    // cv::VideoCapture cap;
-
-    // if (videofilename != "") {
-    //     if (videofilename.size() == 1 && isdigit(videofilename[0]))
-    //         cap.open(videofilename[0] - '0');
-    //     else
-    //         cap.open(videofilename);
-    // }
-
-    // objDetFilename = "testing " + objDetFilename;
-    // cv::namedWindow(objDetFilename, cv::WINDOW_NORMAL);
-
-    // for( size_t i=0;; i++ ) {
-    //     cv::Mat img;
-
-    //     if (cap.isOpened()) {
-    //         cap >> img;
-    //         delay = 1;
-    //     } else if (i < files.size()) {
-    std::vector<cv::Rect> detections;
-    std::vector<double> foundWeights;
-    int j=1 ;
-    for (auto imgName : files) {
-        cv::Mat img = cv::imread(imgName);
-        if (img.empty()) {  // invalid image, skip it.
-           std::cout << imgName << " is invalid!" << std::endl;
-           continue;
-        }
-        std::cout<< j<< std::endl;
-        std::vector<cv::Rect> found = findHumans(img);
-        for (std::vector<cv::Rect>::iterator i = found.begin(); i != found.end(); ++i) {
-            cv::Rect &r = *i;
-            std::cout << r << std::endl;
-            cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
-            adjustBoundingBox(r);
-            std::cout << r << std::endl;
-            cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
-        }
-        cv::imshow("Frame" , img);
-        cv::waitKey(3000);
-        j+=1;    
+    cv::VideoCapture cap;
+    if (videoFilename != "") {
+        if (videoFilename.size() == 1 && isdigit(videoFilename[0]))
+            cap.open(videoFilename[0] - '0');
+        else
+            cap.open(videoFilename);
     }
 
+    if (detectMode != modeName()) {
+        toggleMode();
+    }
+
+    cv::Rect R;
+    for(auto i=0;; i++) {
+        cv::Mat img;
+        if (cap.isOpened()) {
+            cap >> img;
+        } else if (i < files.size()) {
+            img = cv::imread(files[i]);
+        }
+        if (img.empty())
+            return R;
+
+        std::vector<cv::Rect> detections = findHumans(img);
+        for (std::vector<cv::Rect>::iterator j = detections.begin(); j != detections.end(); ++j) {
+            cv::Rect &r = *j;
+            if (files[i] == "../data/test/pedestrian_5.jpg")
+                R = r;
+//            cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+            adjustBoundingBox(r);
+            cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+        }
+        if (displayImage) {
+            cv::imshow("Frame" , img);
+            cv::waitKey(300);
+        }
+    }
+    return R;
 }
 
 /*
  * @brief This is the destructor for the class
  */
 Detect::~Detect() {
-    std::cout << "Class is destroyed" << std::endl;
+    std::cout << "Class Detect has been Destroyed" << std::endl;
 }

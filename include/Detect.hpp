@@ -9,29 +9,25 @@
 #define _INCLUDE_DETECT_H_
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/objdetect/objdetect.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/video/video.hpp>
 #include <iostream>
-#include <iomanip>
-#include <string>
 
 /*
  * @brief Detector is a class
  */
 class Detect {
-    enum Mode { Default, Daimler } m;
-    cv::HOGDescriptor hog, hog_d;
+    enum Mode { Default, User } m;
+    cv::HOGDescriptor hog, hog_user;
 
     public:
     /*
      * @brief This is the constructor for the class
+     *
+     * @param This constructor takes the user defined HOGDescriptor as input. It also sets the mode as Default.
      */
-    Detect();
+    Detect(cv::HOGDescriptor);
 
     /*
-     * @brief This is the first method of the class. It toggles between the Default mode and Daimler mode.
+     * @brief This is the first method of the class. It toggles between the Default mode and User mode.
      */
     void toggleMode();
 
@@ -43,7 +39,7 @@ class Detect {
     std::string modeName() const;
 
     /*
-     * @brief This is the third method of the class. It returns if a human is found in the image.
+     * @brief This is the third method of the class. It returns the bounding boxes around the humans found in the image.
      *
      * @param This method takes an image as input.
      *
@@ -52,21 +48,22 @@ class Detect {
     std::vector<cv::Rect> findHumans(cv::InputArray);
 
     /*
-     * @brief This is the fourth method of the class. It adjust the bounding box created around a detected human.
+     * @brief This is the fourth method of the class. It adjusts the bounding box created around a detected human.
      *
      * @param This method takes the bounding box detected as input.
-    */
+     */
     void adjustBoundingBox(cv::Rect &);
     
     /*
-     * @brief This is the third method of the class. It returns if a human is found in the image.
+     * @brief This is the fifth method of the class. It is used to test the trained classifier.
      *
-     * @param This method takes an image as input.
-     *
-     * @return This method returns a vector containing the object Rect which defines the bounding box around the detected humans.
+     * @param The first parameter defines the mode to be used. In general, it will use "User" mode.
+     * @param The second parameter defines the testDir where the testing set is stored.
+     * @param The third parameter gives the video filename if video is to be made.
+     * @param The fourth parameter commands the method to either show or not show the images.
      */
-    void testTrainedDetector(cv::String, cv::String, cv::String);
-
+    cv::Rect testClassifier(std::string, cv::String, cv::String, bool);
+    
     /*
      * @brief This is the destructor for the class
      */
