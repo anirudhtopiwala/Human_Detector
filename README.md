@@ -130,4 +130,19 @@ doxygen Doxygen
 ```
 find an index.html in ./docs/html directory, which can be viewed on web browser.
 
+## Plugins
 
+- CppChEclipse
+
+    To install and run cppcheck in Terminal
+
+    1. cd <path to repository>
+    2. Run cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name *.cpp | grep -vE -e "^./build/" -e "^./vendor/" )
+
+
+- Google C++ Sytle
+
+    To include and use Google C++ Style formatter in Terminal
+
+    1. cd <path to repository>
+    2. Run cpplint $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )

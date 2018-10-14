@@ -5,21 +5,22 @@
  *  @brief This is the declaration of the Train class.
  */
 
-#ifndef _INCLUDE_TRAIN_H_
-#define _INCLUDE_TRAIN_H_
+#ifndef INCLUDE_TRAIN_HPP_
+#define INCLUDE_TRAIN_HPP_
 
-#include <opencv2/opencv.hpp>
 #include <iostream>
+#include <vector>
+#include <opencv2/opencv.hpp>
 
 /*
  * @brief Train is a class
  */
 class Train {
-    public:
+ public:
     cv::Ptr<cv::ml::SVM> classifier;
     std::vector<cv::Mat> gradientList;
     std::vector<int> labels;
-    
+
     /*
      * @brief This is the constructor for the class
      */
@@ -38,18 +39,18 @@ class Train {
      * @param The first parameter is the window size to be used for HOG feature extraction.
      * @param The second parameter is a vector containing the images whose feature are to be extracted.
      */
-    void getHOGfeatures(const cv::Size, const std::vector<cv::Mat>);
+    void getHOGfeatures(const cv::Size, const std::vector<cv::Mat> &);
 
 
     /*
      * @brief This is the third method of the class. It trains the SVM classifier.
      */
     void trainSVM();
-    
+
     /*
      * @brief This is the destructor for the class
      */
     ~Train();
 };
 
-#endif  // _INCLUDE_TRAIN_H_
+#endif  // INCLUDE_TRAIN_HPP_

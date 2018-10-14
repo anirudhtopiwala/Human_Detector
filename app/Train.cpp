@@ -18,13 +18,15 @@ Train::Train() {
     // Default values to train SVM
     // classifier->setCoef0(0.0);
     // classifier->setDegree(3);
-    // classifier->setTermCriteria(cv::TermCriteria(cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 1000, 1e-3));
+    // classifier->setTermCriteria(cv::TermCriteria(
+    // cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 1000, 1e-3));
     // classifier->setGamma(0);
     // classifier->setKernel(cv::ml::SVM::LINEAR);
     // classifier->setNu(0.5);
     // classifier->setP(0.1); // for EPSILON_SVR, epsilon in loss function?
     // classifier->setC(0.01); // From paper, soft classifier
-    // classifier->setType(cv::ml::SVM::EPS_SVR); // C_SVC; // EPSILON_SVR; // may be also NU_SVR; // do regression task
+    // C_SVC; // EPSILON_SVR; // may be also NU_SVR; // do regression task
+    // classifier->setType(cv::ml::SVM::EPS_SVR);
     std::cout << "Class Train has been Initialized" << std::endl;
 }
 
@@ -43,7 +45,7 @@ std::vector<float> Train::getClassifier() {
     // create a variable to return the support vectors in desired type
     std::vector<float> hogDetector(svm.cols + 1);
     memcpy(&hogDetector[0], svm.ptr(), svm.cols*sizeof(hogDetector[0]));
-    hogDetector[svm.cols] = (float) - rho;
+    hogDetector[svm.cols] = static_cast<float>(- rho);
     return hogDetector;
 }
 
@@ -53,7 +55,8 @@ std::vector<float> Train::getClassifier() {
  * @param The first parameter is the window size to be used for HOG feature extraction.
  * @param The second parameter is a vector containing the images whose feature are to be extracted.
  */
-void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat> imgList) {
+void Train::getHOGfeatures(const cv::Size windowSize,
+                           const std::vector<cv::Mat> & imgList) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
     cv::Mat gray;
@@ -61,7 +64,9 @@ void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat>
 
     for (auto data : imgList)
         if (data.cols >= windowSize.width && data.rows >= windowSize.height) {
-            cv::Rect r = cv::Rect((data.cols - windowSize.width)/2, (data.rows - windowSize.height)/2, windowSize.width, windowSize.height);
+            cv::Rect r = cv::Rect((data.cols - windowSize.width)/2,
+                                  (data.rows - windowSize.height)/2,
+                                  windowSize.width, windowSize.height);
             cvtColor(data(r), gray, cv::COLOR_BGR2GRAY);
             hog.compute(gray, descriptors, cv::Size(8, 8), cv::Size(0, 0));
             gradientList.push_back(cv::Mat(descriptors).clone());
@@ -73,15 +78,16 @@ void Train::getHOGfeatures(const cv::Size windowSize, const std::vector<cv::Mat>
  */
 void Train::trainSVM() {
     // Manipulate Matrix of HOG features for the train function of SVM
-    const int rows = (int)gradientList.size();
-    const int cols = (int)std::max(gradientList[0].cols, gradientList[0].rows);
+    const int rows = static_cast<int>(gradientList.size());
+    const int cols = static_cast<int>(std::max(gradientList[0].cols,
+                                               gradientList[0].rows));
     cv::Mat temp(1, cols, CV_32FC1), trainData(rows, cols, CV_32FC1);
     for (auto index = 0; index < gradientList.size(); index++) {
         if (gradientList[index].cols == 1) {
             transpose(gradientList[index], temp);
-            temp.copyTo(trainData.row((int)index));
+            temp.copyTo(trainData.row(static_cast<int>(index)));
         } else if (gradientList[index].rows == 1) {
-            gradientList[index].copyTo(trainData.row((int)index));
+            gradientList[index].copyTo(trainData.row(static_cast<int>(index)));
         }
     }
 
