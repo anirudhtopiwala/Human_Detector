@@ -10,7 +10,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <iostream>
-
+#include <experimental/filesystem>
 /*
  * @brief Data is a class
  */
@@ -39,6 +39,10 @@ class Data {
      */
     void sampleImages(const cv::Size);
 
+    /*
+     * @brief This is the third method of the class. It is used to extract the annotations from the text file.
+     */
+    void loadAnnotations();
     /*
      * @brief This is the destructor for the class
      */
