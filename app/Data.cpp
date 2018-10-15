@@ -100,6 +100,7 @@ void Data::loadPosImages(const cv::String anotPath, const cv::String  posDir,
            i++;  // Next line
         }
         inputFile.close();
+        l++;
     }
 }
 
