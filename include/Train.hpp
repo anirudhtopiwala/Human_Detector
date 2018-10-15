@@ -44,8 +44,11 @@ class Train {
 
     /*
      * @brief This is the third method of the class. It trains the SVM classifier.
+     *
+     * @param The first parameter is a boolean which commands the method to either save or not save the classifier.
+     * @param The second parameter is the name of the classifier if it is to be saved.
      */
-    void trainSVM();
+    void trainSVM(const bool, const cv::String);
 
     /*
      * @brief This is the destructor for the class

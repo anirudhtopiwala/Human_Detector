@@ -64,20 +64,24 @@ void Train::getHOGfeatures(const cv::Size windowSize,
 
     for (auto data : imgList)
         if (data.cols >= windowSize.width && data.rows >= windowSize.height) {
-            cv::Rect r = cv::Rect((data.cols - windowSize.width)/2,
-                                  (data.rows - windowSize.height)/2,
-                                  windowSize.width, windowSize.height);
-            cvtColor(data(r), gray, cv::COLOR_BGR2GRAY);
-            hog.compute(gray, descriptors, cv::Size(8, 8), cv::Size(0, 0));
+            // convert image to grayscale
+            cvtColor(data, gray, cv::COLOR_BGR2GRAY);
+            // extract hog features
+            hog.compute(gray, descriptors, cv::Size(4, 4), cv::Size(0, 0));
+            // store hog features
             gradientList.push_back(cv::Mat(descriptors).clone());
         }
 }
 
 /*
  * @brief This is the third method of the class. It trains the SVM classifier.
+ *
+ * @param The first parameter is a boolean which commands the method to either save or not save the classifier.
+ * @param The second parameter is the name of the classifier if it is to be saved.
  */
-void Train::trainSVM() {
-    // Manipulate Matrix of HOG features for the train function of SVM
+void Train::trainSVM(const bool saveClassifier = false,
+                     const cv::String classifierName = "") {
+    // make sure all HOG features are row vectors for the train function of SVM
     const int rows = static_cast<int>(gradientList.size());
     const int cols = static_cast<int>(std::max(gradientList[0].cols,
                                                gradientList[0].rows));
@@ -95,6 +99,9 @@ void Train::trainSVM() {
     std::cout << "Training SVM Classifier" << std::endl;
     classifier->train(trainData, cv::ml::ROW_SAMPLE, labels);
     std::cout << "Training Finshed" << std::endl;
+    // Save the classifier if asked
+    if (saveClassifier)
+        classifier->save(classifierName);
 }
 
 /*
