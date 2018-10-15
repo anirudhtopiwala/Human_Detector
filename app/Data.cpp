@@ -18,78 +18,16 @@ Data::Data() {
 
 /*
  * @brief This is the first method of the class. It loads the images, that is, training set - positive.
- */
-void Data::loadImages() {
-    for (auto i = 0; i < anotations.size(); i++) {
-        cv::Mat img = cv::imread(trainImages[i]);
-        img = img(anotations[i]);
-        if (img.empty()) {
-            std::cout << trainImages[i] << " is invalid!" << std::endl;
-            continue;
-        }
-        cv::resize(img, img, cv::Size(96, 160), 0, 0);
-        // cv::imshow("frame",img);
-        // cv::waitKey(10);
-        imgList.push_back(img);
-    }
-}
-
-/*
- * @brief This is the overloaded first method of the class. It loads the images, that is, training set - negative - from the directory given as a string input.
- *
- * @param This method takes the directory name as an input from where the images are to be loaded.
- */
-void Data::loadImages(const cv::String dirName) {
-    std::vector<cv::String> files;
-    cv::glob(dirName, files);
-
-    for (auto imgName : files) {
-        cv::Mat img = cv::imread(imgName);
-        if (img.empty()) {
-            std::cout << imgName << " is invalid!" << std::endl;
-            continue;
-        }
-        imgList.push_back(img);
-    }
-}
-
-/*
- * @brief This is the second method of the class. It extracts sample images from the loaded images.
- *
- * @param This method takes the size of the window as an input to be used for sampling the images.
- */
-void Data::sampleImages(const cv::Size size) {
-    std::vector<cv::Mat> temp;
-    cv::Rect box;
-    box.width = size.width;
-    box.height = size.height;
-
-    const int size_x = box.width;
-    const int size_y = box.height;
-    unsigned int seed = time(NULL);
-    srand(seed);
-
-    for (auto data : imgList) {
-        if (data.cols > box.width && data.rows > box.height) {
-            box.x = rand_r(&seed) % (data.cols - size_x);
-            box.y = rand_r(&seed) % (data.rows - size_y);
-            cv::Mat roi = data(box);
-            temp.push_back(roi.clone());
-        }
-    }
-    imgList = temp;
-}
-
-/*
- * @brief This is the third method of the class. It loads the annotations to be used when loading positive training set.
  *
  * @param The first parameter defines the path to the directory where all annotations are defined.
  * @param The second parameter defines the path to the directory where all positive images are stored.
+ * @param The third parameter defines the size of the window to be used for resizing the images.
+ * @param The fourth parameter commands the method to either show or not show the loaded images.
  */
-void Data::loadAnnotations(const cv::String annotPath,
-                           const cv::String  posDir) {
-    std::string line, value;  // Line stores lines of the file
-                              // and value stores characters of the line
+void Data::loadPosImages(const cv::String anotPath, const cv::String  posDir,
+                         const cv::Size size, const bool dispImg = false) {
+    std::string line;  // line stores lines of the file
+    std::string value;  // value stores characters of the line
     int j = 0;  // Iterate through characters
     int n = 0;  // Iterate through ,()-...
     char v;  // Stores variable value as a char for making comparisons easy
@@ -97,15 +35,17 @@ void Data::loadAnnotations(const cv::String annotPath,
     // Stores rectangles for each image
     std::vector<int> bbValues;  // Bounding box values (xmin,ymin,xmax,ymax)
 
+    // Stores individual file names in respective directories
     std::vector<cv::String> filesAnnot, files;
-    cv::glob(annotPath, filesAnnot);
+    // Extract file names from respective directories
+    cv::glob(anotPath, filesAnnot);
     cv::glob(posDir, files);
 
-    std::cout << "Reading anotations from " << annotPath << std::endl;
-
-    for (auto k = 0; k < files.size(); k++) {
+    std::cout << "Reading annotations from " << anotPath << std::endl;
+    for (auto k = files.begin(), l = filesAnnot.begin();
+              k != files.end(), l != filesAnnot.end(); k++, l++) {
         std::ifstream inputFile;  // Declare input file with image path
-        inputFile.open(filesAnnot[k]);
+        inputFile.open(*l);
         int i = 0;  // Iterate through lines
         while (!inputFile.eof()) {  // Until end of file
             getline(inputFile, line);  // Get lines one by one
@@ -117,7 +57,7 @@ void Data::loadAnnotations(const cv::String annotPath,
                 while (j < line.size()) {  // Until end of line
                     if ((v == '(') || (v == ',') || (v == ')') ||
                         (v == ' ') || (v == '-')) {
-                    // if true, push back acumulated value
+                    // if true, push back acumulated value, if it exists
                         if (n == 0) {
                             bbValues.push_back(stoi(value));
                             // stoi converts string to integer
@@ -136,17 +76,59 @@ void Data::loadAnnotations(const cv::String annotPath,
                 cv::Rect rect(bbValues[0], bbValues[1],
                               bbValues[2] - bbValues[0],
                               bbValues[3] - bbValues[1]);
-                anotations.push_back(rect);
-                trainImages.push_back(files[k]);
+                // Read the image
+                cv::Mat img = cv::imread(*k);
+                // Check if the image is empty
+                if (img.empty()) {
+                    std::cout << *k << " is invalid!" << std::endl;
+                    continue;
+                }
+                // Extract the human as per the annotations
+                img = img(rect);
+                // Resize the image to make all images of the same size
+                cv::resize(img, img, size);
+                // Display loaded images, if asked
+                if (dispImg) {
+                    cv::imshow(*k, img);
+                    cv::waitKey(10);
+                }
+                // Store the images in a list
+                posImgList.push_back(img);
+                // Clear bbValues before extracting next rectangle
                 bbValues.clear();
            }
            i++;  // Next line
         }
-        // std::cout << "File name: " << imgName << std::endl;
         inputFile.close();
     }
-    // std::cout << "annotSize" << anotations.size() << std::endl;
-    // std::cout << "files" << trainImages.size() << std::endl;
+}
+
+/*
+ * @brief This is the second method of the class. It loads the images, that is, training set - negative.
+ *
+ * @param The first parameter defines the directory from where the images are to be loaded.
+ * @param The second parameter defines the size of the window to be used for sampling the images.
+ */
+void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
+    // Stores individual file names in the directory
+    std::vector<cv::String> files;
+    // Extract file names from the directory
+    cv::glob(dirName, files);
+
+    // Read Negative Images
+    for (auto imgName : files) {
+        // Read the image
+        cv::Mat img = cv::imread(imgName);
+        // Check if image was read
+        if (img.empty()) {
+            std::cout << imgName << " is invalid!" << std::endl;
+            continue;
+        }
+        // Resize the image
+        cv::resize(img, img, size);
+        // Store the image in a list
+        negImgList.push_back(img);
+    }
 }
 
 /*

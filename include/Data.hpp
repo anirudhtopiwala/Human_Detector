@@ -17,9 +17,7 @@
  */
 class Data {
  public:
-    std::vector <cv::Rect> anotations;
-    std::vector <cv::String> trainImages;
-    std::vector<cv::Mat> imgList;
+    std::vector<cv::Mat> posImgList, negImgList;
 
     /*
      * @brief This is the constructor for the class
@@ -28,30 +26,22 @@ class Data {
 
     /*
      * @brief This is the first method of the class. It loads the images, that is, training set - positive.
-     */
-    void loadImages();
-
-    /*
-     * @brief This is the overloaded first method of the class. It loads the images, that is, training set - negative - from the directory given as a string input.
-     *
-     * @param This method takes the directory name as an input from where the images are to be loaded.
-     */
-    void loadImages(const cv::String);
-
-    /*
-     * @brief This is the second method of the class. It extracts sample images from the loaded images.
-     *
-     * @param This method takes the size of the window as an input to be used for sampling the images.
-     */
-    void sampleImages(const cv::Size);
-
-    /*
-     * @brief This is the third method of the class. It loads the annotations to be used when loading positive training set.
      *
      * @param The first parameter defines the path to the directory where all annotations are defined.
      * @param The second parameter defines the path to the directory where all positive images are stored.
+     * @param The third parameter defines the size of the window to be used for resizing the images.
+     * @param The fourth parameter commands the method to either show or not show the loaded images.
      */
-    void loadAnnotations(const cv::String , const cv::String);
+    void loadPosImages(const cv::String, const cv::String,
+                       const cv::Size, const bool);
+
+    /*
+     * @brief This is the second method of the class. It loads the images, that is, training set - negative.
+     *
+     * @param The first parameter defines the directory from where the images are to be loaded.
+     * @param The second parameter defines the size of the window to be used for sampling the images.
+     */
+    void loadNegImages(const cv::String, const cv::Size);
 
     /*
      * @brief This is the destructor for the class
