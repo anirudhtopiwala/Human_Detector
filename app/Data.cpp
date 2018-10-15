@@ -102,10 +102,10 @@ void Data::loadAnnotations(const cv::String annotPath,
     cv::glob(posDir, files);
 
     std::cout << "Reading anotations from " << annotPath << std::endl;
-
-    for (auto k = 0; k < files.size(); k++) {
+    auto l = filesAnnot.begin();
+    for (auto k = files.begin(); k != files.end(); k++) {
         std::ifstream inputFile;  // Declare input file with image path
-        inputFile.open(filesAnnot[k]);
+        inputFile.open(*l);
         int i = 0;  // Iterate through lines
         while (!inputFile.eof()) {  // Until end of file
             getline(inputFile, line);  // Get lines one by one
@@ -137,13 +137,14 @@ void Data::loadAnnotations(const cv::String annotPath,
                               bbValues[2] - bbValues[0],
                               bbValues[3] - bbValues[1]);
                 anotations.push_back(rect);
-                trainImages.push_back(files[k]);
+                trainImages.push_back(*k);
                 bbValues.clear();
            }
            i++;  // Next line
         }
         // std::cout << "File name: " << imgName << std::endl;
         inputFile.close();
+        l++;
     }
     // std::cout << "annotSize" << anotations.size() << std::endl;
     // std::cout << "files" << trainImages.size() << std::endl;
