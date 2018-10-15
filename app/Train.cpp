@@ -38,10 +38,10 @@ Train::Train() {
 std::vector<float> Train::getClassifier() {
     // get the support vectors
     cv::Mat svm = classifier->getSupportVectors();
-    // std::cout<< svm<<std::endl;
     // get the decision function
     cv::Mat alpha, svidx;
     double rho = classifier->getDecisionFunction(0, alpha, svidx);
+
     // create a variable to return the support vectors in desired type
     std::vector<float> hogDetector(svm.cols + 1);
     memcpy(&hogDetector[0], svm.ptr(), svm.cols*sizeof(hogDetector[0]));
@@ -95,7 +95,6 @@ void Train::trainSVM() {
     std::cout << "Training SVM Classifier" << std::endl;
     classifier->train(trainData, cv::ml::ROW_SAMPLE, labels);
     std::cout << "Training Finshed" << std::endl;
-    classifier->save("../data/svmclassifier");
 }
 
 /*

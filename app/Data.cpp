@@ -27,7 +27,7 @@ void Data::loadImages() {
             std::cout << trainImages[i] << " is invalid!" << std::endl;
             continue;
         }
-        cv::resize(img, img, cv::Size(96,160), 0, 0);
+        cv::resize(img, img, cv::Size(96, 160), 0, 0);
         // cv::imshow("frame",img);
         // cv::waitKey(10);
         imgList.push_back(img);
