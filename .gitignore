@@ -9,6 +9,7 @@ build/
 Debug/
 data/INRIAPerson
 data/svmclassifier
+data/svm1classifier
 
 # Python
 *.pyc

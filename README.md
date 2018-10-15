@@ -137,7 +137,7 @@ find an index.html in ./docs/html directory, which can be viewed on web browser.
     To install and run cppcheck in Terminal
 
     1. cd <path to repository>
-    2. Run cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name *.cpp | grep -vE -e "^./build/" -e "^./vendor/" )
+    2. Run cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/"  -e "^./docs/"  -e "^./results/" )
 
 
 - Google C++ Sytle
@@ -145,4 +145,4 @@ find an index.html in ./docs/html directory, which can be viewed on web browser.
     To include and use Google C++ Style formatter in Terminal
 
     1. cd <path to repository>
-    2. Run cpplint $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
+    2. Run cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
