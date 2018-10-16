@@ -46,6 +46,9 @@ int main() {
                  "HOG features to detect Humans." << std:: endl;
     std::cout << std::endl;
 
+    // Define a window/image size
+    cv::Size windowSize = cv::Size(96, 160);
+
     // Train or Test a classifier
     std::cout << "Do you want to Train a Classifier? (y/n): ";
     std::string trainDetector;
@@ -53,9 +56,6 @@ int main() {
     std::transform(trainDetector.begin(), trainDetector.end(),
                    trainDetector.begin(), ::tolower);
     if (trainDetector == "yes" || trainDetector == "y") {
-        // Define a window/image size
-        cv::Size windowSize = cv::Size(96, 160);
-
         // Set directory for Positive Images
         std::cout << "Give the Path for Positive Training Images " <<
         "(Default is set as '../data/INRIAPerson/Train/pos/'): ";
@@ -171,9 +171,6 @@ int main() {
                                              cv::Size(), true, "User");
         std::cout << "Program Finshed" << std::endl;
     } else if (trainDetector == "no" || trainDetector == "n") {
-        // Define a window/image size
-        cv::Size windowSize = cv::Size(96, 160);
-
         // Ask the user if Default classifier is to be used
         std::cout << "Do yo want to use OpenCV's Default " <<
                      "People Detector Classifier? (y/n): ";

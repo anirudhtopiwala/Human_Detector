@@ -138,6 +138,19 @@ void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
     // Extract file names from the directory
     cv::glob(dirName, files);
 
+    // Define a box of the same size as given
+    cv::Rect box;
+    box.width = size.width;
+    box.height = size.height;
+
+    // Define the width and height as constant
+    const int size_x = box.width;
+    const int size_y = box.height;
+
+    // Start random number seed
+    unsigned int seed = static_cast<unsigned int>(time(NULL));
+    srand(seed);
+
     // Read Negative Images
     for (auto imgName : files) {
         // Read the image
@@ -147,8 +160,11 @@ void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
             std::cout << imgName << " is invalid!" << std::endl;
             continue;
         }
-        // Resize the image
-        cv::resize(img, img, size);
+
+        // Crop negative images randomly
+        box.x = rand_r(&seed) % (img.cols - size_x);
+        box.y = rand_r(&seed) % (img.rows - size_y);
+        img = img(box);
         // Store the image in a list
         negImgList.push_back(img);
     }
