@@ -1,0 +1,209 @@
+\hypertarget{classDetect}{}\section{Detect Class Reference}
+\label{classDetect}\index{Detect@{Detect}}
+
+
+{\ttfamily \#include $<$Detect.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDetect_afefa427dddf8e308f93fd49424cc3680}{Detect} ()
+\item 
+void \hyperlink{classDetect_a75d4c27eb616460a8ba5a387620626e6}{toggle\+Mode} ()
+\item 
+std\+::string \hyperlink{classDetect_a0742e945747fa012fb22d957a459978c}{mode\+Name} () const 
+\item 
+std\+::vector$<$ cv\+::\+Rect $>$ \hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{find\+Humans} (const cv\+::\+Input\+Array)
+\item 
+void \hyperlink{classDetect_a9b8ebb6ab8c9a07febbba30c03f55fce}{adjust\+Bounding\+Box} (cv\+::\+Rect \&)
+\item 
+cv\+::\+Rect \hyperlink{classDetect_aa04e736f215a89c0cd164e0465bf9f44}{test\+Classifier} (const cv\+::\+String, const cv\+::\+Size, const bool, const std\+::string \&)
+\item 
+\hyperlink{classDetect_aa808b1146b9b8db316b25b02f0a6b5f3}{$\sim$\+Detect} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+H\+O\+G\+Descriptor \hyperlink{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}{hog}
+\item 
+cv\+::\+H\+O\+G\+Descriptor \hyperlink{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}{hog\+\_\+user}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Detect@{Detect}!Detect@{Detect}}
+\index{Detect@{Detect}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{Detect()}{Detect()}}]{\setlength{\rightskip}{0pt plus 5cm}Detect\+::\+Detect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_afefa427dddf8e308f93fd49424cc3680}{}\label{classDetect_afefa427dddf8e308f93fd49424cc3680}
+
+\begin{DoxyCode}
+38               : m(Default), \hyperlink{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}{hog}(), \hyperlink{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}{hog\_user}() \{
+39     \hyperlink{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}{hog}.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
+40     \hyperlink{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}{hog\_user}.setSVMDetector(cv::HOGDescriptor::getDefaultPeopleDetector());
+41     std::cout << \textcolor{stringliteral}{"Class Detect has been Initialized"} << std::endl;
+42 \}
+\end{DoxyCode}
+\index{Detect@{Detect}!````~Detect@{$\sim$\+Detect}}
+\index{````~Detect@{$\sim$\+Detect}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{$\sim$\+Detect()}{~Detect()}}]{\setlength{\rightskip}{0pt plus 5cm}Detect\+::$\sim$\+Detect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_aa808b1146b9b8db316b25b02f0a6b5f3}{}\label{classDetect_aa808b1146b9b8db316b25b02f0a6b5f3}
+
+\begin{DoxyCode}
+158                 \{
+159     std::cout << \textcolor{stringliteral}{"Class Detect has been Destroyed"} << std::endl;
+160 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\index{Detect@{Detect}!adjust\+Bounding\+Box@{adjust\+Bounding\+Box}}
+\index{adjust\+Bounding\+Box@{adjust\+Bounding\+Box}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{adjust\+Bounding\+Box(cv\+::\+Rect \&)}{adjustBoundingBox(cv::Rect &)}}]{\setlength{\rightskip}{0pt plus 5cm}void Detect\+::adjust\+Bounding\+Box (
+\begin{DoxyParamCaption}
+\item[{cv\+::\+Rect \&}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_a9b8ebb6ab8c9a07febbba30c03f55fce}{}\label{classDetect_a9b8ebb6ab8c9a07febbba30c03f55fce}
+
+\begin{DoxyCode}
+84                                          \{
+85     r.x += cvRound(r.width*0.1);
+86     r.width = cvRound(r.width*0.8);
+87     r.y += cvRound(r.height*0.07);
+88     r.height = cvRound(r.height*0.8);
+89 \}
+\end{DoxyCode}
+\index{Detect@{Detect}!find\+Humans@{find\+Humans}}
+\index{find\+Humans@{find\+Humans}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{find\+Humans(const cv\+::\+Input\+Array)}{findHumans(const cv::InputArray)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ cv\+::\+Rect $>$ Detect\+::find\+Humans (
+\begin{DoxyParamCaption}
+\item[{const cv\+::\+Input\+Array}]{img}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{}\label{classDetect_a1d25bc00785e30f42c1f6211d11786d0}
+
+\begin{DoxyCode}
+67                                                            \{
+68     std::vector<cv::Rect> found;
+69     \textcolor{keywordflow}{if} (m == Default) \{
+70         std::cout << \textcolor{stringliteral}{"Using in-Built Classifier"} << std::endl;
+71         \hyperlink{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}{hog}.detectMultiScale(img, found);
+72     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (m == User) \{
+73         std::cout << \textcolor{stringliteral}{"Using User Trained Classifier"} << std::endl;
+74         \hyperlink{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}{hog\_user}.detectMultiScale(img, found);
+75     \}
+76     \textcolor{keywordflow}{return} found;
+77 \}
+\end{DoxyCode}
+\index{Detect@{Detect}!mode\+Name@{mode\+Name}}
+\index{mode\+Name@{mode\+Name}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{mode\+Name() const }{modeName() const }}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Detect\+::mode\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{classDetect_a0742e945747fa012fb22d957a459978c}{}\label{classDetect_a0742e945747fa012fb22d957a459978c}
+
+\begin{DoxyCode}
+56                                  \{
+57     \textcolor{keywordflow}{return} (m == Default ? \textcolor{stringliteral}{"Default"} : \textcolor{stringliteral}{"User"});
+58 \}
+\end{DoxyCode}
+\index{Detect@{Detect}!test\+Classifier@{test\+Classifier}}
+\index{test\+Classifier@{test\+Classifier}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{test\+Classifier(const cv\+::\+String, const cv\+::\+Size, const bool, const std\+::string \&)}{testClassifier(const cv::String, const cv::Size, const bool, const std::string &)}}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Rect Detect\+::test\+Classifier (
+\begin{DoxyParamCaption}
+\item[{const cv\+::\+String}]{test\+Dir, }
+\item[{const cv\+::\+Size}]{size, }
+\item[{const bool}]{disp\+Image = {\ttfamily true}, }
+\item[{const std\+::string \&}]{mode = {\ttfamily \char`\"{}Default\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_aa04e736f215a89c0cd164e0465bf9f44}{}\label{classDetect_aa04e736f215a89c0cd164e0465bf9f44}
+
+\begin{DoxyCode}
+100                                                                             \{
+101     std::cout << \textcolor{stringliteral}{"Testing Classifier"} << std::endl;
+102     \textcolor{comment}{// Extract individual files from the directory}
+103     std::vector<cv::String> files;
+104     cv::glob(testDir, files);
+105 
+106     \textcolor{comment}{// Confirm that the mode matches}
+107     \textcolor{keywordflow}{if} (\hyperlink{classDetect_a0742e945747fa012fb22d957a459978c}{modeName}() != mode) \{
+108         \hyperlink{classDetect_a75d4c27eb616460a8ba5a387620626e6}{toggleMode}();
+109     \}
+110 
+111     \textcolor{comment}{// This output has been kept to pass the test}
+112     cv::Rect R;
+113     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} data : files) \{
+114         \textcolor{comment}{// Read the image}
+115         cv::Mat img = cv::imread(data);
+116         \textcolor{comment}{// Check if the image was read correctly}
+117         \textcolor{keywordflow}{if} (img.empty()) \{
+118             std::cout << data << \textcolor{stringliteral}{" is invalid!"} << std::endl;
+119             \textcolor{keywordflow}{continue};
+120         \}
+121         \textcolor{comment}{// Resize the image}
+122         std::cout << size << std::endl;
+123         \textcolor{keywordflow}{if} (size != cv::Size())
+124             cv::resize(img, img, size);
+125         \textcolor{comment}{// Detect humans}
+126         std::vector<cv::Rect> detections = \hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{findHumans}(img);
+127         \textcolor{keywordflow}{if} (detections.size() > 0) \{
+128             std::cout << \textcolor{stringliteral}{"Human Detection Done: "} << detections.size() <<
+129                          \textcolor{stringliteral}{" detections in "} << data << std::endl;
+130         \} \textcolor{keywordflow}{else} \{
+131             std::cout << \textcolor{stringliteral}{"No Human Detected in "} << data << std::endl;
+132             \textcolor{keywordflow}{continue};
+133         \}
+134 
+135         \textcolor{comment}{// Creating BB}
+136         std::cout << \textcolor{stringliteral}{"Creating Bounding Boxes"} << std::endl;
+137         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} i = detections.begin(); i != detections.end(); i++) \{
+138             cv::Rect &r = *i;
+139             \textcolor{comment}{// To pass the test}
+140             \textcolor{keywordflow}{if} (data == \textcolor{stringliteral}{"../data/test/imgs/pedestrian\_5.jpg"})
+141                 R = r;
+142             \textcolor{comment}{// Adjust the bounding boxes}
+143             \hyperlink{classDetect_a9b8ebb6ab8c9a07febbba30c03f55fce}{adjustBoundingBox}(r);
+144             \textcolor{comment}{// Create the bounding box in the image}
+145             cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
+146         \}
+147         \textcolor{keywordflow}{if} (dispImage) \{
+148             cv::imshow(\textcolor{stringliteral}{"Detected Humans"} , img);
+149             cv::waitKey(3000);
+150         \}
+151     \}
+152     \textcolor{keywordflow}{return} R;
+153 \}
+\end{DoxyCode}
+\index{Detect@{Detect}!toggle\+Mode@{toggle\+Mode}}
+\index{toggle\+Mode@{toggle\+Mode}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{toggle\+Mode()}{toggleMode()}}]{\setlength{\rightskip}{0pt plus 5cm}void Detect\+::toggle\+Mode (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classDetect_a75d4c27eb616460a8ba5a387620626e6}{}\label{classDetect_a75d4c27eb616460a8ba5a387620626e6}
+
+\begin{DoxyCode}
+47                         \{
+48     m = (m == Default ? User : Default);
+49 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\index{Detect@{Detect}!hog@{hog}}
+\index{hog@{hog}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{hog}{hog}}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+H\+O\+G\+Descriptor Detect\+::hog}\hypertarget{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}{}\label{classDetect_ab7b1c5cfa3e8f5daa91f2fe644327005}
+\index{Detect@{Detect}!hog\+\_\+user@{hog\+\_\+user}}
+\index{hog\+\_\+user@{hog\+\_\+user}!Detect@{Detect}}
+\subsubsection[{\texorpdfstring{hog\+\_\+user}{hog_user}}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+H\+O\+G\+Descriptor Detect\+::hog\+\_\+user}\hypertarget{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}{}\label{classDetect_ad7d55a57eca5ee84b37c1ea00489f770}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{Detect_8hpp}{Detect.\+hpp}\item 
+app/\hyperlink{Detect_8cpp}{Detect.\+cpp}\end{DoxyCompactItemize}

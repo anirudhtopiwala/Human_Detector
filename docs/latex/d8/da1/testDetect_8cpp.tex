@@ -1,0 +1,130 @@
+\hypertarget{testDetect_8cpp}{}\section{test/test\+Detect.cpp File Reference}
+\label{testDetect_8cpp}\index{test/test\+Detect.\+cpp@{test/test\+Detect.\+cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\\*
+{\ttfamily \#include $<$Data.\+hpp$>$}\\*
+{\ttfamily \#include $<$Train.\+hpp$>$}\\*
+{\ttfamily \#include $<$Detect.\+hpp$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{testDetect_8cpp_ac6873dc8c350aa4bb43d32aa90244a9c}{T\+E\+ST} (Detect\+Test, Detect\+Mode\+Name\+Test)
+\item 
+\hyperlink{testDetect_8cpp_a0327c78bcbeb0b39d7e8b94fb233125a}{T\+E\+ST} (Detect\+Test, Detect\+Toggle\+Test)
+\item 
+\hyperlink{testDetect_8cpp_a45caa9698430098e1e30ed9be3af238a}{T\+E\+ST} (Detect\+Test, Detect\+Humans\+Test)
+\item 
+\hyperlink{testDetect_8cpp_af375b8171b9cbb6776050f84fb3edfef}{T\+E\+ST} (Detect\+Test, Detect\+Adjust\+Box\+Test)
+\item 
+\hyperlink{testDetect_8cpp_a21fbb1cc1982128b4ad97adf9b535b66}{T\+E\+ST} (Detect\+Test, Detect\+Test\+Classifier\+Test)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{test\+Detect.\+cpp@{test\+Detect.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Detect.\+cpp@{test\+Detect.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Detect\+Test, Detect\+Mode\+Name\+Test)}{TEST(DetectTest, DetectModeNameTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Detect\+Test}]{, }
+\item[{Detect\+Mode\+Name\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testDetect_8cpp_ac6873dc8c350aa4bb43d32aa90244a9c}{}\label{testDetect_8cpp_ac6873dc8c350aa4bb43d32aa90244a9c}
+
+\begin{DoxyCode}
+39                                      \{
+40   \hyperlink{classDetect}{Detect} test;
+41   \textcolor{comment}{// Check if the mode is initialized to Default}
+42   ASSERT\_EQ(\textcolor{stringliteral}{"Default"}, test.\hyperlink{classDetect_a0742e945747fa012fb22d957a459978c}{modeName}());
+43 \}
+\end{DoxyCode}
+\index{test\+Detect.\+cpp@{test\+Detect.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Detect.\+cpp@{test\+Detect.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Detect\+Test, Detect\+Toggle\+Test)}{TEST(DetectTest, DetectToggleTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Detect\+Test}]{, }
+\item[{Detect\+Toggle\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testDetect_8cpp_a0327c78bcbeb0b39d7e8b94fb233125a}{}\label{testDetect_8cpp_a0327c78bcbeb0b39d7e8b94fb233125a}
+
+\begin{DoxyCode}
+46                                    \{
+47   \hyperlink{classDetect}{Detect} test;
+48   test.\hyperlink{classDetect_a75d4c27eb616460a8ba5a387620626e6}{toggleMode}();
+49   \textcolor{comment}{// Check if the mode changed to User}
+50   ASSERT\_EQ(\textcolor{stringliteral}{"User"}, test.\hyperlink{classDetect_a0742e945747fa012fb22d957a459978c}{modeName}());
+51 \}
+\end{DoxyCode}
+\index{test\+Detect.\+cpp@{test\+Detect.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Detect.\+cpp@{test\+Detect.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Detect\+Test, Detect\+Humans\+Test)}{TEST(DetectTest, DetectHumansTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Detect\+Test}]{, }
+\item[{Detect\+Humans\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testDetect_8cpp_a45caa9698430098e1e30ed9be3af238a}{}\label{testDetect_8cpp_a45caa9698430098e1e30ed9be3af238a}
+
+\begin{DoxyCode}
+54                                    \{
+55   \hyperlink{classDetect}{Detect} test;
+56   cv::Rect orgBox(124, 26, 221, 442);  \textcolor{comment}{// [221 x 442 from (124, 26)]}
+57   std::string imageName(\textcolor{stringliteral}{"../data/test/imgs/pedestrian\_5.jpg"});
+58   cv::Mat img = cv::imread(imageName);
+59   std::vector<cv::Rect> found = test.\hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{findHumans}(img);
+60   cv::Rect &r1 = found.front();
+61   \textcolor{comment}{// Check if the detected box is close to the ground truth in Default Mode}
+62   ASSERT\_LT(orgBox.area() - (orgBox & r1).area(), 500);
+63   test.\hyperlink{classDetect_a75d4c27eb616460a8ba5a387620626e6}{toggleMode}();
+64   found = test.\hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{findHumans}(img);
+65   cv::Rect &r2 = found.front();
+66   \textcolor{comment}{// Check if the detected box is close to the ground truth in User Mode}
+67   ASSERT\_LT(orgBox.area() - (orgBox & r2).area(), 500);
+68   \textcolor{comment}{// Check if the detected boxes using either methods are close to each other}
+69   ASSERT\_LT(r1.area() - (r1 & r2).area(), 500);
+70 \}
+\end{DoxyCode}
+\index{test\+Detect.\+cpp@{test\+Detect.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Detect.\+cpp@{test\+Detect.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Detect\+Test, Detect\+Adjust\+Box\+Test)}{TEST(DetectTest, DetectAdjustBoxTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Detect\+Test}]{, }
+\item[{Detect\+Adjust\+Box\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testDetect_8cpp_af375b8171b9cbb6776050f84fb3edfef}{}\label{testDetect_8cpp_af375b8171b9cbb6776050f84fb3edfef}
+
+\begin{DoxyCode}
+73                                       \{
+74   \hyperlink{classDetect}{Detect} test;
+75   std::string imageName(\textcolor{stringliteral}{"../data/test/imgs/pedestrian\_5.jpg"});
+76   cv::Mat img = cv::imread(imageName);
+77   std::vector<cv::Rect> found = test.\hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{findHumans}(img);
+78   cv::Rect &r = found.front();
+79   cv::Rect orgBox = r;
+80   test.\hyperlink{classDetect_a9b8ebb6ab8c9a07febbba30c03f55fce}{adjustBoundingBox}(r);
+81   \textcolor{comment}{// Check if the bounding box has reduced after adjustment}
+82   ASSERT\_TRUE((0.63 <= static\_cast<double>(r.area())/
+83     static\_cast<double>(orgBox.area())) || (\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(r.area())/
+84                               static\_cast<double>(orgBox.area()) <= 0.65));
+85 \}
+\end{DoxyCode}
+\index{test\+Detect.\+cpp@{test\+Detect.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Detect.\+cpp@{test\+Detect.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Detect\+Test, Detect\+Test\+Classifier\+Test)}{TEST(DetectTest, DetectTestClassifierTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Detect\+Test}]{, }
+\item[{Detect\+Test\+Classifier\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testDetect_8cpp_a21fbb1cc1982128b4ad97adf9b535b66}{}\label{testDetect_8cpp_a21fbb1cc1982128b4ad97adf9b535b66}
+
+\begin{DoxyCode}
+88                                            \{
+89   \hyperlink{classDetect}{Detect} test;
+90   std::string imageName(\textcolor{stringliteral}{"../data/test/imgs/pedestrian\_5.jpg"});
+91   cv::Mat img = cv::imread(imageName);
+92   cv::resize(img, img, cv::Size(200, 200));
+93   std::vector<cv::Rect> found = test.\hyperlink{classDetect_a1d25bc00785e30f42c1f6211d11786d0}{findHumans}(img);
+94   cv::Rect &orgBox = found.front();
+95   cv::Rect r = test.\hyperlink{classDetect_aa04e736f215a89c0cd164e0465bf9f44}{testClassifier}(\textcolor{stringliteral}{"../data/test/imgs"}, cv::Size(200, 200),
+96                                                             \textcolor{keyword}{false}, \textcolor{stringliteral}{"User"});
+97   \textcolor{comment}{// Check if the bounding box computed by the two methods are close}
+98   ASSERT\_LT(orgBox.area() - (orgBox & r).area(), 500);
+99 \}
+\end{DoxyCode}

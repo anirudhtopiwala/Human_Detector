@@ -1,0 +1,181 @@
+\hypertarget{classTrain}{}\section{Train Class Reference}
+\label{classTrain}\index{Train@{Train}}
+
+
+{\ttfamily \#include $<$Train.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classTrain_aa05ce5a8ff68dea76d457f4ff2d0d1ba}{Train} ()
+\item 
+std\+::vector$<$ float $>$ \hyperlink{classTrain_a72251742e0ed3d4871dffe8a05ebbc8c}{get\+Classifier} ()
+\item 
+void \hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{get\+H\+O\+Gfeatures} (const cv\+::\+Size, const std\+::vector$<$ cv\+::\+Mat $>$ \&)
+\item 
+void \hyperlink{classTrain_a7a7755ffab3240048df164cb4dff409c}{train\+S\+VM} (const bool, const cv\+::\+String)
+\item 
+\hyperlink{classTrain_a28c78c0d21e7fbce79cb94927f23c11e}{$\sim$\+Train} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+cv\+::\+Ptr$<$ cv\+::ml\+::\+S\+VM $>$ \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}
+\item 
+std\+::vector$<$ cv\+::\+Mat $>$ \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradient\+List}
+\item 
+std\+::vector$<$ int $>$ \hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Train@{Train}!Train@{Train}}
+\index{Train@{Train}!Train@{Train}}
+\subsubsection[{\texorpdfstring{Train()}{Train()}}]{\setlength{\rightskip}{0pt plus 5cm}Train\+::\+Train (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classTrain_aa05ce5a8ff68dea76d457f4ff2d0d1ba}{}\label{classTrain_aa05ce5a8ff68dea76d457f4ff2d0d1ba}
+
+\begin{DoxyCode}
+38              \{
+39     \textcolor{comment}{// Initialize classifier}
+40     \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier} = cv::ml::SVM::create();
+41     \textcolor{comment}{// Default values to train SVM}
+42     \textcolor{comment}{// classifier->setCoef0(0.0);}
+43     \textcolor{comment}{// classifier->setDegree(3);}
+44     \textcolor{comment}{// classifier->setTermCriteria(cv::TermCriteria(}
+45     \textcolor{comment}{// cv::TermCriteria::MAX\_ITER + cv::TermCriteria::EPS, 1000, 1e-3));}
+46     \textcolor{comment}{// classifier->setGamma(0);}
+47     \textcolor{comment}{// classifier->setKernel(cv::ml::SVM::LINEAR);}
+48     \textcolor{comment}{// classifier->setNu(0.5);}
+49     \textcolor{comment}{// classifier->setP(0.1); // for EPSILON\_SVR, epsilon in loss function?}
+50     \textcolor{comment}{// classifier->setC(0.01); // From paper, soft classifier}
+51     \textcolor{comment}{// C\_SVC; // EPSILON\_SVR; // may be also NU\_SVR; // do regression task}
+52     \textcolor{comment}{// classifier->setType(cv::ml::SVM::EPS\_SVR);}
+53     std::cout << \textcolor{stringliteral}{"Class Train has been Initialized"} << std::endl;
+54 \}
+\end{DoxyCode}
+\index{Train@{Train}!````~Train@{$\sim$\+Train}}
+\index{````~Train@{$\sim$\+Train}!Train@{Train}}
+\subsubsection[{\texorpdfstring{$\sim$\+Train()}{~Train()}}]{\setlength{\rightskip}{0pt plus 5cm}Train\+::$\sim$\+Train (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classTrain_a28c78c0d21e7fbce79cb94927f23c11e}{}\label{classTrain_a28c78c0d21e7fbce79cb94927f23c11e}
+
+\begin{DoxyCode}
+138               \{
+139     std::cout << \textcolor{stringliteral}{"Class Train has been Destroyed"} << std::endl;
+140 \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\index{Train@{Train}!get\+Classifier@{get\+Classifier}}
+\index{get\+Classifier@{get\+Classifier}!Train@{Train}}
+\subsubsection[{\texorpdfstring{get\+Classifier()}{getClassifier()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ float $>$ Train\+::get\+Classifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classTrain_a72251742e0ed3d4871dffe8a05ebbc8c}{}\label{classTrain_a72251742e0ed3d4871dffe8a05ebbc8c}
+
+\begin{DoxyCode}
+61                                       \{
+62     \textcolor{comment}{// get the support vectors}
+63     cv::Mat svm = \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->getSupportVectors();
+64     \textcolor{comment}{// get the decision function}
+65     cv::Mat alpha, svidx;
+66     \textcolor{keywordtype}{double} rho = \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->getDecisionFunction(0, alpha, svidx);
+67 
+68     \textcolor{comment}{// create a variable to return the support vectors in desired type}
+69     std::vector<float> hogDetector(svm.cols + 1);
+70     memcpy(&hogDetector[0], svm.ptr(), svm.cols*\textcolor{keyword}{sizeof}(hogDetector[0]));
+71     hogDetector[svm.cols] = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(- rho);
+72     \textcolor{keywordflow}{return} hogDetector;
+73 \}
+\end{DoxyCode}
+\index{Train@{Train}!get\+H\+O\+Gfeatures@{get\+H\+O\+Gfeatures}}
+\index{get\+H\+O\+Gfeatures@{get\+H\+O\+Gfeatures}!Train@{Train}}
+\subsubsection[{\texorpdfstring{get\+H\+O\+Gfeatures(const cv\+::\+Size, const std\+::vector$<$ cv\+::\+Mat $>$ \&)}{getHOGfeatures(const cv::Size, const std::vector< cv::Mat > &)}}]{\setlength{\rightskip}{0pt plus 5cm}void Train\+::get\+H\+O\+Gfeatures (
+\begin{DoxyParamCaption}
+\item[{const cv\+::\+Size}]{window\+Size, }
+\item[{const std\+::vector$<$ cv\+::\+Mat $>$ \&}]{img\+List}
+\end{DoxyParamCaption}
+)}\hypertarget{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{}\label{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}
+
+\begin{DoxyCode}
+82                                                              \{
+83     cv::HOGDescriptor hog;
+84     hog.winSize = windowSize;
+85     hog.cellSize = cv::Size(8, 8);
+86     cv::Mat gray;
+87     std::vector<float> descriptors;
+88 
+89     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} data : imgList)
+90         \textcolor{keywordflow}{if} (data.cols >= windowSize.width && data.rows >= windowSize.height) \{
+91             \textcolor{comment}{// convert image to grayscale}
+92             cvtColor(data, gray, cv::COLOR\_BGR2GRAY);
+93             \textcolor{comment}{// extract hog features}
+94             hog.compute(gray, descriptors);
+95             \textcolor{comment}{// store hog features}
+96             \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.push\_back(cv::Mat(descriptors).clone());
+97             \textcolor{comment}{// Now flip the images}
+98             cv::flip(gray, gray, 1);
+99             hog.compute(gray, descriptors);
+100             \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.push\_back(cv::Mat(descriptors).clone());
+101         \}
+102 \}
+\end{DoxyCode}
+\index{Train@{Train}!train\+S\+VM@{train\+S\+VM}}
+\index{train\+S\+VM@{train\+S\+VM}!Train@{Train}}
+\subsubsection[{\texorpdfstring{train\+S\+V\+M(const bool, const cv\+::\+String)}{trainSVM(const bool, const cv::String)}}]{\setlength{\rightskip}{0pt plus 5cm}void Train\+::train\+S\+VM (
+\begin{DoxyParamCaption}
+\item[{const bool}]{save\+Classifier = {\ttfamily false}, }
+\item[{const cv\+::\+String}]{classifier\+Name = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{classTrain_a7a7755ffab3240048df164cb4dff409c}{}\label{classTrain_a7a7755ffab3240048df164cb4dff409c}
+
+\begin{DoxyCode}
+111                                                          \{
+112     \textcolor{comment}{// make sure all HOG features are row vectors for the train function of SVM}
+113     \textcolor{keyword}{const} \textcolor{keywordtype}{int} rows = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size());
+114     \textcolor{keyword}{const} \textcolor{keywordtype}{int} cols = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(std::max(\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[0].cols,
+115                                                \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[0].rows));
+116     cv::Mat temp(1, cols, CV\_32FC1), trainData(rows, cols, CV\_32FC1);
+117     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} index = 0; index < \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size(); index++) \{
+118         \textcolor{keywordflow}{if} (\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[index].cols == 1) \{
+119             transpose(\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[index], temp);
+120             temp.copyTo(trainData.row(static\_cast<int>(index)));
+121         \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[index].rows == 1) \{
+122             \hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}[index].copyTo(trainData.row(static\_cast<int>(index)));
+123         \}
+124     \}
+125 
+126     \textcolor{comment}{// Training Starts}
+127     std::cout << \textcolor{stringliteral}{"Training SVM Classifier"} << std::endl;
+128     \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->train(trainData, cv::ml::ROW\_SAMPLE, \hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels});
+129     std::cout << \textcolor{stringliteral}{"Training Finshed"} << std::endl;
+130     \textcolor{comment}{// Save the classifier if asked}
+131     \textcolor{keywordflow}{if} (saveClassifier)
+132         \hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->save(classifierName);
+133 \}
+\end{DoxyCode}
+
+
+\subsection{Member Data Documentation}
+\index{Train@{Train}!classifier@{classifier}}
+\index{classifier@{classifier}!Train@{Train}}
+\subsubsection[{\texorpdfstring{classifier}{classifier}}]{\setlength{\rightskip}{0pt plus 5cm}cv\+::\+Ptr$<$cv\+::ml\+::\+S\+VM$>$ Train\+::classifier}\hypertarget{classTrain_af48556029dbb829b97e52a47c38f5dec}{}\label{classTrain_af48556029dbb829b97e52a47c38f5dec}
+\index{Train@{Train}!gradient\+List@{gradient\+List}}
+\index{gradient\+List@{gradient\+List}!Train@{Train}}
+\subsubsection[{\texorpdfstring{gradient\+List}{gradientList}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$cv\+::\+Mat$>$ Train\+::gradient\+List}\hypertarget{classTrain_ae4c540cf58c0252745f527f7aca267d4}{}\label{classTrain_ae4c540cf58c0252745f527f7aca267d4}
+\index{Train@{Train}!labels@{labels}}
+\index{labels@{labels}!Train@{Train}}
+\subsubsection[{\texorpdfstring{labels}{labels}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$int$>$ Train\+::labels}\hypertarget{classTrain_a94e850beee52059be00a4fd9068cb223}{}\label{classTrain_a94e850beee52059be00a4fd9068cb223}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{Train_8hpp}{Train.\+hpp}\item 
+app/\hyperlink{Train_8cpp}{Train.\+cpp}\end{DoxyCompactItemize}

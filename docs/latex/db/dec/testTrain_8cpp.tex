@@ -1,0 +1,92 @@
+\hypertarget{testTrain_8cpp}{}\section{test/test\+Train.cpp File Reference}
+\label{testTrain_8cpp}\index{test/test\+Train.\+cpp@{test/test\+Train.\+cpp}}
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\\*
+{\ttfamily \#include $<$Data.\+hpp$>$}\\*
+{\ttfamily \#include $<$Train.\+hpp$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{testTrain_8cpp_af258a280e367e7ea70bedeed7076b958}{T\+E\+ST} (Train\+Test, Train\+Get\+H\+O\+G\+Test)
+\item 
+\hyperlink{testTrain_8cpp_ac55d451faf4ffbaee0822a7e2c2bd064}{T\+E\+ST} (Train\+Test, Train\+S\+V\+M\+Test)
+\item 
+\hyperlink{testTrain_8cpp_a644fb7dc805726eef5b8b7bc533f3700}{T\+E\+ST} (Train\+Test, Train\+Get\+Classifier\+Test)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{test\+Train.\+cpp@{test\+Train.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Train.\+cpp@{test\+Train.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Train\+Test, Train\+Get\+H\+O\+G\+Test)}{TEST(TrainTest, TrainGetHOGTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Train\+Test}]{, }
+\item[{Train\+Get\+H\+O\+G\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testTrain_8cpp_af258a280e367e7ea70bedeed7076b958}{}\label{testTrain_8cpp_af258a280e367e7ea70bedeed7076b958}
+
+\begin{DoxyCode}
+38                                  \{
+39   \hyperlink{classData}{Data} testData;
+40   \hyperlink{classTrain}{Train} test;
+41   testData.\hyperlink{classData_a7a9b971dd776aa4086174ea2704bacd5}{loadNegImages}(\textcolor{stringliteral}{"../data/test/neg"}, cv::Size(200, 200));
+42   test.\hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{getHOGfeatures}(cv::Size(200, 200), testData.\hyperlink{classData_a64003b8f6c1cf3a3788e817a9727e5b7}{negImgList});
+43   \textcolor{comment}{// Check if the gradientList is being filled}
+44   ASSERT\_GT(test.\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size(), 0);
+45 \}
+\end{DoxyCode}
+\index{test\+Train.\+cpp@{test\+Train.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Train.\+cpp@{test\+Train.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Train\+Test, Train\+S\+V\+M\+Test)}{TEST(TrainTest, TrainSVMTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Train\+Test}]{, }
+\item[{Train\+S\+V\+M\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testTrain_8cpp_ac55d451faf4ffbaee0822a7e2c2bd064}{}\label{testTrain_8cpp_ac55d451faf4ffbaee0822a7e2c2bd064}
+
+\begin{DoxyCode}
+48                               \{
+49   \hyperlink{classData}{Data} testData;
+50   testData.\hyperlink{classData_a30cb7a53ab253a2f7e477ac13fe4c3e3}{loadPosImages}(\textcolor{stringliteral}{"../data/test/annotations"}, \textcolor{stringliteral}{"../data/test/pos"},
+51                                           cv::Size(200, 200), \textcolor{keyword}{false});
+52   testData.\hyperlink{classData_a7a9b971dd776aa4086174ea2704bacd5}{loadNegImages}(\textcolor{stringliteral}{"../data/test/neg"}, cv::Size(200, 200));
+53   \hyperlink{classTrain}{Train} test;
+54   test.\hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{getHOGfeatures}(cv::Size(200, 200), testData.\hyperlink{classData_a42bd07ac68b6b13b10b1e1b53a9c682c}{posImgList});
+55   \textcolor{keywordtype}{size\_t} posCount = test.\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size();
+56   test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.assign(posCount, 1);
+57   test.\hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{getHOGfeatures}(cv::Size(200, 200), testData.\hyperlink{classData_a64003b8f6c1cf3a3788e817a9727e5b7}{negImgList});
+58   \textcolor{keywordtype}{size\_t} negCount = test.\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size() - posCount;
+59   test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.insert(test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.end(), negCount, -1);
+60   \textcolor{comment}{// Check if the classifier is empty initially}
+61   ASSERT\_TRUE(test.\hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->getSupportVectors().empty());
+62   test.\hyperlink{classTrain_a7a7755ffab3240048df164cb4dff409c}{trainSVM}(\textcolor{keyword}{false}, \textcolor{stringliteral}{""});
+63   \textcolor{comment}{// Check if there is the classifier is non-empty after training}
+64   ASSERT\_TRUE(!test.\hyperlink{classTrain_af48556029dbb829b97e52a47c38f5dec}{classifier}->getSupportVectors().empty());
+65 \}
+\end{DoxyCode}
+\index{test\+Train.\+cpp@{test\+Train.\+cpp}!T\+E\+ST@{T\+E\+ST}}
+\index{T\+E\+ST@{T\+E\+ST}!test\+Train.\+cpp@{test\+Train.\+cpp}}
+\subsubsection[{\texorpdfstring{T\+E\+S\+T(\+Train\+Test, Train\+Get\+Classifier\+Test)}{TEST(TrainTest, TrainGetClassifierTest)}}]{\setlength{\rightskip}{0pt plus 5cm}T\+E\+ST (
+\begin{DoxyParamCaption}
+\item[{Train\+Test}]{, }
+\item[{Train\+Get\+Classifier\+Test}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testTrain_8cpp_a644fb7dc805726eef5b8b7bc533f3700}{}\label{testTrain_8cpp_a644fb7dc805726eef5b8b7bc533f3700}
+
+\begin{DoxyCode}
+68                                         \{
+69   \hyperlink{classData}{Data} testData;
+70   testData.\hyperlink{classData_a30cb7a53ab253a2f7e477ac13fe4c3e3}{loadPosImages}(\textcolor{stringliteral}{"../data/test/annotations"}, \textcolor{stringliteral}{"../data/test/pos"},
+71                                           cv::Size(200, 200), \textcolor{keyword}{false});
+72   testData.\hyperlink{classData_a7a9b971dd776aa4086174ea2704bacd5}{loadNegImages}(\textcolor{stringliteral}{"../data/test/neg"}, cv::Size(200, 200));
+73   \hyperlink{classTrain}{Train} test;
+74   test.\hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{getHOGfeatures}(cv::Size(200, 200), testData.\hyperlink{classData_a42bd07ac68b6b13b10b1e1b53a9c682c}{posImgList});
+75   \textcolor{keywordtype}{size\_t} posCount = test.\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size();
+76   test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.assign(posCount, 1);
+77   test.\hyperlink{classTrain_a6a98a6bbafe06950a62d5825a7eda62f}{getHOGfeatures}(cv::Size(200, 200), testData.\hyperlink{classData_a64003b8f6c1cf3a3788e817a9727e5b7}{negImgList});
+78   \textcolor{keywordtype}{size\_t} negCount = test.\hyperlink{classTrain_ae4c540cf58c0252745f527f7aca267d4}{gradientList}.size() - posCount;
+79   test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.insert(test.\hyperlink{classTrain_a94e850beee52059be00a4fd9068cb223}{labels}.end(), negCount, -1);
+80   test.\hyperlink{classTrain_a7a7755ffab3240048df164cb4dff409c}{trainSVM}(\textcolor{keyword}{false}, \textcolor{stringliteral}{""});
+81   \textcolor{comment}{// Check if the getClassifier gives a non-empty output}
+82   ASSERT\_NE(test.\hyperlink{classTrain_a72251742e0ed3d4871dffe8a05ebbc8c}{getClassifier}().size(), 0);
+83 \}
+\end{DoxyCode}
