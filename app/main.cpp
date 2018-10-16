@@ -114,7 +114,7 @@ int main() {
         trainClass.getHOGfeatures(windowSize, allData.posImgList);
         // Assign Positive labels
         size_t positiveCount = trainClass.gradientList.size();
-        trainClass.labels.assign(positiveCount, 1);
+        trainClass.labels.assign(positiveCount, 0);
         std::cout << "Done getting HOG Features for Positive Images" <<
                                                                 std::endl;
 
@@ -124,7 +124,7 @@ int main() {
         trainClass.getHOGfeatures(windowSize, allData.negImgList);
         // Assign Negative labels
         size_t negativeCount = trainClass.gradientList.size() - positiveCount;
-        trainClass.labels.insert(trainClass.labels.end(), negativeCount, -1);
+        trainClass.labels.insert(trainClass.labels.end(), negativeCount, 1);
         std::cout << "Done getting HOG Features for Negative Images" <<
                                                                 std::endl;
 
@@ -168,7 +168,7 @@ int main() {
         detector.hog_user.cellSize = cv::Size(4, 4);
         detector.hog_user.setSVMDetector(trainClass.getClassifier());
         cv::Rect r = detector.testClassifier(static_cast<cv::String>(testDir),
-                                             cv::Size(), true, "User");
+                                             windowSize, true, "User");
         std::cout << "Program Finshed" << std::endl;
     } else if (trainDetector == "no" || trainDetector == "n") {
         // Define a window/image size
@@ -221,7 +221,7 @@ int main() {
             detector.hog_user.winSize = windowSize;
             detector.hog_user.cellSize = cv::Size(4, 4);
             detector.hog_user.setSVMDetector(trainClass.getClassifier());
-            cv::Rect r = detector.testClassifier(testDir, cv::Size(),
+            cv::Rect r = detector.testClassifier(testDir, windowSize,
                                                  true, "User");
             std::cout << "Finshed" << std::endl;
         } else {

@@ -38,6 +38,17 @@
 Train::Train() {
     // Initialize classifier
     classifier = cv::ml::SVM::create();
+    // Default values to train SVM
+    classifier->setCoef0(0.0);
+    classifier->setDegree(3);
+    classifier->setTermCriteria(cv::TermCriteria(
+    cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 1000, 1e-3));
+    classifier->setGamma(0);
+    classifier->setKernel(cv::ml::SVM::LINEAR);
+    classifier->setNu(0.5);
+    classifier->setP(0.1); // for EPSILON_SVR, epsilon in loss function?
+    classifier->setC(0.01); // From paper, soft classifier
+    classifier->setType(cv::ml::SVM::EPS_SVR);
     std::cout << "Class Train has been Initialized" << std::endl;
 }
 
