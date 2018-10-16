@@ -1,0 +1,12 @@
+Done processing ./include/Train.hpp
+Done processing ./include/Detect.hpp
+Done processing ./include/Data.hpp
+Done processing ./app/Detect.cpp
+Done processing ./app/main.cpp
+Done processing ./app/Train.cpp
+Done processing ./app/Data.cpp
+Done processing ./test/testData.cpp
+Done processing ./test/testDetect.cpp
+Done processing ./test/main.cpp
+Done processing ./test/testTrain.cpp
+
