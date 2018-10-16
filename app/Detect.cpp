@@ -1,4 +1,27 @@
 /*
+ * MIT License
+ * 
+ * Copyright (c) 2018 Anirudh Topiwala
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+/*
  * @file Detect.cpp
  * @Copyright [2018]
  * @author1 Ghost1995 [Ashwin Goyal] - stub
@@ -45,12 +68,10 @@ std::vector<cv::Rect> Detect::findHumans(const cv::InputArray img) {
     std::vector<cv::Rect> found;
     if (m == Default) {
         std::cout << "Using in-Built Classifier" << std::endl;
-        hog.detectMultiScale(img, found, 0, cv::Size(4, 4),
-                             cv::Size(0, 0), 1.05, 2);
+        hog.detectMultiScale(img, found);
     } else if (m == User) {
         std::cout << "Using User Trained Classifier" << std::endl;
-        hog_user.detectMultiScale(img, found, 0, cv::Size(4, 4),
-                                  cv::Size(0, 0), 1.05, 2, false);
+        hog_user.detectMultiScale(img, found);
     }
     return found;
 }
@@ -98,7 +119,7 @@ cv::Rect Detect::testClassifier(const cv::String testDir, const cv::Size size,
             continue;
         }
         // Resize the image
-        cv::resize(img, img, size);
+        // cv::resize(img, img, size);
         // Detect humans
         std::vector<cv::Rect> detections = findHumans(img);
         if (detections.size() > 0) {
@@ -122,7 +143,7 @@ cv::Rect Detect::testClassifier(const cv::String testDir, const cv::Size size,
             cv::rectangle(img, r.tl(), r.br(), cv::Scalar(0, 255, 0), 2);
         }
         if (dispImage) {
-            cv::imshow("Frame" , img);
+            cv::imshow("Detected Humans" , img);
             cv::waitKey(3000);
         }
     }
