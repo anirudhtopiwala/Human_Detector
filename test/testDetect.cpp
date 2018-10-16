@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 /*
- *  @file test.cpp
+ *  @file testDetect.cpp
  *  Copyright [2018]
  *  @author Ghost1995 [Ashwin Goyal]
  *  @author anirudhtopiwala [Anirudh Topiwala]
@@ -31,8 +31,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <Data.hpp>
-#include <Train.hpp>
 #include <Detect.hpp>
 
 // Unit test for second method of class Detect

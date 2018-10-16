@@ -165,7 +165,7 @@ int main() {
         // Test Classifier
         Detect detector;
         detector.hog_user.winSize = windowSize;
-        detector.hog_user.cellSize = cv::Size(8, 8);
+        detector.hog_user.cellSize = cv::Size(4, 4);
         detector.hog_user.setSVMDetector(trainClass.getClassifier());
         cv::Rect r = detector.testClassifier(static_cast<cv::String>(testDir),
                                              cv::Size(), true, "User");
@@ -219,7 +219,7 @@ int main() {
             // Test Classifier
             Detect detector;
             detector.hog_user.winSize = windowSize;
-            detector.hog_user.cellSize = cv::Size(8, 8);
+            detector.hog_user.cellSize = cv::Size(4, 4);
             detector.hog_user.setSVMDetector(trainClass.getClassifier());
             cv::Rect r = detector.testClassifier(testDir, cv::Size(),
                                                  true, "User");

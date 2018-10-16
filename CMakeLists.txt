@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2.1)
-project (scratch)
+project (Human_Detection)
 
 add_compile_options(-std=c++11)
 
@@ -23,10 +23,6 @@ else()
 endif()
 
 find_package(OpenCV REQUIRED)
-
-# INCLUDE_DIRECTORIES( ${OpenCV_INCLUDE_DIRS} )
-# add_executable( detect app/main.cpp )
-# target_link_libraries( detect ${OpenCV_LIBS} )
 
 include(CMakeToolsHelpers OPTIONAL)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

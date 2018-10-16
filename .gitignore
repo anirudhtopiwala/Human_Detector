@@ -6,9 +6,9 @@
 
 # Build artifacts
 build/
-Debug/
 data/INRIAPerson
-data/classifier
+docs/
+data/classifier/classifier
 
 # Python
 *.pyc

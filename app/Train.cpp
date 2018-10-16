@@ -38,18 +38,6 @@
 Train::Train() {
     // Initialize classifier
     classifier = cv::ml::SVM::create();
-    // Default values to train SVM
-    // classifier->setCoef0(0.0);
-    // classifier->setDegree(3);
-    // classifier->setTermCriteria(cv::TermCriteria(
-    // cv::TermCriteria::MAX_ITER + cv::TermCriteria::EPS, 1000, 1e-3));
-    // classifier->setGamma(0);
-    // classifier->setKernel(cv::ml::SVM::LINEAR);
-    // classifier->setNu(0.5);
-    // classifier->setP(0.1); // for EPSILON_SVR, epsilon in loss function?
-    // classifier->setC(0.01); // From paper, soft classifier
-    // C_SVC; // EPSILON_SVR; // may be also NU_SVR; // do regression task
-    // classifier->setType(cv::ml::SVM::EPS_SVR);
     std::cout << "Class Train has been Initialized" << std::endl;
 }
 
@@ -82,7 +70,7 @@ void Train::getHOGfeatures(const cv::Size windowSize,
                            const std::vector<cv::Mat> & imgList) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
-    hog.cellSize = cv::Size(8, 8);
+    hog.cellSize = cv::Size(4, 4);
     cv::Mat gray;
     std::vector<float> descriptors;
 

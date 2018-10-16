@@ -119,7 +119,6 @@ cv::Rect Detect::testClassifier(const cv::String testDir, const cv::Size size,
             continue;
         }
         // Resize the image
-        std::cout << size << std::endl;
         if (size != cv::Size())
             cv::resize(img, img, size);
         // Detect humans
