@@ -1,4 +1,27 @@
 /*
+ * MIT License
+ * 
+ * Copyright (c) 2018 Anirudh Topiwala
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+/*
  *  @file Train.cpp
  *  Copyright [2018]
  *  @author1 Ghost1995 [Ashwin Goyal] - stub
@@ -59,6 +82,7 @@ void Train::getHOGfeatures(const cv::Size windowSize,
                            const std::vector<cv::Mat> & imgList) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
+    hog.cellSize = cv::Size(8, 8);
     cv::Mat gray;
     std::vector<float> descriptors;
 
@@ -67,8 +91,12 @@ void Train::getHOGfeatures(const cv::Size windowSize,
             // convert image to grayscale
             cvtColor(data, gray, cv::COLOR_BGR2GRAY);
             // extract hog features
-            hog.compute(gray, descriptors, cv::Size(4, 4), cv::Size(0, 0));
+            hog.compute(gray, descriptors);
             // store hog features
+            gradientList.push_back(cv::Mat(descriptors).clone());
+            // Now flip the images
+            cv::flip(gray, gray, 1);
+            hog.compute(gray, descriptors);
             gradientList.push_back(cv::Mat(descriptors).clone());
         }
 }
