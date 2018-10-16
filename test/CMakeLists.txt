@@ -3,10 +3,12 @@ set(GTEST_SHUFFLE 1)
 add_executable(
     detectHuman-test
     main.cpp
-    test.cpp
-    ../app/Detect.cpp
+    testData.cpp
     ../app/Data.cpp
+    testTrain.cpp
     ../app/Train.cpp
+    testDetect.cpp
+    ../app/Detect.cpp
 )
 
 target_include_directories(detectHuman-test PUBLIC ../vendor/googletest/googletest/include 

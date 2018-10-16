@@ -168,7 +168,7 @@ int main() {
         detector.hog_user.cellSize = cv::Size(8, 8);
         detector.hog_user.setSVMDetector(trainClass.getClassifier());
         cv::Rect r = detector.testClassifier(static_cast<cv::String>(testDir),
-                                             windowSize, true, "User");
+                                             cv::Size(), true, "User");
         std::cout << "Program Finshed" << std::endl;
     } else if (trainDetector == "no" || trainDetector == "n") {
         // Define a window/image size
@@ -192,7 +192,7 @@ int main() {
 
             // Test Classifier
             Detect detector;
-            cv::Rect r = detector.testClassifier(testDir, windowSize,
+            cv::Rect r = detector.testClassifier(testDir, cv::Size(),
                                                  true, "Default");
             std::cout << "Finshed" << std::endl;
         } else if (defaultClassifier == "no" || defaultClassifier == "n") {
@@ -221,7 +221,7 @@ int main() {
             detector.hog_user.winSize = windowSize;
             detector.hog_user.cellSize = cv::Size(8, 8);
             detector.hog_user.setSVMDetector(trainClass.getClassifier());
-            cv::Rect r = detector.testClassifier(testDir, windowSize,
+            cv::Rect r = detector.testClassifier(testDir, cv::Size(),
                                                  true, "User");
             std::cout << "Finshed" << std::endl;
         } else {
