@@ -133,6 +133,19 @@ cd build
 cmake ..
 make
 ```
+## Building for code coverage
+```
+sudo apt-get install lcov
+git clone https://github.com/anirudhtopiwala/Human_Detector.git
+cd Human_Detector
+mkdir build
+cd build
+cmake -D COVERAGE=ON -D CMAKE_BUILD_TYPE=Debug ../
+make
+make code_coverage
+```
+This generates a index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
+
 ## Data Set up
 
 The user has three options here:
