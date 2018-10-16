@@ -28,15 +28,6 @@ install:
   - sudo apt-get install -y build-essential
   - sudo apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
   - sudo apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
-  
-#  - sudo apt-get install libxine2-dev libv4l-dev
-#  - sudo apt-get install libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
-#  - sudo apt-get install libqt4-dev libgtk2.0-dev libtbb-dev
-#  - sudo apt-get install libatlas-base-dev
-#  - sudo apt-get install libfaac-dev libmp3lame-dev libtheora-dev
-#  - sudo apt-get install libvorbis-dev libxvidcore-dev
-#  - sudo apt-get install libopencore-amrnb-dev libopencore-amrwb-dev
-#  - sudo apt-get install x264 v4l-utils
 
 # Download v2.4.8
   - curl -sL https://github.com/Itseez/opencv/archive/3.3.0.zip > opencv.zip
@@ -59,7 +50,7 @@ script:
   - cmake -DCOVERAGE=ON -DCMAKE_BUILD_TYPE=Debug ../
   - make
   - make code_coverage
-  - test/cpp-test
+  - test/detectHuman-test
 
 after_success:
   - coveralls --root .. -E ".*external.*" -E ".*CMakeFiles.*" -E ".*test/.*.cpp.*"
