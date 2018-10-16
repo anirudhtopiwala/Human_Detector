@@ -1,20 +1,36 @@
-\href{https://travis-ci.org/anirudhtopiwala/Human_Detector}{\tt } \subsection*{\href{https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master}{\tt } }
+\href{https://travis-ci.org/anirudhtopiwala/Human_Detector}{\tt } \href{https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master}{\tt } \subsection*{\href{https://opensource.org/licenses/MIT}{\tt } }
 
 \subsection*{Overview}
 
 Human detection is an old and important problem in the field of object detection.\+Current technologies easily detect static obstacles. But, detecting dynamic obstacles has always been tough.\+In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient.
 
-To this extent we propose an algorithm that can detect humans in frame by making rectangular bounding boxes around individual humans. The center position of the rectangle will be used as the pixel location in that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations (not considered in this project) to track the human with respect to the robot world frame. We would be using Histogram of Oriented Gradient (H\+OG) as the feature extractor. Support Vector Machine (S\+VM) will be used as a classifier which will be using the extracted H\+OG features as a classifying factor. The data set used for training images will be from Caltech \href{http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/}{\tt Pedestrian Dataset} or the \href{http://pascal.inrialpes.fr/data/human/}{\tt I\+N\+R\+IA Person Dataset}
+To this extent we propose an algorithm that can detect humans in a frame by making rectangular bounding boxes around individual humans. The center position of the rectangle will be used as the pixel location in that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations to track the human with respect to the robot\textquotesingle{}s world frame. We have used Histogram of Oriented Gradient (H\+OG) as the feature extractor. Support Vector Machine (S\+VM) is used to train using these feature vectors generated on the training data.\+The data set used for this project is taken from \href{http://pascal.inrialpes.fr/data/human/}{\tt I\+N\+R\+IA Person Dataset}. The algorithm is based on the paper by \href{https://ieeexplore.ieee.org/document/1467360}{\tt Dalal, N. Triggs, B.}. A brief introduction of the algorithm can be found \href{https://www.learnopencv.com/histogram-of-oriented-gradients/}{\tt here}.
 
-\subsection*{Initial Project Breakdown (Plan)}
+\subsection*{Algorithm and Outputs}
+
+The goal of this project is to detect humans using a S\+VM classifier trained on Hog descriptors. As the name suggests there are three major componenets or classes in the project. The {\bfseries Data class}, which is responsible for loading the training Data, the {\bfseries Train class} which computes the Hog descriptors and trains the classifier and the {\bfseries Detect class} which makes a bounding box around the detected human. Refer to the \href{https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Class.pdf}{\tt class} and the \href{https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/initial/UML_Activity.pdf}{\tt activity} diagrams to understand the flow of the algorithm.
+
+The algorithm starts with reading the positive(pos) images from the I\+N\+R\+IA database to form the training data. Now as the H\+OG discriptors requires a cropped input of the human to form a good descriptor, the training images were cropped using the bounding boxes obtained from the annotations file. To have a balanced descriptor the negatives (neg) were formed by random cropping on the images obtained from the neg folder of the I\+N\+R\+IA dataset. All the images along with the test images were finally resized to have the same size, as this is very essential to the proper working of the classifier.
+
+The Hog features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8) the number of discriptors were not enough to respresent all the information of the image. This can be clearly observed in the comparison seen below.
 
  
+
+The Hog features for a cell size of (4,4) for some of the test images is shown below.
+
+ 
+
+Once the discriptor for pos and neg images is concatenated it is passed to the S\+VM classifier. After the classifier is trained the detect\+Multi\+Scale function of opencv is used to make the detection. The bounding box obtained is then adjusted to give the final prediction of the human. Some of the detections on the test images can be seen below.
+
+ 
+
+As we can see the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be acieved by using \href{https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/}{\tt Non maximum suppression.}. Some other optimization techniques are discussed \href{https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector}{\tt here}.
 
 \subsection*{License}
 
 M\+IT License
 
-Copyright (c) 2017 Anirudh Topiwala
+Copyright (c) 2018 Anirudh Topiwala
 
 
 \begin{DoxyCode}
@@ -38,29 +54,11 @@ Copyright (c) 2017 Anirudh Topiwala
 \end{DoxyCode}
 
 
-\#\# Standard install via command-\/line 
-\begin{DoxyCode}
-1 git clone https://github.com/anirudhtopiwala/Human\_Detector.git
-2 cd <path to repository>
-3 mkdir build
-4 cd build
-5 cmake ..
-6 make
-7 Run tests: ./test/cpp-test
-8 Run program: ./app/detect
-\end{DoxyCode}
+\subsection*{T\+DD Process (check)}
 
+Test Driven Development is used to develop the module. The process is detailed in the following \href{https://docs.google.com/spreadsheets/d/1EZE9dxY_vlz4glKEceYtc5kQ3OyYQjs5Zh9BSKF8AoA/edit?usp=sharing}{\tt link}
 
-\#\# Building for code coverage 
-\begin{DoxyCode}
-1 sudo apt-get install lcov
-2 cmake -D COVERAGE=ON -D CMAKE\_BUILD\_TYPE=Debug ../
-3 make
-4 make code\_coverage
-\end{DoxyCode}
- This generates a index.\+html page in the build/coverage sub-\/directory that can be viewed locally in a web browser.
-
-\section*{Dependencies}
+\subsection*{Dependencies}
 
 Install Open\+CV 3.\+3.\+0 using the following commands
 
@@ -111,6 +109,78 @@ Install Dependencies
 25 sudo sh -c 'echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf'
 26 sudo ldconfig
 \end{DoxyCode}
- \section*{T\+DD Process}
 
-Test Driven Development is used to develop the module. The process is detailed in the following \href{https://docs.google.com/spreadsheets/d/1EZE9dxY_vlz4glKEceYtc5kQ3OyYQjs5Zh9BSKF8AoA/edit?usp=sharing}{\tt link} 
+
+\#\# Build Instructions 
+\begin{DoxyCode}
+1 git clone https://github.com/anirudhtopiwala/Human\_Detector.git
+2 cd Human\_Detector
+3 mkdir build
+4 cd build
+5 cmake ..
+6 make
+\end{DoxyCode}
+ \subsection*{Data Set up}
+
+The user has three options here\+: 1) Download our classifier from \mbox{[}here\mbox{]}() and save it in \href{https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/}{\tt ./data/classifier/}. 2) Use a deafut Pre Trained classifier of Open\+Cv to run the program. 3) Train your own classifier to run the program.
+
+For options 1 and 2 the user can either use his own data and give the file path for the test images in app/main.\+cpp or download the I\+N\+R\+IA Dataset by running the code below. The dataset has both training and testing images and is of 1.\+9 GB. There are a couple of sample images present in \href{https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/pos}{\tt ./data/test/pos/} which can also be used to test the classifier. In this case no additional image data needs to be downloaded. 
+\begin{DoxyCode}
+1 cd .. 
+2 cd data
+3 wget ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar
+4 cd ..
+\end{DoxyCode}
+ Downlading the I\+N\+R\+IA dataset is necessary for option 3 as it will taking the training images from here. A different dataset can also be used here if needed but the feature extraction paramters and the classifier parmaters needs to be fine tuned accordingly.
+
+\subsection*{Running the Demo}
+
+Go to the build directory and run the following command from the build directory\+:
+
+
+\begin{DoxyCode}
+1 cd <build folder of the module>
+2 ./app/detectHumans 
+\end{DoxyCode}
+
+
+\subsection*{Running Unit Tests}
+
+Go to the build directory and run the following command from the build directory\+: 
+\begin{DoxyCode}
+1 cd <build folder of the module>
+2 ./test/detectHuman-test 
+\end{DoxyCode}
+ \subsection*{How to generate doxygen documnetation}
+
+To install doxygen run the following command\+: 
+\begin{DoxyCode}
+1 sudo apt-get install doxygen
+\end{DoxyCode}
+ Now from the cloned directory run\+: 
+\begin{DoxyCode}
+1 doxygen Doxygen
+\end{DoxyCode}
+ Doxygen files will be generated to /docs folder
+
+To view them in a browser\+: 
+\begin{DoxyCode}
+1 cd docs
+2 cd html
+3 google-chrome index.html
+\end{DoxyCode}
+ \subsection*{Plugins}
+
+Cpp\+Ch\+Eclipse To install and run cppcheck in Terminal 
+\begin{DoxyCode}
+1 cd <path to repository>
+2 cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name \(\backslash\)*.hpp -or
+       -name \(\backslash\)*.cpp | grep -vE -e "^./build/" -e "^./vendor/"  -e "^./docs/"  -e "^./results/" )
+\end{DoxyCode}
+ Google C++ Sytle To include and use Google C++ Style formatter in Terminal 
+\begin{DoxyCode}
+1 cd <path to repository>
+2 cpplint $( find . -name \(\backslash\)*.hpp -or -name \(\backslash\)*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e
+       "^./results" )
+\end{DoxyCode}
+ 
