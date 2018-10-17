@@ -71,7 +71,7 @@ std::vector<cv::Rect> Detect::findHumans(const cv::InputArray img) {
         hog.detectMultiScale(img, found);
     } else if (m == User) {
         std::cout << "Using User Trained Classifier" << std::endl;
-        hog_user.detectMultiScale(img, found,0,cv::Size(8,8),cv::Size(32,32),1.05,2);
+        hog_user.detectMultiScale(img, found);
     }
     return found;
 }
