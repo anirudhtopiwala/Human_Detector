@@ -140,7 +140,7 @@ This generates a index.html page in the build/coverage sub-directory that can be
 ## Data Set up
 
 The user has three options here: 
-1) Download our classifier from [here](https://drive.google.com/open?id=1O-uQ92591j2iyKO5jmt-Bc4SYLmPd6SE) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The classifer is of 1 GB.
+1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The classifer is of 1 GB.
 2) Use a default Pre Trained classifier of OpenCV to run the program.
 3) Train your own classifier to run the program.
 
