@@ -5,6 +5,7 @@
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
+The loss in coverage of 7 percent is beacuse of uncovered statements by the unit test. Example of these are code blocks which are put in place to check the correct input of directory path or to check the correct dimensions of different variables. And as unit tests are given the right image inputs, these code blocks dont get covered.
 ## Overview
 
 Human detection is an old and important problem in the field of object detection. Current technologies
@@ -138,12 +139,12 @@ This generates a index.html page in the build/coverage sub-directory that can be
 
 ## Data Set up
 
-The user has three options here:
-1) Download our classifier from [here]() and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/).
+The user has three options here: 
+1) Download our classifier from [here](https://drive.google.com/open?id=1O-uQ92591j2iyKO5jmt-Bc4SYLmPd6SE) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The classifer is of 1 GB.
 2) Use a default Pre Trained classifier of OpenCV to run the program.
 3) Train your own classifier to run the program.
 
-For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of 1.9 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
+For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
 ```
 cd .. 
 cd data
@@ -151,6 +152,9 @@ wget ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar
 cd ..
 ```
 Downlading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction paramters and the classifier parmaters needs to be fine tuned accordingly.
+
+Once the dataset it downloaded, extract it in the same folder.
+
 
 ## Running the Program
 
