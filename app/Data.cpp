@@ -4,22 +4,22 @@
  * Copyright (c) 2018 Anirudh Topiwala
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
  */
 /*
  *  @file Data.cpp
@@ -33,19 +33,15 @@
 #include <Data.hpp>
 
 /*
- * @brief This is the constructor for the class
+ * This is the constructor for the class
  */
 Data::Data() {
     std::cout << "Class Data has been Initialized" << std::endl;
 }
 
 /*
- * @brief This is the first method of the class. It loads the images, that is, training set - positive.
- *
- * @param The first parameter defines the path to the directory where all annotations are defined.
- * @param The second parameter defines the path to the directory where all positive images are stored.
- * @param The third parameter defines the size of the window to be used for resizing the images.
- * @param The fourth parameter commands the method to either show or not show the loaded images.
+ * This is the first method of the class. It loads the images, that is,
+ * training set - positive.
  */
 void Data::loadPosImages(const cv::String anotPath, const cv::String  posDir,
                          const cv::Size size, const bool dispImg = false) {
@@ -127,10 +123,8 @@ void Data::loadPosImages(const cv::String anotPath, const cv::String  posDir,
 }
 
 /*
- * @brief This is the second method of the class. It loads the images, that is, training set - negative.
- *
- * @param The first parameter defines the directory from where the images are to be loaded.
- * @param The second parameter defines the size of the window to be used for sampling the images.
+ * This is the second method of the class. It loads the images, that is,
+ * training set - negative.
  */
 void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
     // Stores individual file names in the directory
@@ -171,7 +165,37 @@ void Data::loadNegImages(const cv::String dirName, const cv::Size size) {
 }
 
 /*
- * @brief This is the destructor for the class
+ * This is the third method of the class. It gives the size of the image list.
+ */
+int Data::getImgListSize(const cv::String str) {
+    if (str == "positive") {
+        return posImgList.size();
+    } else if (str == "negative") {
+        return negImgList.size();
+    } else {
+        std::cout << "Unexpected input to the function" << std::endl;
+        return 0;
+    }
+}
+
+/*
+ * This is the fourth method of the class. It gives the image list as an
+ * output.
+ */
+std::vector<cv::Mat> Data::getImgList(const cv::String str) {
+    if (str == "positive") {
+        return posImgList;
+    } else if (str == "negative") {
+        return negImgList;
+    } else {
+        std::cout << "Unexpected input to the function" << std::endl;
+        std::vector<cv::Mat> noImgList;
+        return noImgList;
+    }
+}
+
+/*
+ * This is the destructor for the class
  */
 Data::~Data() {
     std::cout << "Class Data has been Destroyed" << std::endl;
