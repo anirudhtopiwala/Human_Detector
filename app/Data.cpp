@@ -100,6 +100,7 @@ void Data::loadPosImages(const cv::String anotPath, const cv::String  posDir,
                 // Check if the image is empty
                 if (img.empty()) {
                     std::cout << *k << " is invalid!" << std::endl;
+                    i++;  // Next line
                     continue;
                 }
                 // Extract the human as per the annotations
