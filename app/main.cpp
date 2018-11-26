@@ -30,7 +30,7 @@
  *  @brief This is the main file which runs the detection algorithm
  */
 
-#include <Detect.hpp>
+#include "Detect.hpp"
 
 /*
  * @brief This is a function to compare the strings (case-insensitive).

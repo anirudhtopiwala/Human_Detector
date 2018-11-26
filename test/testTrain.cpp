@@ -31,7 +31,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <Train.hpp>
+#include "Train.hpp"
 
 // Unit test for first method of class Train
 TEST(TrainTest, getClassifierTest) {

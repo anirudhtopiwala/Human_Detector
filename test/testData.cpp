@@ -31,7 +31,7 @@
  */
 
 #include <gtest/gtest.h>
-#include <Data.hpp>
+#include "Data.hpp"
 
 // Unit test for first method of class Data
 TEST(DataTest, loadPosImagesTest) {

@@ -30,7 +30,7 @@
  * @brief This is the implementation of the Detect class.
  */
 
-#include <Detect.hpp>
+#include "Detect.hpp"
 
 /*
  * This is the constructor for the class

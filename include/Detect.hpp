@@ -97,6 +97,8 @@ class Detect : public Train {
      *        show the images.
      * @param The fourth parameter defines the mode to be used for testing the
      *        classifier.
+     *
+     * @result This function returns the rectangle when testing.
      */
     cv::Rect testClassifier(const cv::String, const cv::Size,
                             const bool, const std::string &);
