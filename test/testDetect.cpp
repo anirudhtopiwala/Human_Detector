@@ -88,7 +88,6 @@ class Mock : public Detect {
  public:
   MOCK_METHOD0(toggleMode, void());
   MOCK_METHOD0(modeName, const std::string());
-  MOCK_METHOD1(adjustBoundingBox, void(cv::Rect & r));
 };
 
 // Unit test for fifth method of class Detect
@@ -104,8 +103,6 @@ TEST(DetectTest, testClassifierTest) {
   EXPECT_CALL(mockTest, toggleMode())
       .Times(0);
   EXPECT_CALL(mockTest, modeName())
-      .Times(0);
-  EXPECT_CALL(mockTest, adjustBoundingBox(found.front()))
       .Times(0);
 
   cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
