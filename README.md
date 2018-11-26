@@ -1,21 +1,19 @@
 # Human Detector
 
-[![Build Status](https://travis-ci.org/anirudhtopiwala/Human_Detector.svg?branch=master)](https://travis-ci.org/anirudhtopiwala/Human_Detector)
-[![Coverage Status](https://coveralls.io/repos/github/anirudhtopiwala/Human_Detector/badge.svg?branch=master)](https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=master)
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/anirudhtopiwala/Human_Detector.svg?branch=GMock_Extra_Credit_Ashwin)](https://travis-ci.org/anirudhtopiwala/Human_Detector)
+[![Coverage Status](https://coveralls.io/repos/github/anirudhtopiwala/Human_Detector/badge.svg?branch=GMock_Extra_Credit_Ashwin)](https://coveralls.io/github/anirudhtopiwala/Human_Detector?branch=GMock_Extra_Credit_Ashwin)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
-The loss in coverage of 7 percent is beacuse of uncovered statements by the unit test. Example of these are code blocks which are put in place to check the correct input of directory path or to check the correct dimensions of different variables. And as unit tests are given the right image inputs, these code blocks dont get covered.
+The loss in coverage of 3 percent is beacuse of uncovered statements by the unit test. Example of these are code blocks which display image. These have not been checked as travis will fail if an image is displayed.
+
 ## Overview
 
-Human detection is an old and important problem in the field of object detection. Current technologies
-easily detect static obstacles. But, detecting dynamic obstacles has always been tough. In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient. 
+Human detection is an old and important problem in the field of object detection. Current technologies easily detect static obstacles. But, detecting dynamic obstacles has always been tough. In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient. 
 
-To this extent we propose an algorithm that can detect humans in a frame by making rectangular bounding
-boxes around individual humans. The center position of the rectangle will be used as the pixel location in
-that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations to track the human with respect to the robot's world frame.  We have used Histogram of Oriented Gradient (HOG) as the feature extractor. Support Vector Machine (SVM) is used to train using these feature vectors generated on the training data.The data set used for this project is taken from [INRIA Person Dataset](http://pascal.inrialpes.fr/data/human/). The algorithm is based on the paper by [Dalal, N., Triggs, B.](https://ieeexplore.ieee.org/document/1467360). A brief introduction of the algorithm can be found [here](https://www.learnopencv.com/histogram-of-oriented-gradients/). 
+To this extent we propose an algorithm that can detect humans in a frame by making rectangular bounding boxes around individual humans. The center position of the rectangle will be used as the pixel location in that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations to track the human with respect to the robot's world frame.  We have used Histogram of Oriented Gradient (HOG) as the feature extractor. Support Vector Machine (SVM) is used to train using these feature vectors generated on the training data.The data set used for this project is taken from [INRIA Person Dataset](http://pascal.inrialpes.fr/data/human/). The algorithm is based on the paper by [Dalal, N., Triggs, B.](https://ieeexplore.ieee.org/document/1467360). A brief introduction of the algorithm can be found [here](https://www.learnopencv.com/histogram-of-oriented-gradients/).
 
-We have used openCV as a thrid party library, which is covered under the 3-clause BSD License.
+We have used openCV as a third party library, which is covered under the 3-clause BSD License.
 
 ## Algorithm and Outputs
 
@@ -116,7 +114,7 @@ sudo ldconfig
 
 ## Build Instructions
 ```
-git clone https://github.com/anirudhtopiwala/Human_Detector.git
+git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/anirudhtopiwala/Human_Detector.git
 cd Human_Detector
 mkdir build
 cd build
@@ -127,7 +125,7 @@ make
 ## Build Instructions for Code Coverage
 ```
 sudo apt-get install lcov
-git clone https://github.com/anirudhtopiwala/Human_Detector.git
+git clone -b GMock_Extra_Credit_Ashwin --single-branch https://github.com/anirudhtopiwala/Human_Detector.git
 cd Human_Detector
 mkdir build
 cd build
@@ -135,26 +133,24 @@ cmake -D COVERAGE=ON -D CMAKE_BUILD_TYPE=Debug ../
 make
 make code_coverage
 ```
-This generates a index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
+This generates an index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
 
 ## Data Set up
 
 The user has three options here: 
-1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The classifer is of 1 GB.
+1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The size of the classifer is approximately 1 GB.
 2) Use a default Pre Trained classifier of OpenCV to run the program.
 3) Train your own classifier to run the program.
 
-For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
+For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of approximately 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
 ```
 cd .. 
 cd data
 wget ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar
+tar -xvf INRIAPerson.tar
 cd ..
 ```
-Downlading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction paramters and the classifier parmaters needs to be fine tuned accordingly.
-
-Once the dataset it downloaded, extract it in the same folder.
-
+Downlading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction parameters and the classifier parameters need to be fine tuned accordingly.
 
 ## Running the Program
 
@@ -187,22 +183,21 @@ Doxygen files will be generated to ./docs folder.
 
 To view them in a browser:
 ```
-cd docs
-cd html
+cd docs/html
 google-chrome index.html
 ```
 
 ## Plugins
 
 - CppChEclipse
-To install and run cppcheck in Terminal
+To run cppcheck in Terminal
 ```
 cd <path to repository>
-cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/"  -e "^./docs/"  -e "^./results/" )
+cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $(find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./additional_files/" -e "^./build/" -e "^./cmake/" -e "^./data/" -e "^./docs/" -e "^./results/" -e "^./UML/" -e "^./vendor/")
 ```
 - Google C++ Sytle
 To include and use Google C++ Style formatter in Terminal
 ```
 cd <path to repository>
-cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
+cpplint $(find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./additional_files/" -e "^./build/" -e "^./cmake/" -e "^./data/" -e "^./docs/" -e "^./results/" -e "^./UML/" -e "^./vendor/")
 ```
