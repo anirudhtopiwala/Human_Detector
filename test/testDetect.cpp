@@ -4,22 +4,22 @@
  * Copyright (c) 2018 Anirudh Topiwala
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
  */
 /*
  *  @file testDetect.cpp
@@ -33,23 +33,23 @@
 #include <gtest/gtest.h>
 #include <Detect.hpp>
 
-// Unit test for second method of class Detect
-TEST(DetectTest, DetectModeNameTest) {
-  Detect test;
-  // Check if the mode is initialized to Default
-  ASSERT_EQ("Default", test.modeName());
-}
-
 // Unit test for first method of class Detect
-TEST(DetectTest, DetectToggleTest) {
+TEST(DetectTest, toggleModeTest) {
   Detect test;
   test.toggleMode();
   // Check if the mode changed to User
   ASSERT_EQ("User", test.modeName());
 }
 
+// Unit test for second method of class Detect
+TEST(DetectTest, modeNameTest) {
+  Detect test;
+  // Check if the mode is initialized to Default
+  ASSERT_EQ("Default", test.modeName());
+}
+
 // Unit test for third method of class Detect
-TEST(DetectTest, DetectHumansTest) {
+TEST(DetectTest, findHumansTest) {
   Detect test;
   cv::Rect orgBox(124, 26, 221, 442);  // [221 x 442 from (124, 26)]
   std::string imageName("../data/test/imgs/pedestrian_5.jpg");
@@ -68,7 +68,7 @@ TEST(DetectTest, DetectHumansTest) {
 }
 
 // Unit test for fourth method of class Detect
-TEST(DetectTest, DetectAdjustBoxTest) {
+TEST(DetectTest, adjustBoundingBoxTest) {
   Detect test;
   std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
@@ -83,7 +83,7 @@ TEST(DetectTest, DetectAdjustBoxTest) {
 }
 
 // Unit test for fifth method of class Detect
-TEST(DetectTest, DetectTestClassifierTest) {
+TEST(DetectTest, testClassifierTest) {
   Detect test;
   std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
