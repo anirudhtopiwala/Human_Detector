@@ -31,7 +31,8 @@
  */
 
 #include <gtest/gtest.h>
-#include <Detect.hpp>
+#include <gmock/gmock.h>
+#include "Detect.hpp"
 
 // Unit test for first method of class Detect
 TEST(DetectTest, toggleModeTest) {
@@ -82,6 +83,14 @@ TEST(DetectTest, adjustBoundingBoxTest) {
                               static_cast<double>(orgBox.area()) <= 0.65));
 }
 
+// Declare a mock class
+class Mock : public Detect {
+ public:
+  MOCK_METHOD0(toggleMode, void());
+  MOCK_METHOD0(modeName, const std::string());
+  MOCK_METHOD1(adjustBoundingBox, void(cv::Rect & r));
+};
+
 // Unit test for fifth method of class Detect
 TEST(DetectTest, testClassifierTest) {
   Detect test;
@@ -90,6 +99,15 @@ TEST(DetectTest, testClassifierTest) {
   cv::resize(img, img, cv::Size(200, 200));
   std::vector<cv::Rect> found = test.findHumans(img);
   cv::Rect &orgBox = found.front();
+
+  Mock mockTest;
+  EXPECT_CALL(mockTest, toggleMode())
+      .Times(0);
+  EXPECT_CALL(mockTest, modeName())
+      .Times(0);
+  EXPECT_CALL(mockTest, adjustBoundingBox(found.front()))
+      .Times(0);
+
   cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
                                                             false, "User");
   // Check if the bounding box computed by the two methods are close
