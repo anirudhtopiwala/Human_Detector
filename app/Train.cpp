@@ -4,22 +4,22 @@
  * Copyright (c) 2018 Anirudh Topiwala
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
  */
 /*
  *  @file Train.cpp
@@ -33,7 +33,7 @@
 #include <Train.hpp>
 
 /*
- * @brief This is the constructor for the class
+ * This is the constructor for the class
  */
 Train::Train() {
     // Initialize classifier
@@ -53,9 +53,8 @@ Train::Train() {
 }
 
 /*
- * @brief This is the first method of the class. It outputs the support vectors of the classifier.
- *
- * @result The output is a float vector containing the support vectors of the classifier.
+ * This is the first method of the class. It outputs the support vectors of the
+ * classifier.
  */
 std::vector<float> Train::getClassifier() {
     // get the support vectors
@@ -72,19 +71,18 @@ std::vector<float> Train::getClassifier() {
 }
 
 /*
- * @brief This is the second method of the class. It extracts HOG features from the given images.
- *
- * @param The first parameter is the window size to be used for HOG feature extraction.
- * @param The second parameter is a vector containing the images whose feature are to be extracted.
+ * This is the second method of the class. It extracts HOG features from the
+ * given images.
  */
 void Train::getHOGfeatures(const cv::Size windowSize,
-                           const std::vector<cv::Mat> & imgList) {
+                           const cv::String imgType) {
     cv::HOGDescriptor hog;
     hog.winSize = windowSize;
     hog.cellSize = cv::Size(4, 4);
     cv::Mat gray;
     std::vector<float> descriptors;
 
+    std::vector<cv::Mat> imgList = getImgList(imgType);
     for (auto data : imgList)
         if (data.cols >= windowSize.width && data.rows >= windowSize.height) {
             // convert image to grayscale
@@ -101,10 +99,7 @@ void Train::getHOGfeatures(const cv::Size windowSize,
 }
 
 /*
- * @brief This is the third method of the class. It trains the SVM classifier.
- *
- * @param The first parameter is a boolean which commands the method to either save or not save the classifier.
- * @param The second parameter is the name of the classifier if it is to be saved.
+ * This is the third method of the class. It trains the SVM classifier.
  */
 void Train::trainSVM(const bool saveClassifier = false,
                      const cv::String classifierName = "") {
@@ -132,7 +127,30 @@ void Train::trainSVM(const bool saveClassifier = false,
 }
 
 /*
- * @brief This is the destructor for the class
+ * This is the fourth method of the class. It gives the size of the gradient
+ * list.
+ */
+int Train::getListSize() {
+    return gradientList.size();
+}
+
+/*
+ * This is the fifth method of the class. It sets the classifier for the class.
+ */
+void Train::setClassifier(const cv::Ptr<cv::ml::SVM> userClassifier) {
+    classifier = userClassifier;
+}
+
+/*
+ * This is the sixth method of the class. It returns the classifier for the
+ * class.
+ */
+cv::Ptr<cv::ml::SVM> Train::getDefaultClassifier() {
+    return classifier;
+}
+
+/*
+ * This is the destructor for the class
  */
 Train::~Train() {
     std::cout << "Class Train has been Destroyed" << std::endl;
