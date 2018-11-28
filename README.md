@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
-The loss in coverage of 3 percent is beacuse of uncovered statements by the unit test. Example of these are code blocks which display image. These have not been checked as travis will fail if an image is displayed.
+The loss in coverage of 3 percent is because of uncovered statements by the unit test. Example of these are code blocks which display image. These have not been checked as travis will fail if an image is displayed.
 
 ## Overview
 
@@ -17,12 +17,12 @@ We have used openCV as a third party library, which is covered under the 3-claus
 
 ## Algorithm and Outputs
 
-The goal of this project is to detect humans using a SVM classifier trained on HOG descriptors. As the name suggests there are three major componenets or classes in the project. The **Data class**, which is responsible for loading the training Data, the **Train class** which computes the HOG descriptors and trains the classifier and the **Detect class** which makes a bounding box around the detected human.
+The goal of this project is to detect humans using a SVM classifier trained on HOG descriptors. As the name suggests there are three major components or classes in the project. The **Data class**, which is responsible for loading the training Data, the **Train class** which computes the HOG descriptors and trains the classifier and the **Detect class** which makes a bounding box around the detected human.
 Refer to the [class](https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Class.pdf) and the  [activity]( https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Activity.pdf) diagrams to understand the flow of the algorithm.
 
 The algorithm starts with reading the positive (pos) images from the INRIA database to form the training data. Now, as the HOG descriptors requires a cropped input of the human to form a good descriptor, the training images were cropped using the bounding boxes obtained from the annotations file. To have a balanced descriptor, the negatives (neg) were formed by random cropping on the images obtained from the neg folder of the INRIA dataset. All the images were finally resized to have the same size, as this is very essential to the proper working of the classifier. 
 
-The HOG features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8), the number of descriptors were not enough to respresent all the information in the image. This can be clearly observed in the comparison shown below. 
+The HOG features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8), the number of descriptors were not enough to represent all the information in the image. This can be clearly observed in the comparison shown below. 
 
 <p align="center">
 <img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/Hog_cell_size_comaprison.png">
@@ -40,7 +40,7 @@ Once the descriptor for pos and neg images is concatenated, it is passed to the 
 <img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/detections.gif">
 </p>
 
-As we can see, the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be acieved by using [Non-maximum Suppression.](https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/). Some other optimization techniques are discussed [here](https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector). 
+As we can see, the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be achieved by using [Non-maximum Suppression.](https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/). Some other optimization techniques are discussed [here](https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector). 
 
 ## License
 
@@ -138,8 +138,8 @@ This generates an index.html page in the build/coverage sub-directory that can b
 ## Data Set up
 
 The user has three options here: 
-1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The size of the classifer is approximately 1 GB.
-2) Use a default Pre Trained classifier of OpenCV to run the program.
+1) Download our classifier from [here](https://drive.google.com/drive/folders/1_ohdD842Nh5XqXgyvDHJ5lnyOXj5CTd1?usp=sharing) and save it in [./data/classifier/](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/classifier/). The size of the classifier is approximately 1 GB.
+2) Use a default PreTrained classifier of OpenCV to run the program.
 3) Train your own classifier to run the program.
 
 For options 1 and 2 the user can either use his own data and give the file path for the test images when prompted while running the program or download the INRIA Dataset by running the code below. The dataset has both training and testing images and is of approximately 1.2 GB. There are a couple of sample images present in [./data/test/imgs](https://github.com/anirudhtopiwala/Human_Detector/tree/master/data/test/imgs) which can be used to test the classifier. In this case no additional image data needs to be downloaded.
@@ -150,7 +150,7 @@ wget ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar
 tar -xvf INRIAPerson.tar
 cd ..
 ```
-Downlading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction parameters and the classifier parameters need to be fine tuned accordingly.
+Downloading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction parameters and the classifier parameters need to be fine tuned accordingly.
 
 ## Running the Program
 
@@ -173,13 +173,13 @@ cd <build folder of the module>
 
 Google Mock Test is used to test interdependent classes and methods. This way if the base class or method is changed then the tests for the derived class need not be rewritten.
 
-For this project, google mock test has been created for interdependent methods. In class Detect, method testClassifier calls all the other four methods of the class. We are only testing the modeName() and toggleMode() methods.
+For this project, Google mock test has been created for interdependent methods. In class Detect, method testClassifier calls all the other four methods of the class. We are only testing the modeName() and toggleMode() methods.
 
-Using google mock macro "EXPECT_CALL", it has been checked that the modeName() method is only called once and it returns a default value. It has also been checked that the toggleMode() method is only called once and it is called after the call to modeName() method.
+Using Google mock macro "EXPECT_CALL", it has been checked that the modeName() method is only called once and it returns a default value. It has also been checked that the toggleMode() method is only called once and it is called after the call to modeName() method.
 
-Note that, for the google mock testing, the classes have now been made dependent on each other with a is-a relationship.
+Note that, for the Google mock testing, the classes have now been made dependent on each other with a is-a relationship.
 
-## How to Generate Doxygen Documnetation
+## How to Generate Doxygen Documentation
 
 To install doxygen run the following command:
 ```
@@ -197,7 +197,7 @@ cd docs/html
 google-chrome index.html
 ```
 
-## Plugins
+## Plug-ins
 
 - CppChEclipse
 To run cppcheck in Terminal
