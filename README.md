@@ -169,6 +169,16 @@ cd <build folder of the module>
 ./test/detectHuman-test 
 ```
 
+## Google Mock Test
+
+Google Mock Test is used to test interdependent classes and methods. This way if the base class or method is changed then the tests for the derived class need not be rewritten.
+
+For this project, google mock test has been created for interdependent methods. In class Detect, method testClassifier calls all the other four methods of the class. We are only testing the modeName() and toggleMode() methods.
+
+Using google mock macro "EXPECT_CALL", it has been checked that the modeName() method is only called once and it returns a default value. It has also been checked that the toggleMode() method is only called once and it is called after the call to modeName() method.
+
+Note that, for the google mock testing, the classes have now been made dependent on each other with a is-a relationship.
+
 ## How to Generate Doxygen Documnetation
 
 To install doxygen run the following command:
