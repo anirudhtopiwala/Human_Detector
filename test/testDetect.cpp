@@ -83,28 +83,27 @@ TEST(DetectTest, adjustBoundingBoxTest) {
                               static_cast<double>(orgBox.area()) <= 0.65));
 }
 
-// Declare a mock class
+// Declare a mock class for gmock testing of fifth method of class Detect
 class Mock : public Detect {
  public:
   MOCK_METHOD0(toggleMode, void());
-  MOCK_METHOD0(modeName, const std::string());
+  MOCK_CONST_METHOD0(modeName, std::string());
 };
 
 // Unit test for fifth method of class Detect
 TEST(DetectTest, testClassifierTest) {
-  Detect test;
+  // Define mock object
+  Mock test;
+  // Define mock tests
+  ::testing::Expectation initMode = EXPECT_CALL(test, modeName()).Times(1)
+                                      .WillOnce(::testing::Return("Default"));
+  EXPECT_CALL(test, toggleMode()).Times(1).After(initMode);
+  // Start the testing
   std::string imageName("../data/test/imgs/pedestrian_5.jpg");
   cv::Mat img = cv::imread(imageName);
   cv::resize(img, img, cv::Size(200, 200));
   std::vector<cv::Rect> found = test.findHumans(img);
   cv::Rect &orgBox = found.front();
-
-  Mock mockTest;
-  EXPECT_CALL(mockTest, toggleMode())
-      .Times(0);
-  EXPECT_CALL(mockTest, modeName())
-      .Times(0);
-
   cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
                                                             false, "User");
   // Check if the bounding box computed by the two methods are close
