@@ -12,6 +12,7 @@ add_executable(
 )
 
 target_include_directories(detectHuman-test PUBLIC ../vendor/googletest/googletest/include 
-                                           ${CMAKE_SOURCE_DIR}/include ${OpenCV_INCLUDE_DIRS})
-target_link_libraries(detectHuman-test PUBLIC gtest ${OpenCV_LIBS})
+	../vendor/googletest/googlemock/include ${CMAKE_SOURCE_DIR}/include ${OpenCV_INCLUDE_DIRS})		
+
+target_link_libraries(detectHuman-test PUBLIC gtest  gmock ${OpenCV_LIBS})
 
