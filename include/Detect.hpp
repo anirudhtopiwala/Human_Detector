@@ -56,7 +56,7 @@ class Detect : public Train {
      * @brief This is the first method of the class. It toggles between the
      *        Default mode and User mode.
      */
-    void toggleMode();
+    virtual void toggleMode();
 
     /*
      * @brief This is the second method of the class. It returns the name of
@@ -64,7 +64,7 @@ class Detect : public Train {
      *
      * @return This method returns the mode name as a string.
      */
-    std::string modeName() const;
+    virtual std::string modeName() const;
 
     /*
      * @brief This is the third method of the class. It returns the bounding
@@ -75,7 +75,7 @@ class Detect : public Train {
      * @return This method returns a vector containing the object Rect which
      *         defines the bounding box around the detected humans.
      */
-    std::vector<cv::Rect> findHumans(const cv::InputArray);
+    virtual std::vector<cv::Rect> findHumans(const cv::InputArray);
 
     /*
      * @brief This is the fourth method of the class. It adjusts the bounding
@@ -83,7 +83,7 @@ class Detect : public Train {
      *
      * @param This method takes the bounding box detected as input.
      */
-    void adjustBoundingBox(cv::Rect &);
+    virtual void adjustBoundingBox(cv::Rect &);
 
     /*
      * @brief This is the fifth method of the class. It is used to test the
@@ -100,13 +100,13 @@ class Detect : public Train {
      *
      * @result This function returns the rectangle when testing.
      */
-    cv::Rect testClassifier(const cv::String, const cv::Size,
+    virtual cv::Rect testClassifier(const cv::String, const cv::Size,
                             const bool, const std::string &);
 
     /*
      * @brief This is the destructor for the class
      */
-    ~Detect();
+    virtual ~Detect();
 };
 
 #endif  // INCLUDE_DETECT_HPP_
