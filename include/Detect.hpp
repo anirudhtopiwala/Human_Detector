@@ -53,14 +53,14 @@ class Detect {
     /*
      * @brief This is the first method of the class. It toggles between the Default mode and User mode.
      */
-    void toggleMode();
+    virtual void toggleMode();
 
     /*
      * @brief This is the second method of the class. It returns the name of the current mode.
      *
      * @return This method returns the mode name as a string.
      */
-    std::string modeName() const;
+    virtual std::string modeName() const;
 
     /*
      * @brief This is the third method of the class. It returns the bounding boxes around the humans found in the image.
