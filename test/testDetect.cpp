@@ -33,8 +33,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <Detect.hpp>
-
-// Defining Mock class to check the toggleMode and modeName methods of my class Detect
+// Defining Mock class to check the toggleMode and modeName methods of my class
+// Detect
 class MockTest : public Detect {
  public:
   MOCK_METHOD0(toggleMode, void());
@@ -62,8 +62,8 @@ TEST(DetectTest, DetectToggleTest) {
                                       .WillOnce(::testing::Return("User"))
                                       .WillOnce(::testing::Return("Default"));
 
-cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
-                                                            false, "User");                                      
+  cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
+                                                            false, "User");
   // Calling the Method
   std::string str = test.modeName();
 }
