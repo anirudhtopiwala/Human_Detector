@@ -31,21 +31,41 @@
  */
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <Detect.hpp>
 
-// Unit test for second method of class Detect
+// Defining Mock class to check the toggleMode and modeName methods of my class Detect
+class MockTest : public Detect {
+ public:
+  MOCK_METHOD0(toggleMode, void());
+  MOCK_CONST_METHOD0(modeName, std::string());
+};
+
+// Mock test for second method of class Detect
 TEST(DetectTest, DetectModeNameTest) {
-  Detect test;
+  MockTest test;
   // Check if the mode is initialized to Default
-  ASSERT_EQ("Default", test.modeName());
+  EXPECT_CALL(test, modeName()).Times(1)
+                                      .WillOnce(::testing::Return("Default"));
+  // Calling the method
+  // std::string str = test.modeName();
+  cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
+                                                            false, "User");
 }
 
-// Unit test for first method of class Detect
+// Mock test for first method of class Detect
 TEST(DetectTest, DetectToggleTest) {
-  Detect test;
+  MockTest test;
   test.toggleMode();
   // Check if the mode changed to User
-  ASSERT_EQ("User", test.modeName());
+  EXPECT_CALL(test, modeName()).Times(2)
+                                      .WillOnce(::testing::Return("User"))
+                                      .WillOnce(::testing::Return("Default"));
+
+cv::Rect r = test.testClassifier("../data/test/imgs", cv::Size(200, 200),
+                                                            false, "User");                                      
+  // Calling the Method
+  std::string str = test.modeName();
 }
 
 // Unit test for third method of class Detect
