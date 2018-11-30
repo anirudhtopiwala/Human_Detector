@@ -8,7 +8,7 @@
 The loss in coverage of 7 percent is because of uncovered statements by the unit test. Example of these are code blocks which are put in place to check the correct input of directory path or to check the correct dimensions of different variables. And as unit tests are given the right image inputs, these code blocks don't get covered.
 ## Overview
 
-This Branch is an implementation of Google Mock test. Please go to the Master Branch for original implementation. To read more on the Google mock test. Go to the Google Mock section in the ReadMe below.
+**This Branch is an implementation of Google Mock test. Please go to the Master Branch for original implementation. To read more on the Google mock test. Go to the Google Mock section in the ReadMe below.**
 
 Human detection is an old and important problem in the field of object detection. Current technologies
 easily detect static obstacles. But, detecting dynamic obstacles has always been tough. In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient. 
@@ -178,9 +178,9 @@ cd <build folder of the module>
 
 Google Mock is a way to test interdependent methods or classes by creating their mock counterparts. This is very useful as if there is any refactoring and the classes are changed, then the tests need not rewritten. Note: mock objects are different from fake objects. Mock objects are specifically built to test interdependent classes.
 
-For the current projects, I have created two mock methods in the Detection class, which are toggleMode() and modeName(). I have used these methods as these are the only methods which are called into different classes. All the other methods are independent and they act as just functions. Therefore I decided just to stick to these two methods for Google Mock implementation. 
+For the current projects, I have created two mock methods in the Detection class, which are toggleMode() and modeName(). I have used these methods as these are the only methods which are called into different classes. All the other methods are independent and they act as just functions. Therefore I decided to use just these two methods for Google Mock implementation. 
 
-Using Google mock macro "EXPECT_CALL", in the testDetect.cpp (DetectModeNameTest), I checked if the modeName() method is being called once and that the default value is being returned. 
+Using Google mock macro "EXPECT_CALL", in the testDetect.cpp (DetectModeNameTest), I checked if the modeName() method is being called once and that the value "default" is being returned. 
 
 The toggleMode() method is checked in DetectToggleTest. Here we use the same mock macro "EXPECT_CALL" to run **twice**. This way we check if the mode name is changing from "User" to "Default" and back.
 
