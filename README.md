@@ -5,8 +5,10 @@
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ---
 
-The loss in coverage of 7 percent is beacuse of uncovered statements by the unit test. Example of these are code blocks which are put in place to check the correct input of directory path or to check the correct dimensions of different variables. And as unit tests are given the right image inputs, these code blocks dont get covered.
+The loss in coverage of 7 percent is because of uncovered statements by the unit test. Example of these are code blocks which are put in place to check the correct input of directory path or to check the correct dimensions of different variables. And as unit tests are given the right image inputs, these code blocks don't get covered.
 ## Overview
+
+This Branch is an implementation of Google Mock test. Please go to the Master Branch for original implementation. To read more on the Google mock test. Go to the Google Mock section in the ReadMe below.
 
 Human detection is an old and important problem in the field of object detection. Current technologies
 easily detect static obstacles. But, detecting dynamic obstacles has always been tough. In dynamic obstacles, human obstacles are the most important as any collision might lead to injury or loss of life which is highly undesirable for any product. This has generated a need for an accurate detector for making the algorithms more robust and efficient. 
@@ -15,16 +17,16 @@ To this extent we propose an algorithm that can detect humans in a frame by maki
 boxes around individual humans. The center position of the rectangle will be used as the pixel location in
 that frame. The pixel coordinates can then be used with a robots intrinsic and extrinsic transformations to track the human with respect to the robot's world frame.  We have used Histogram of Oriented Gradient (HOG) as the feature extractor. Support Vector Machine (SVM) is used to train using these feature vectors generated on the training data.The data set used for this project is taken from [INRIA Person Dataset](http://pascal.inrialpes.fr/data/human/). The algorithm is based on the paper by [Dalal, N., Triggs, B.](https://ieeexplore.ieee.org/document/1467360). A brief introduction of the algorithm can be found [here](https://www.learnopencv.com/histogram-of-oriented-gradients/). 
 
-We have used openCV as a thrid party library, which is covered under the 3-clause BSD License.
+We have used openCV as a third party library, which is covered under the 3-clause BSD License.
 
 ## Algorithm and Outputs
 
-The goal of this project is to detect humans using a SVM classifier trained on HOG descriptors. As the name suggests there are three major componenets or classes in the project. The **Data class**, which is responsible for loading the training Data, the **Train class** which computes the HOG descriptors and trains the classifier and the **Detect class** which makes a bounding box around the detected human.
+The goal of this project is to detect humans using a SVM classifier trained on HOG descriptors. As the name suggests there are three major components or classes in the project. The **Data class**, which is responsible for loading the training Data, the **Train class** which computes the HOG descriptors and trains the classifier and the **Detect class** which makes a bounding box around the detected human.
 Refer to the [class](https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Class.pdf) and the  [activity]( https://github.com/anirudhtopiwala/Human_Detector/blob/master/UML/revised/UML_Activity.pdf) diagrams to understand the flow of the algorithm.
 
 The algorithm starts with reading the positive (pos) images from the INRIA database to form the training data. Now, as the HOG descriptors requires a cropped input of the human to form a good descriptor, the training images were cropped using the bounding boxes obtained from the annotations file. To have a balanced descriptor, the negatives (neg) were formed by random cropping on the images obtained from the neg folder of the INRIA dataset. All the images were finally resized to have the same size, as this is very essential to the proper working of the classifier. 
 
-The HOG features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8), the number of descriptors were not enough to respresent all the information in the image. This can be clearly observed in the comparison shown below. 
+The HOG features were calculated with a cell size of (4,4). This size was taken as the length of the descriptor is very high for a cell size of (2,2) and for a cell size of (8,8), the number of descriptors were not enough to represent all the information in the image. This can be clearly observed in the comparison shown below. 
 
 <p align="center">
 <img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/Hog_cell_size_comaprison.png">
@@ -42,7 +44,7 @@ Once the descriptor for pos and neg images is concatenated, it is passed to the 
 <img src="https://github.com/anirudhtopiwala/Human_Detector/blob/master/additional_files/detections.gif">
 </p>
 
-As we can see, the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be acieved by using [Non-maximum Suppression.](https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/). Some other optimization techniques are discussed [here](https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector). 
+As we can see, the classifier is able to make an approximate detection of the human. This detection is the most basic kind of detection and many other optimization algorithms can be used to improve upon the detection accuracy. One way of removing multiple detections or multiple bounding boxes over a single human can be achieved by using [Non-maximum Suppression.](https://www.pyimagesearch.com/2015/02/16/faster-non-maximum-suppression-python/). Some other optimization techniques are discussed [here](https://stackoverflow.com/questions/26607418/improving-accuracy-opencv-hog-people-detector). 
 
 ## License
 
@@ -151,7 +153,7 @@ cd data
 wget ftp://ftp.inrialpes.fr/pub/lear/douze/data/INRIAPerson.tar
 cd ..
 ```
-Downlading the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction paramters and the classifier parmaters needs to be fine tuned accordingly.
+Downplaying the INRIA dataset is necessary for option 3, as the training images are required for training the classifier. A different dataset can also be used here if needed but the feature extraction paramters and the classifier parameters needs to be fine tuned accordingly.
 
 Once the dataset it downloaded, extract it in the same folder.
 
@@ -172,6 +174,18 @@ Go to the build directory and run the following command from the build directory
 cd <build folder of the module>
 ./test/detectHuman-test 
 ```
+## Google Mock Test
+
+Google Mock is a way to test interdependent methods or classes by creating their mock counterparts. This is very useful as if there is any refactoring and the classes are changed, then the tests need not rewritten. Note: mock objects are different from fake objects. Mock objects are specifically built to test interdependent classes.
+
+For the current projects, I have created two mock methods in the Detection class, which are toggleMode() and modeName(). I have used these methods as these are the only methods which are called into different classes. All the other methods are independent and they act as just functions. Therefore I decided just to stick to these two methods for Google Mock implementation. 
+
+Using Google mock macro "EXPECT_CALL", in the testDetect.cpp (DetectModeNameTest), I checked if the modeName() method is being called once and that the default value is being returned. 
+
+The toggleMode() method is checked in DetectToggleTest. Here we use the same mock macro "EXPECT_CALL" to run **twice**. This way we check if the mode name is changing from "User" to "Default" and back.
+
+
+Note that, for the Google mock testing, the methods discussed above in the class detect was interdependent and therefore no additional changes are made in the class structure. 
 
 ## How to Generate Doxygen Documnetation
 
