@@ -43,7 +43,7 @@ class MockTest : public Detect {
 
 // Mock test for second method of class Detect
 TEST(DetectTest, DetectModeNameTest) {
-  MockTest test;
+  ::testing::NiceMock<MockTest> test;
   // Check if the mode is initialized to Default
   EXPECT_CALL(test, modeName()).Times(1)
                                       .WillOnce(::testing::Return("Default"));
@@ -55,7 +55,7 @@ TEST(DetectTest, DetectModeNameTest) {
 
 // Mock test for first method of class Detect
 TEST(DetectTest, DetectToggleTest) {
-  MockTest test;
+  ::testing::NiceMock<MockTest> test;
   test.toggleMode();
   // Check if the mode changed to User
   EXPECT_CALL(test, modeName()).Times(2)
