@@ -176,9 +176,9 @@ cd <build folder of the module>
 ```
 ## Google Mock Test
 
-Google Mock is a way to test interdependent methods or classes by creating their mock counterparts. This is very useful as if there is any refactoring and the classes are changed, then the tests need not rewritten. Note: mock objects are different from fake objects. Mock objects are specifically built to test interdependent classes.
+Google Mock is a way to test interdependent methods or classes by creating their mock counterparts. This is very useful as if there is any refactoring and the classes are changed, then the tests need not be rewritten. Note: mock objects are different from fake objects. Mock objects are specifically built to test interdependent classes.
 
-For the current projects, I have created two mock methods in the Detection class, which are toggleMode() and modeName(). I have used these methods as these are the only methods which are called into different classes. All the other methods are independent and they act as just functions. Therefore I decided to use just these two methods for Google Mock implementation. 
+For the current project, I have created two mock methods in the Detect class, which are toggleMode() and modeName(). I have used these methods as these are the only methods which are called into different classes. All the other methods are independent and they just act as functions. Therefore I decided to use just these two methods for Google Mock implementation. 
 
 Using Google mock macro "EXPECT_CALL", in the testDetect.cpp (DetectModeNameTest), I checked if the modeName() method is being called once and that the value "default" is being returned. 
 
