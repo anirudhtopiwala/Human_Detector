@@ -185,7 +185,8 @@ Using Google mock macro "EXPECT_CALL", in the testDetect.cpp (DetectModeNameTest
 The toggleMode() method is checked in DetectToggleTest. Here we use the same mock macro "EXPECT_CALL" to run **twice**. This way we check if the mode name is changing from "User" to "Default" and back.
 
 
-Note that, for the Google mock testing, the methods discussed above in the class detect was interdependent and therefore no additional changes are made in the class structure. 
+Note that, for the Google mock testing, the methods discussed above in the class detect were interdependent among classes and therefore no additional changes are made in the class structure. **Therefore the class and activity diagrams are also not changed.**
+
 
 ## How to Generate Doxygen Documnetation
 
